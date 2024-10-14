@@ -1,0 +1,30 @@
+Primero que nada armar toda estructura desde 0 para fijar conocimientos, ir fijandose en el txt. No seamos boludos
+
+e ir haciendo un paso a paso aca de como ir haciendo un servidor completo.
+
+
+HACer los manager con los Class, y un txt para los Class ( ver clase de FS para recordar la teoria del Class)
+
+
+DEDICARLE EL TIEMPO NECESARIO PARA LA ENTREGA
+
+
+
+
+
+PASO A PASO-----------------------
+
+LEvantamos Servidor Express Basico
+
+-COnfiguraciones
+    .Uso de static
+    .Handlebars
+    .Usos de Router
+
+
+-Router 
+    .ViewsRouter  == Renderizando las vistas Handlebars
+
+
+
+Clase 15 1.40min ( apeas termina de configurar Handlebars)

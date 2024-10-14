@@ -1,0 +1,68 @@
+    -Protocolo de comunicacion BIDIRECCIONAL (a dif del HTTP, que es unidireccional) basado en TCP ( conexion CLIENTE - SERVIDOR)
+
+        
+        -npm i socket.io
+
+    -en SERVIDOR
+        import {Server} from 'socket.io'
+
+
+    Luego debemos instanciar el server que importamos y enviarle para que trabaje en conjunto con nuestro serverHTTP de express
+
+            const serverHTTP = app.listen(PORT, () => {
+                console.log(`Server Online ${PORT}`)
+            })
+
+
+            const serverSockets = new Server(serverHTTP)
+
+    -Poner a escuchar el serverSocket, por ejemplo la conexion de un CLIENTE
+            
+            serverSockets.on("connection", socket =>{
+                console.log(`se conecto un cliente con id ${socket.id}`)// en "socket, esta toda la informacion del cliente, por eso podemos acceder a .id"
+            })
+
+
+    -Despues debemos del lado del Cliente, utilziar el script que nos deja a disposicion socket-
+        -Para eso en la vista que querramos utilizar, ponemos en uso el script de socket.
+
+        /websocket.handlebars
+
+            <script src ="socket.io/socket.io.js"></script>
+            <script src ="js/websocket.js"></script> //NUESTRO JS
+            
+
+    -Aqui haremos la conexion del cliente, por lo tanto se deberia ejecutar el console.log del servidor al escuchar el evento de conecction
+
+
+        /js/websocket.js
+            const socket = io()
+
+
+    -luego comenzaremos con las emisiones y escuchas. 
+    CADA VEZ QUE HACEMOS UN EMIT (socket.emit) DEBEMOS TENER UN ON(socket.on) QUE LO CAPTE
+
+
+    /server
+        En el callback de el que escucha el evento de conecction hbacemos:
+           
+            socket.emit('saludo', {emisor: 'Server', mensaje: `¡BIENVENIDO, SE LE ASIGNO EL ID: ${socket.id}` })
+
+    Luego en el cleinte lo recibimos y lo manipulamos
+        /websocket.js
+                        
+            socket.on('saludo', (datos)=>{
+                console.log(`${datos.emisor} dice: ${datos.mensaje}`)
+            })
+
+        
+    -LUEGO EMPEZAMOS A JUGAR, ESTABLECIENDO ESTA COMUNCACION SERVER - CLIENTE
+    Pedimos el nombre del cliente mediante prompts, lo mostramos, lo traemos al servidor etc etc
+
+    Usamos una emision a todos menos al emisor con BROADCAST etc
+
+    Y emision General a TODOS desde el servidor servidorSocket.emit.....
+
+
+
+    LUEGO TRABAJAMOS EN COSNUMO DE API, CON EJEMPLO DE FAMILIA Y POST, EMITIR UN NUEVO USUARIO APENAS SE CREA

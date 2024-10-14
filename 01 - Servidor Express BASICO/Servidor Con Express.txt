@@ -1,0 +1,38 @@
+SERVIDOREXPRESS-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-npm init
+
+-instalar express (clase 6)
+
+-.gitignore
+
+-type: "module"
+
+-Crear Utils.js con el __dirname
+
+-crear SRC
+
+-configurar server express(clase 6)
+        import express from 'express'
+
+        const PORT = 3000
+
+        const app = express()
+
+        /* Manejo de datos complejos ej req.body */
+        app.use(express.json())
+        app.use(express.urlencoded({extended:true}))
+
+        const server=app.listen(PORT, () => {
+            console.log(`Server Online ${PORT}`)
+        })
+
+        app.get('/', (req,res)=>{
+            res.send('Server Online')
+        })
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

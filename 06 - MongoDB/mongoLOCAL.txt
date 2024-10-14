@@ -1,0 +1,79 @@
+--- MONGO DB 
+
+Mongo es una BD NoSQL, es decir una BD mas flexible, que se centra mas en el rendimiento que en seguridad y consisntencia, como lo hacen las BD SQL
+
+Su estructura se basa en colecciones, llamadas BSON, similares a los JSON.
+
+utiliza un ORM llamado "mongoose"
+
+
+-------------INSTALACION
+Instalar la version community Server
+
+Ejecutar el instalador como Administrador
+
+//PARA USAR DE MANERA LOCAL---------------------------------------
+
+NO instalar como servicio ( levantar manualmente cada vez que se usa) 
+
+    EN CONSOLA
+        -mongod
+        -mongosh
+        
+        - show dbs //para listar bases de datos
+        
+        - use nombreDeDb //Crear db, no va a aexistir hasta que le insertemos un documento
+        
+        -db.createCollection('nombreDeCOleccion') // crea coleccion dentro de la BD
+        
+        -db.alumnos.insertOnde({nombre:"Diego", edad:"20"}) //insertar un dato
+
+        -db.alumnos.insertMany([ARRAYYY]) //agragar varios datos
+
+        -db.alumnos.drop // eliminar
+
+
+CRUD CON MONGO (SEGUIMOS DE MANERA LOCAL)
+
+    CR 
+        -Una vez ya echo las insersiones.
+
+        El R del crud.
+
+        //findOne muestra solo la primera coincidencia, como el find de JS
+            
+            -db.heroes.findOne({parametro: valor}) // ej nombre:'Hulk'
+
+        //find muestra todas las coincidencias
+            -db.heroes.find({parametro: valor}) // team: 'Avengers'
+
+
+        -Hay operadores para filtrar, operadores que filtran obj ($or ---- $and ---etc), otros que trabajan sobre arrays ($all ---- $size---- etc) etc
+
+
+        -BUSQUEDA AVANZADA ( se mete dentro de las propiedades mismas)
+            ej: 
+            -db.heroes.find({"elemento.propiedad": valor}) // "enemie.name":"JOKER"
+
+
+        -PROYECCIONES
+            -db.heroes.find({}, {_id: 0 , nombre: 1}) 
+            //Las proyecciones usan el 2do parametro del find, 0 es una propiedad que no queres mostrar, y el 1 es lo que si queres ver, y como el primer parametro del find esta vacio, lista todo los documentos, pero solo con las propiueadews indicadas por la proyeccion
+
+
+        
+        CRUD - UD
+    
+        UPDATE
+            - db.heroes.updateMany({parametro: valor}, {$set: {powers: "escupir Fuego"}})
+
+            //el 1er parametro es un FILTRO, y el 2do es la isntruccion de lo que va a modificar a el objeto que coincida con el filtro
+
+        
+        DELETE
+            -db.heroes.deleteOne({parametro: valor}) // unico parametro, es el filtro y lo elimina al obj coincidente
+
+
+
+
+

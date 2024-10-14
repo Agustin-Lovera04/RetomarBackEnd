@@ -1,0 +1,200 @@
+-------MOTORES DE PLANTILLAS + MIDDLEWARES + MULTER---------------
+
+-Una vez levantado el servidor, crear dentro de SRC, carpeta "PUBLIC"
+
+-Configurar en servidor el uso de statics.
+    app.use(express.static(__dirname + '/public'))
+
+-En public creamos los html
+
+
+
+------MIDDLEWARES-----------------------------------------------
+
+- mid en ruta ( Solo de ejemplo)
+
+    function mid1(req,res, next){
+        console.log('Paso middle')
+        next()
+        }
+    router.post('/', mid1,(req,res)=>{
+
+
+- mid CON ERROR ------
+
+    function mid1({error, req , res, next}){
+        if(error){
+            res.setHeader('Content-Type','application/json');
+            return res.status(404).json({error: error.message});
+        }
+
+        next()
+        }
+
+
+
+-----------MULTER------------------------------------------------
+
+MULTER + STORAGE ---
+   
+    -util.js (De la doc oficial, crea una funcion para definir donde se guardaran los archivos manejados por multer, y manipular nombre etc etc.
+    Lo exportamos y lo usamos en el server)
+            
+            import multer from 'multer'
+
+            const storage = multer.diskStorage({
+                destination: function (req, file, cb) {
+                    cb(null, './src/uploads')
+                },
+                filename: function (req, file, cb) {
+                    cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname)
+                }
+            })
+
+            export const upload = multer({ storage: storage })
+
+        - en HTML
+                                    <form action="/multer" method="post" enctype="multipart/form-data">
+                                        <input type="file" name="avatar" />
+                                        <input type="text" name="nombre" placeholder="nombre">
+                                        <input type="submit" value="Upload">
+                                    </form>
+
+
+                        - Creamos el endpoint que recibira el hhtp req con multer
+
+                                app.post('/multer', upload.single('avatar'),(req, res, next)=>{
+                                        console.log(req.file)
+                                    
+                                        res.status(200).json({status: "ok"})
+                                    })
+
+
+
+ESTO PARA TRABAJAR EN ARCHIVO( MANERA VIEJA)
+                    Una vez instalado, e importado.
+                            (donde guardara los archivos)
+                            const upload = multer({dest: './uploads/'})
+
+
+                        - en HTML
+                                    <form action="/multer" method="post" enctype="multipart/form-data">
+                                        <input type="file" name="avatar" />
+                                        <input type="text" name="nombre" placeholder="nombre">
+                                        <input type="submit" value="Upload">
+                                    </form>
+
+
+                        - Creamos el endpoint que recibira el hhtp req con multer
+
+                                app.post('/multer', upload.single('avatar'),(req, res, next)=>{
+                                        console.log(req.file)
+                                    
+                                        res.status(200).json({status: "ok"})
+                                    })
+
+
+
+
+---------HANDLEBARS----------------------------------------------------------
+-RENDERIZA VISTAS DEL LADO DEL SERVIDOR Y NO DEL CLIENTE
+(Nivel de escalabilidad: Medio - bajo)
+
+
+    -npm i express-handlebars
+
+    -en server
+        import {engine} from 'express-handlebars'
+        
+
+            //Handlebars configuracion
+            app.engine('handlebars', engine())//declara y inicializa el motor
+            app.set('view engine', 'handlebars')//setea el motor de vistas
+            app.set('views', './src/views')//donde se encontraran las vistas
+
+
+    -Dentro de src creamos.
+        /src
+            /views
+                /layouts
+                    .main.handlebars
+    
+
+    -Dentro del main, colocamos el cascaron html "!" y dentro del body.
+           
+            {{{body}}}
+
+    -Luego fuera de Layouts, empezamos a crear los vistas.handlebars, que querramos
+    Y para utilizarlos debemos renderizarlos en los END.
+
+        app.get('/', (req, res) =>{
+            res.setHeader('Content-Type','text/html');
+            return res.status(200).render('home');
+        })
+
+
+
+    -Una vez ahi podemos trabajar el dinamismo de handlebars, ejemplo_
+
+            -end
+                let api = [
+                    {id: 1, nombre: "Natalia Balisardi"},
+                    {id: 2, nombre: "Sebastian Lovera"},
+                    {id: 3, nombre: "Juan Ignacio Lovera"}
+                ]
+
+                app.get('/', (req, res) =>{
+
+                    let famliar01 = api[0]
+
+                    
+                    res.setHeader('Content-Type','text/html');
+                    return res.status(200).render('home', {famliar01});
+                })
+
+
+            -Handlebars 
+                    <h1>home Page</h1>
+                    <hr>
+
+                    <div>
+                        <h2>{{famliar01.nombre}} </h2>
+                    </div>
+
+
+        ------------------------------------------------------
+        HABNDLEBARS  + ROUTER 
+    
+    .Coomo no queremos recargar el script donde se encuentra alojado el servidor, migramos todo lo que sea vistas a un router, ej "vistasRouter"
+
+    -routes
+        -vistasRoutes.js
+                    .import { Router } from 'express';
+                    export const router=Router()
+
+                    router.get('/',(req,res)=>{
+
+                        
+
+                        res.status(200).render('Home')
+                    })
+
+                    router.get('/familiaCompleta',(req,res)=>{
+
+                        res.status(200).render('FamiliaCompleta')
+                    })
+
+
+            -Luego importamos en el server el router y lo seteamos para que todo lo que llegue al END  raiz "/" lo trabaje con el script de vistasRoutes
+
+
+---ForEach en HANDLEBARS
+    
+        {{#each familia}}
+            <div>
+                <h2>{{this.nombre}} </h2>
+            </div>
+        {{/each}}
+
+
+

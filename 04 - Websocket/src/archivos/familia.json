@@ -1,0 +1,33 @@
+[
+     {
+          "id": 1,
+          "nombre": "Natalia",
+          "apellido": "Balisardi"
+     },
+     {
+          "id": 2,
+          "nombre": "Sebastian",
+          "apellido": "Lovera"
+     },
+     {
+          "id": 3,
+          "nombre": "JUAN IGNACIO",
+          "apellido": "Lovera",
+          "edad": "27"
+     },
+     {
+          "id": 4,
+          "nombre": "Agustin",
+          "apellido": "Lovera"
+     },
+     {
+          "id": 5,
+          "nombre": "Ivan",
+          "apellido": "Zurbiggen"
+     },
+     {
+          "id": 6,
+          "nombre": "Eduardo",
+          "apellido": "Lovera"
+     }
+]

@@ -1,0 +1,15 @@
+<h1>Familia Completa</h1>
+
+{{#if detalle}}
+        {{#each familia}}
+        <div>
+            <h2>{{this.nombre}} - ID: {{this.id}}</h2>
+        </div>
+    {{/each}}
+{{else}}
+    <ul>
+        {{#each familia}}
+        <li>{{this.nombre}} </li>
+        {{/each}}
+    </ul>
+{{/if}}

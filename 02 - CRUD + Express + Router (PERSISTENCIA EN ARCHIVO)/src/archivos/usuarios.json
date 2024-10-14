@@ -1,0 +1,18 @@
+[
+     {
+          "id": 1,
+          "nombre": "Natalia",
+          "apellido": "Balisardi"
+     },
+     {
+          "id": 2,
+          "nombre": "Sebastian",
+          "apellido": "Lovera"
+     },
+     {
+          "id": 3,
+          "nombre": "JUAN IGNACIO",
+          "apellido": "Lovera",
+          "edad": "27"
+     }
+]

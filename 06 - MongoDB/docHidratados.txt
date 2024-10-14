@@ -1,0 +1,12 @@
+Mongo a pesar de que no se ve a simple vista, Devuelve los documentos con propiedes extras lo que se ocnoce como DOC HIDRATADO
+
+Eso nos generaria problemas para luego tratar los objetos fuera de lo que es el CRUD
+
+Esto se solucionaria de manera sencilla, haciendole un tratamiento a la operacion encargada de devolver un dato desde la DB
+EJ el Find
+
+let usuario = await usuarioModel.find().lean()
+
+La propiedad .lean() le indica a Mongoose que omita la hidratación de los documentos.
+
+

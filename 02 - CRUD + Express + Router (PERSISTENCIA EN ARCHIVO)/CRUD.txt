@@ -1,0 +1,15 @@
+-------CRUD ( PERSISTENCIA EN ARCHIVO )---------------
+
+Una vez levantado el servidor con express y configurado-
+
+-Creamos las funciones de GET (getUSers) y POST (saveUsers) en archivo
+
+-Comenzamos a utilizarlas en Endpoints
+
+-GET, POST PUT DELETE
+
+-Creamos router/usuarios.router.js dentro de src
+
+-creamos el router y lo exportamos, migramos los endpoint necesarios.
+
+-utilizamos el Router en server.js
