@@ -54,7 +54,10 @@ Luego tenemos para elegir los metodos de Conexion, nsootros vamos a usar Cliente
 
 
 
-
+//MANERA RESUMIDA = export const productsModel = mongoose.model('products', new mongoose.Schema(
+    {
+    }
+))
 
 -Luego empezamos a juagr con el CRUD---------------------------------------------------------------------------------------------------------------
 

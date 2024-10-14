@@ -1,0 +1,70 @@
+Son una representacion de una entidad.
+Las clases funcionan como moldes por lo tanto una vez definido el molde podemos crear muchos objetos con la misma forma y funcionalidades. A estos objetos se les llama INSTANCIAS
+
+Las clases pueden tener un "CONSTRUCTOR" que sirve para tareas de inizializacion
+
+Y luego se van declarando los METODOS, que son como "funciones" dentro de la clase
+
+
+Hay metodos STATIC que no se asocian a las instancias creadas, si no que se asocian directamente a la CLASE en si
+
+
+SINTAXIS
+
+class PersonaManager {
+    
+    constructor(nombre, apellido){
+        this.nombre = nombre
+        this.apellido = apellido
+    }
+
+    armarNombreCompleto(){
+        return ´El nombre completo es: ${this.nombre} ${this.apellido}´
+    }
+
+    cambiarNombre(nom){
+        this.nombre = nom
+    }
+
+    static verEspecie(){
+        let especie = 'HUMANO'
+        return ´La especie es: ${especie}´
+    }
+}
+
+
+
+//INSTANCIAS
+
+let persona1 = new PersonaManager('Agustin', 'Lovera') // SE HACE UN NEW DE CLASE y SE PASAN ARGUMENTOS QUE PIDE EL CONSTRUCTOR
+
+console.log( persona1.armarNombreCompleto()) // Agustin Lovera
+
+console.log(persona1.cambiarNombre('Juan Ignacio'))
+
+console.log(persona1.armarNombreCompleto()) // JUAN IGNACIO
+
+
+
+//STATIC
+console.log(PersonaManager.verEspecie());
+
+
+
+Y despues para usarlo por ejemplo, en un router, hacemos
+
+import { Router } from 'express';
+import { UsuariosManager } from '../dao/manager/usuariosManager.js';
+export const router=Router()
+
+
+let instancia = new UsuariosManager()
+
+router.get('/',(req,res)=>{
+
+    let usuarios = instancia.getUsers()
+
+    return res.status(200).json({
+        users: usuarios,
+    });
+})

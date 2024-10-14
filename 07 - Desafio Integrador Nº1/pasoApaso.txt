@@ -26,5 +26,18 @@ LEvantamos Servidor Express Basico
     .ViewsRouter  == Renderizando las vistas Handlebars
 
 
+-CONEXION A DB
+    .Generamos la conexion a DB mediante el ORM mongoose
 
-Clase 15 1.40min ( apeas termina de configurar Handlebars)
+-Generar las colecciones y los modelos de trabajo con mongoose
+
+-revisar Estado de DB si ya cuenta con datos, o hay que poblarla ( en este caso yo hice end para crear las colecciones y le inserte cosas, pero se ejecutan una unica vez y ya los borre)
+
+
+
+
+
+
+
+-INSERTE ALGUNOS DOCUMENTOS EN COLECCION DE PRODUCTOS, YA BORRE TODOS LOS END DE INSERCION
+QUEDE EN 1.48min  clase 15
