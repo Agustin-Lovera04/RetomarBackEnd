@@ -3,9 +3,6 @@ Primero que nada armar toda estructura desde 0 para fijar conocimientos, ir fija
 e ir haciendo un paso a paso aca de como ir haciendo un servidor completo.
 
 
-HACer los manager con los Class, y un txt para los Class ( ver clase de FS para recordar la teoria del Class)
-
-
 DEDICARLE EL TIEMPO NECESARIO PARA LA ENTREGA
 
 
@@ -29,15 +26,14 @@ LEvantamos Servidor Express Basico
 -CONEXION A DB
     .Generamos la conexion a DB mediante el ORM mongoose
 
--Generar las colecciones y los modelos de trabajo con mongoose
+    -Generar las colecciones y los modelos de trabajo con mongoose
 
--revisar Estado de DB si ya cuenta con datos, o hay que poblarla ( en este caso yo hice end para crear las colecciones y le inserte cosas, pero se ejecutan una unica vez y ya los borre)
+    -revisar Estado de DB si ya cuenta con datos, o hay que poblarla ( en este caso yo hice end para crear las colecciones y le inserte cosas, pero se ejecutan una unica vez y ya los borre)
+
+-Generar las clases y sus respectivas instancias para generar Nuestro manager de objetos (products, chat etc..)
+
+-Empezamos a trabajar en el CRUD con los manager, el router, handlebars  etc y en las Consignas del trabajo.
 
 
-
-
-
-
-
--INSERTE ALGUNOS DOCUMENTOS EN COLECCION DE PRODUCTOS, YA BORRE TODOS LOS END DE INSERCION
-QUEDE EN 1.48min  clase 15
+SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES
+Nos tenemos que poner al dia con las consignas de los tps anteriores, asi luego terminamos las consignas de esta entrega, pero nos falta practicamente todo el crud, comenze por el crud y funcionalidades de los PRoducts, ir guiandose con el desafio Integrador ya entregado, ( ir viendo las funciones qwue tienen los manager y ver que nos falta)

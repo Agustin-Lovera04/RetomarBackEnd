@@ -12,7 +12,12 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(express.static(__dirname + '/public'))
 
-app.engine('handlebars' , engine())
+app.engine('handlebars', engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+}))
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 

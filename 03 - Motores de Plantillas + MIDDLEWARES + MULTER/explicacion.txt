@@ -198,3 +198,14 @@ ESTO PARA TRABAJAR EN ARCHIVO( MANERA VIEJA)
 
 
 
+
+-----------------------2da Opcion para trasbajar con doc HIdratados.
+configuracion del motor de hanlebars:
+
+app.engine('handlebars', engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+}))
+

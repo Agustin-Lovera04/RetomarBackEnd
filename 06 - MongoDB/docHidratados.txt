@@ -9,4 +9,17 @@ let usuario = await usuarioModel.find().lean()
 
 La propiedad .lean() le indica a Mongoose que omita la hidratación de los documentos.
 
+------------------------------------------------------------------------------------
 
+SEGUNDA OPCION
+
+Parametros especiales para HANDLEBARS
+
+En app.js en vez de configurar el motor simple hacer:
+
+app.engine('handlebars', engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+}))
