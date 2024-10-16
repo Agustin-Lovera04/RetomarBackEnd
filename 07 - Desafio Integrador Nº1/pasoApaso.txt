@@ -34,6 +34,13 @@ LEvantamos Servidor Express Basico
 
 -Empezamos a trabajar en el CRUD con los manager, el router, handlebars  etc y en las Consignas del trabajo.
 
+-Individualizamos el Router de cada objeto de trabajo y dejamos el de vistasRouter por un lado que solo renderiza vistas y Enpoints de CRUD por otro. ej (products.Router.js)
 
+
+
+FOCUS PUNTUAL:
+-Que funcione el POST, luego hacer la vista cliente HTTP implementando socket.io
+
+FOCUS GRAL:
 SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES
 Nos tenemos que poner al dia con las consignas de los tps anteriores, asi luego terminamos las consignas de esta entrega, pero nos falta practicamente todo el crud, comenze por el crud y funcionalidades de los PRoducts, ir guiandose con el desafio Integrador ya entregado, ( ir viendo las funciones qwue tienen los manager y ver que nos falta)

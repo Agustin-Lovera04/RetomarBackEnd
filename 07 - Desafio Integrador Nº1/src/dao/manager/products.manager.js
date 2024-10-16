@@ -32,4 +32,17 @@ export class ProductsManager{
             console.log(error);   
         }
     }
+
+
+    async createProduct(title, description, code, price, stock, category, thumbnail){
+        try {
+
+            let newProduct = await productsModel.create({title: title, description: description, code: code, price: Number(price), stock:Number(stock), category: category, thumbnail: thumbnail})
+
+            return newProduct
+
+        } catch (error) {
+            return null
+        }
+    }
 }

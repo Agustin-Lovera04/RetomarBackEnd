@@ -2,32 +2,34 @@ import { Router } from 'express';
 import { ProductsManager } from '../dao/manager/products.manager.js';
 export const router = Router();
 
-let manager = new ProductsManager()
+export let manager = new ProductsManager()
 
 
 
 router.get('/',(req,res)=>{
-    
     res.status(200).render('Home')
 })
 
+
 router.get('/products',async (req,res) =>{
     let products
+
     let empty = false
+
     try {
         products = await manager.getProducts()
-
         if(products.length === 0){
             empty = true
         }
 
         if (req.query.limit) {
             products = products.slice(0, req.query.limit);
-          }
+        }
 
         return res.status(200).render('products', {products , empty})
     } catch (error) {
-        
+        res.setHeader('Content-Type','application/json');
+        return res.status(500).json({InternalError: error.message,});
     }
 })
 

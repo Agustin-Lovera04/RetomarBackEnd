@@ -2,7 +2,8 @@ import express from 'express';
 import __dirname from './utils.js';
 import {engine} from 'express-handlebars'
 import mongoose from 'mongoose'
-import { router as viewsRouter} from './router/viewsRouter.js';
+import { router as viewsRouter} from './router/views.router.js';
+import { router as productsRouter } from './router/products.router.js';
 const PORT=3000;
 
 const app=express();
@@ -22,7 +23,7 @@ app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 
 
-
+app.use('/api/products' , productsRouter)
 app.use('/' , viewsRouter)
 
 
