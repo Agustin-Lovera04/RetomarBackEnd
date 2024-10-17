@@ -45,14 +45,16 @@ LEvantamos Servidor Express Basico
 
         -En conjunto tambien debemos genenar Vistas, Formularios y Manupular el DOM, lo que sea necesario para el funcionamiento del Socket y asi  mejorar el funcionamiento de nuestro manager CRUD
 
+        -Implementar MULTER ( como Middle) para el manejo de la data del Formulario
+
 
 
 
 Quedaste en:
-HAciendo el formulario de agregar producto
+HAY UN ERROR 404 DE RUTA MEDIO RARO al enviar el fetch - SOLCUIONAR
 
 FOCUS PUNTUAL:
--Que funcione el POST ( FUNCIONANDO ) => => =>, luego hacer la vista cliente HTTP implementando socket.io
+-FORMULARIO ANDANDO CON ERROR Y CON EXITOS- IMPLEMENTAR socket.io y solucionar error de arriba
 
 FOCUS GRAL:
 SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES

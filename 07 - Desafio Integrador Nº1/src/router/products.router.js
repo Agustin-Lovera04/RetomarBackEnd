@@ -1,8 +1,13 @@
 import { Router } from 'express';
 import { manager } from './views.router.js';
+import multer from 'multer'
 export const router=Router()
 
-router.post('/', async(req,res)=>{
+/* MANEJO DE FORM DATA */
+const upload = multer()
+
+router.post('/', upload.none(),async(req,res)=>{
+
     let {title, description, code, price, stock, category, thumbnail} = req.body
 
     if(!title || !description || !code || !price || !stock || !category){
@@ -22,6 +27,5 @@ router.post('/', async(req,res)=>{
         return res.status(404).json({error: 'Server Error Internal'});
     }
 
-    res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: newProduct});
 })

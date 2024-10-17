@@ -1,0 +1,28 @@
+---Hacer el Fo,mrulario con html
+
+--RECORDAR USAR MULTER COMO MIDDLEWARE, PARA EL MANEJO DE HEADER " multipart/form-data"
+
+.Nosotros vamos a manerarlo con el elemento "FormData" Nativo de JS
+
+Esto automáticamente toma todos los campos del formulario y los prepara en formato multipart/form-data para ser enviados en la solicitud HTTP
+
+
+En js una vez quew capturamos todos los elewmentos del dom y el formulario completo en si.
+
+.Capturamos el evento del submit, lo trabajaremos con un e.preventDefault()
+
+DEbemos realizar la solicitud a la API mediante un FETCH
+
+.Donde le indicaremos pasos asi manejamos el envio manualmente.
+
+Metodo:
+Body: (Aqui le mandaremos el resultado del FormData)
+
+
+Pero antes, para que funcione Bien el FormData
+EN html
+
+A las etiquetasd del form, debemos tratarlas con el "name" ue indica cual sera la clave para el clave-valor de formData
+
+EJ:
+            <input name="price" type="number" class="form-control" />
