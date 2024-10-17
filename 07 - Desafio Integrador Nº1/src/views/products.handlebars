@@ -1,4 +1,12 @@
 <h1>Products Page</h1>
+<hr>
+<h2>Agregar un Producto</h2>
+<form id="postProduct"></form>
+    
+
+<hr>
+
+
 
 {{#if empty}}
 <h1>No hay productos Disponibles en este momento...!!! Intente mas tarde</h1>
@@ -8,8 +16,12 @@
 <ul>
     <li >
     Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>
-    Descripcion: <span>{{this.description}} </span>
+    Descripcion: <span>{{this.description}} </span><br>
+    ID: <span>{{this._id}} </span>
     </li>
 </ul>
 {{/each}}
 {{/if}}
+
+ <script src ="socket.io/socket.io.js"></script>
+ <script src="js/products.js"></script>

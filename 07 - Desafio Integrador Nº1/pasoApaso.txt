@@ -30,16 +30,29 @@ LEvantamos Servidor Express Basico
 
     -revisar Estado de DB si ya cuenta con datos, o hay que poblarla ( en este caso yo hice end para crear las colecciones y le inserte cosas, pero se ejecutan una unica vez y ya los borre)
 
--Generar las clases y sus respectivas instancias para generar Nuestro manager de objetos (products, chat etc..)
 
--Empezamos a trabajar en el CRUD con los manager, el router, handlebars  etc y en las Consignas del trabajo.
+    .CRUD
+        -Generar las clases y sus respectivas instancias para generar Nuestro manager de objetos (products, chat etc..)
 
--Individualizamos el Router de cada objeto de trabajo y dejamos el de vistasRouter por un lado que solo renderiza vistas y Enpoints de CRUD por otro. ej (products.Router.js)
+        -Empezamos a trabajar en el CRUD con los manager, el router, handlebars  etc y en las Consignas del trabajo.
+
+        -Individualizamos el Router de cada objeto de trabajo y dejamos el de vistasRouter por un lado que solo renderiza vistas y Enpoints de CRUD por otro. ej (products.Router.js)
 
 
+
+    .VISTAS Y CRUD
+        -Implementar Socket.Io para la comunacion entre cliente y servidor, para generar las vistas Hadlebars del CRUD de objetos
+
+        -En conjunto tambien debemos genenar Vistas, Formularios y Manupular el DOM, lo que sea necesario para el funcionamiento del Socket y asi  mejorar el funcionamiento de nuestro manager CRUD
+
+
+
+
+Quedaste en:
+HAciendo el formulario de agregar producto
 
 FOCUS PUNTUAL:
--Que funcione el POST, luego hacer la vista cliente HTTP implementando socket.io
+-Que funcione el POST ( FUNCIONANDO ) => => =>, luego hacer la vista cliente HTTP implementando socket.io
 
 FOCUS GRAL:
 SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES

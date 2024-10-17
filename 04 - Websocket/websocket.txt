@@ -40,7 +40,7 @@
 
 
     -luego comenzaremos con las emisiones y escuchas. 
-    CADA VEZ QUE HACEMOS UN EMIT (socket.emit) DEBEMOS TENER UN ON(socket.on) QUE LO CAPTE
+    CADA VEZ QUE HACEMOS UN EMIT (.emit) DEBEMOS TENER UN ON(.on) QUE LO CAPTE
 
 
     /server

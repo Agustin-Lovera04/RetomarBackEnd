@@ -4,6 +4,7 @@ import {engine} from 'express-handlebars'
 import mongoose from 'mongoose'
 import { router as viewsRouter} from './router/views.router.js';
 import { router as productsRouter } from './router/products.router.js';
+import {Server} from 'socket.io'
 const PORT=3000;
 
 const app=express();
@@ -30,6 +31,15 @@ app.use('/' , viewsRouter)
 const server=app.listen(PORT,()=>{
     console.log(`Server escuchando en puerto ${PORT}`);
 });
+
+
+
+
+export const io = new Server(server)
+io.on("connection", (socket) => {
+    console.log(`Se conecto un cliente, id: ${socket.id}`)
+})
+
 
 
 try {

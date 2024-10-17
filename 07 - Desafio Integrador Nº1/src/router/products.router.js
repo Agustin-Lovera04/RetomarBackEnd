@@ -5,7 +5,7 @@ export const router=Router()
 router.post('/', async(req,res)=>{
     let {title, description, code, price, stock, category, thumbnail} = req.body
 
-    if(!title || !description || !code || !price || !stock || !category || !thumbnail){
+    if(!title || !description || !code || !price || !stock || !category){
         return res.status(404).json({error: 'Debe enviar todos los campos solicitados.'});
     }
 
@@ -21,4 +21,7 @@ router.post('/', async(req,res)=>{
     if(!newProduct){
         return res.status(404).json({error: 'Server Error Internal'});
     }
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({ok: newProduct});
 })
