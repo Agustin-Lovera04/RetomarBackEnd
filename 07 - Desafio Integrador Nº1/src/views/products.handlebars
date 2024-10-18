@@ -39,6 +39,8 @@
 <h1>No hay productos Disponibles en este momento...!!! Intente mas tarde</h1>
 
 {{else}}
+
+<div id="containerProducts">
 {{#each products}}
 <ul>
     <li >
@@ -48,6 +50,7 @@
     </li>
 </ul>
 {{/each}}
+</div>
 {{/if}}
 
  <script src ="socket.io/socket.io.js"></script>

@@ -41,20 +41,20 @@ LEvantamos Servidor Express Basico
 
 
     .VISTAS Y CRUD
-        -Implementar Socket.Io para la comunacion entre cliente y servidor, para generar las vistas Hadlebars del CRUD de objetos
+        -Con el Post del CRUD funcioanando, ahora lo llevamos al funcionamiento con ususario en navegador, Por lo tanto debemos hacer una vista con fomrulario, (paso a paso en txt)
 
-        -En conjunto tambien debemos genenar Vistas, Formularios y Manupular el DOM, lo que sea necesario para el funcionamiento del Socket y asi  mejorar el funcionamiento de nuestro manager CRUD
+        -En conjunto tambien debemos genenar Vistas, Formularios y Manupular el DOM con las respuestas del servidor, mediante los fetch, socket etc, lo que sea necesario para el funcionamiento del Socket y asi  mejorar el funcionamiento de nuestro manager CRUD
 
         -Implementar MULTER ( como Middle) para el manejo de la data del Formulario
-
+        
+        -Implementar Socket.Io para la comunacion entre cliente y servidor, para generar las vistas Hadlebars del CRUD de objetos
 
 
 
 Quedaste en:
-HAY UN ERROR 404 DE RUTA MEDIO RARO al enviar el fetch - SOLCUIONAR
 
 FOCUS PUNTUAL:
--FORMULARIO ANDANDO CON ERROR Y CON EXITOS- IMPLEMENTAR socket.io y solucionar error de arriba
+-FORMULARIO + SOCKET ANDANDO
 
 FOCUS GRAL:
 SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES

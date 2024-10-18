@@ -26,6 +26,26 @@ postProductForm.addEventListener("submit", async (event) => {
         return (responseFetch.innerHTML = `<p style="background-color:green;">Producto Agregado Con Exito</p>`);
       });
   } catch (error) {
-    console.log(error);
+      return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
   }
 });
+
+
+socket.on('listProducts', (products)=>{
+    let containerProducts = document.getElementById('containerProducts')
+    containerProducts.innerHTML = ''
+
+    products.forEach(product => {
+      const productDOM = `
+      <ul>
+        <li >
+        Nombre: <span style="font-weight: bold;">${product.title}</span><br>
+        Descripcion: <span>${product.description} </span><br>
+        ID: <span>${product._id} </span>
+        </li>
+      </ul>
+    });
+    `
+    containerProducts.innerHTML += productDOM
+  })
+})
