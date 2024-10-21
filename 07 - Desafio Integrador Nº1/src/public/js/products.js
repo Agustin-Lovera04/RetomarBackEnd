@@ -44,7 +44,6 @@ socket.on('listProducts', (products)=>{
         ID: <span>${product._id} </span>
         </li>
       </ul>
-    });
     `
     containerProducts.innerHTML += productDOM
   })

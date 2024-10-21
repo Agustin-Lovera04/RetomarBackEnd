@@ -33,3 +33,39 @@ router.post('/', upload.none(),async(req,res)=>{
 
     return res.status(200).json({ok: newProduct});
 })
+
+router.put('/:id', async (req,res)=>{
+    let {id} = req.params //lo estoy haciendo desde parametro para Postman
+
+    let isValid = await manager.validID(id)
+    if(isValid == false){
+        res.setHeader('Content-Type','application/json');
+        return res.status(401).json({error: 'Ingrese un ID valido'});
+    }
+
+    let product = await manager.getProductById(id)
+    if(!product){
+        return res.status(401).json({
+            error: 'No se encontro producto con el ID Ingresado'
+        });
+    }
+
+
+    if(req.body._id){
+        return res.status(401).json({
+            error: 'NO SE PUEDE MODIFICAR LA PROPIEDAD: _ID'
+        });
+    }
+
+
+    let putProduct = await manager.putProduct(id, req.body)
+    if(!putProduct){
+        return res.status(500).json({
+            error: 'internal server error' + error.message,
+        });
+    }
+
+    return res.status(200).json({
+        ok: putProduct,
+    });
+})

@@ -45,4 +45,18 @@ export class ProductsManager{
             return null
         }
     }
+
+    async putProduct(id, body){
+        try {
+            let prodMod = await productsModel.updateOne({ _id: id }, body)
+            if (prodMod.modifiedCount == 0) {
+                return null
+            }
+            return prodMod
+        
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
 }
