@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { manager } from './views.router.js';
+import { productsManager } from './views.router.js';
 import multer from 'multer'
 import { io } from '../app.js';
 export const router=Router()
@@ -22,14 +22,14 @@ router.post('/', upload.none(),async(req,res)=>{
         })}
 
 
-    let newProduct = await manager.createProduct(title, description, code, price, stock, category, thumbnail)
+    let newProduct = await productsManager.createProduct(title, description, code, price, stock, category, thumbnail)
 
     if(!newProduct){
         return res.status(500).json({error: 'Server Error Internal'});
     }
     
 
-    io.emit('listProducts', await manager.getProducts())
+    io.emit('listProducts', await productsManager.getProducts())
 
     return res.status(200).json({ok: newProduct});
 })
@@ -37,13 +37,13 @@ router.post('/', upload.none(),async(req,res)=>{
 router.put('/:id', async (req,res)=>{
     let {id} = req.params //lo estoy haciendo desde parametro para Postman
 
-    let isValid = await manager.validID(id)
+    let isValid = await productsManager.validID(id)
     if(isValid == false){
         res.setHeader('Content-Type','application/json');
         return res.status(401).json({error: 'Ingrese un ID valido'});
     }
 
-    let product = await manager.getProductById(id)
+    let product = await productsManager.getProductById(id)
     if(!product){
         return res.status(401).json({
             error: 'No se encontro producto con el ID Ingresado'
@@ -58,7 +58,7 @@ router.put('/:id', async (req,res)=>{
     }
 
 
-    let putProduct = await manager.putProduct(id, req.body)
+    let putProduct = await productsManager.putProduct(id, req.body)
     if(!putProduct){
         return res.status(500).json({
             error: 'internal server error' + error.message,
@@ -68,4 +68,34 @@ router.put('/:id', async (req,res)=>{
     return res.status(200).json({
         ok: putProduct,
     });
+})
+
+router.delete('/:id', async (req,res)=>{
+
+    console.log('fetch recibido' + req.params.id)
+    let {id} = req.params
+
+    let isValid = await productsManager.validID(id)
+    if(isValid == false){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'ingrese un ID valido'});
+    }
+
+    let product = await productsManager.getProductById(id) //VER COMO HACER PARA QUE SOLO DEVUELVA UN TRUE, PARA NO ESTAR PASANDO EL PRODUCTO ENTERO INESESARIAMENTE
+    if(!product){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'No se encontro producto con el ID ingresado'});
+    }
+
+
+    let prodDelete = await productsManager.deleteProduct(id)
+    if(!prodDelete){
+        res.setHeader('Content-Type','application/json');
+        return res.status(500).json('Internal Error Server');
+    }
+
+    io.emit('listProducts', await productsManager.getProducts())
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({ok: prodDelete});
 })

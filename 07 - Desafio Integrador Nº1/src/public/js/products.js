@@ -31,6 +31,39 @@ postProductForm.addEventListener("submit", async (event) => {
 });
 
 
+
+const deleteProductForm = document.getElementById('deleteProductForm')
+deleteProductForm.addEventListener("submit", (event) =>{
+  event.preventDefault()
+
+  let idValue = document.getElementById('IdValue').value
+
+  try {
+    fetch(`http://localhost:3000/api/products/${idValue}`, {
+      method:"DELETE"
+    })
+
+    .then((response) => response.json())
+    .then((data) => {
+
+      console.log('fetch enviado')
+      if (data.error) {
+        return (responseFetch.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
+      }
+      deleteProductForm.reset();
+      responseFetch.innerHTML = `<p style="background-color:green;">Producto Eliminado Con Exito</p>`
+    })
+  } catch (error) {
+    return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
+  }
+})
+
+
+
+
+
+
+
 socket.on('listProducts', (products)=>{
     let containerProducts = document.getElementById('containerProducts')
     containerProducts.innerHTML = ''

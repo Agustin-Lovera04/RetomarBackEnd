@@ -1,8 +1,9 @@
 <h1>Products Page</h1>
 <hr>
-<h2>Agregar un Producto</h2>
-
 <div id="responseFetch"></div>
+<div class="formsContainer" style="display: flex; flex-direction: row; justify-content:space-between">
+<div class="formPost-Container">
+<h2>Agregar un Producto</h2>
 
 <form id="postProductForm">
     <div><label for="title">TITULO:</label>
@@ -26,10 +27,24 @@
     <div><label for="thumbnail">URL IMG: (opcional)</label>
     <input type="text" name="thumbnail" id="thumbnail">
     </div>
-
     <button type="submit">AGREGAR PRODUCTO</button>
 </form>
+</div>
+
+
+<div class="formPost-Container">
+    <h2>Eliminar un Producto</h2>
+    <form id="deleteProductForm">
+        <div>
+            <label for="ID">Ingrese ID:</label>
+            <input type="text" id="IdValue">
+        </div>
+        <button type="submit">Eliminar</button>
+    </form>
+
+</div>
     
+</div>
 
 <hr>
 

@@ -1,0 +1,19 @@
+<h1>CARTS PAGE</h1>
+
+{{#if empty}}
+<h1>No hay carritos Disponibles en este momento...!!! Intente mas tarde</h1>
+
+{{else}}
+
+<div id="containerCarts">
+{{#each carts}}
+<ul>
+    <li >
+    Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>
+    Productos: <span>{{this.products}} </span><br>
+    ID: <span>{{this._id}} </span>
+    </li>
+</ul>
+{{/each}}
+</div>
+{{/if}}

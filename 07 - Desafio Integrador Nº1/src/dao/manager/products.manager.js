@@ -16,10 +16,11 @@ export class ProductsManager{
     async getProducts(){
         let products
         try {
-            products  = await productsModel.find().lean()
+            products  = await productsModel.find({status: true}).lean()
             return products
         } catch (error) {
-            console.log(error);   
+            console.log(error);
+            return []
         }
     }
 
@@ -54,6 +55,21 @@ export class ProductsManager{
             }
             return prodMod
         
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
+    async deleteProduct(id){
+        let productDeleted = await this.getProductById(id)
+        try {
+            productDeleted = await productsModel.updateOne({_id:id}, {$set: {status: false}})
+            if(productDeleted.modifiedCount == 0){
+                return null
+            }
+
+            return productDeleted
         } catch (error) {
             console.log(error)
             return null
