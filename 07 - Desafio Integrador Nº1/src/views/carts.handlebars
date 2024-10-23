@@ -1,5 +1,17 @@
 <h1>CARTS PAGE</h1>
 
+<div class="forms-container">
+    <h2>Crear un carrito:</h2>
+    <div id="responseFetch"></div>
+    <form id="postCartForm">
+        <label for="title">Ingrese un titulo</label>
+        <input type="text" id="titleCart">
+        <button type="submit">Crear</button>
+    </form>
+</div>
+
+
+
 {{#if empty}}
 <h1>No hay carritos Disponibles en este momento...!!! Intente mas tarde</h1>
 
@@ -17,3 +29,7 @@
 {{/each}}
 </div>
 {{/if}}
+
+
+ <script src ="socket.io/socket.io.js"></script>
+ <script src="js/carts.js"></script>

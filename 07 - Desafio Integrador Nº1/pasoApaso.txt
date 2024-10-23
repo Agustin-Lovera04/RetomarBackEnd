@@ -53,7 +53,7 @@ LEvantamos Servidor Express Basico
 
 Quedaste en:
 - CRUD DE PRODUCTS COMPLETADO
-- => CRUD DE CARRITO  GET, GETID , POST (andando solo desde postman) OKKKKKK
+- => CRUD DE CARRITO  GET, GETID , POST ( mas o menos andadno controlar luego errores y seguir con U y D de carrito Y LO MAS IMPORTANTE;  EL SEGUNDO POST, para agregar productos)
 
 FOCUS PUNTUAL:
 SEGUIR CON CRUD DE CARRITO E IMPLEMENTAR CHAT AL PROYECTO
