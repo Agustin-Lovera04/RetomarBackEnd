@@ -6,6 +6,7 @@ import { router as viewsRouter} from './router/views.router.js';
 import { router as productsRouter } from './router/products.router.js';
 import { router as cartsRouter } from './router/carts.router.js';
 import {Server} from 'socket.io'
+import multer from 'multer';
 const PORT=3000;
 
 const app=express();
@@ -24,9 +25,14 @@ app.engine('handlebars', engine({
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 
+
+
 app.use('/api/carts', cartsRouter)
 app.use('/api/products' , productsRouter)
 app.use('/' , viewsRouter)
+
+
+
 
 
 const server=app.listen(PORT,()=>{

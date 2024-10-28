@@ -1,13 +1,38 @@
 <h1>CARTS PAGE</h1>
 
-<div class="forms-container">
-    <h2>Crear un carrito:</h2>
-    <div id="responseFetch"></div>
-    <form id="postCartForm">
-        <label for="title">Ingrese un titulo</label>
-        <input type="text" id="titleCart">
-        <button type="submit">Crear</button>
-    </form>
+<div id="responseFetch"></div>
+<div class="forms-container" style="display: flex; flex-direction: row; justify-content:space-around">
+    <div>
+        <h2>Crear un carrito:</h2>
+        <form id="postCartForm">
+            <label for="title">Ingrese un titulo</label>
+            <input type="text" id="titleCart" required>
+            <button type="submit">Crear</button>
+        </form>
+    </div>
+    <div>
+        <h2>Modificar carrito</h2>
+        <form id="putCartForm">
+            <div>
+                <label for="id">Ingrese el Id del carrito a modificar:</label>
+                <input type="text" id="putIdCart" required>
+            </div>
+            <div>
+                <label for="newTitle">Ingrese el Nuevo titulo de carrito:</label>
+                <input type="text" id="newTitleCart" name="title" required>
+            </div>
+            <button type="submit">Modificar</button>
+        </form>
+    </div>
+
+        <div>
+        <h2>Eliminar un carrito:</h2>
+        <form id="deleteCartForm">
+            <label for="id">Eliminar carrito:</label>
+            <input type="text" id="deleteIdCart" required>
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
 </div>
 
 

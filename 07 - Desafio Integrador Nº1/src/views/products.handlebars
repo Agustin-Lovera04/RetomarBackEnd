@@ -7,22 +7,22 @@
 
 <form id="postProductForm">
     <div><label for="title">TITULO:</label>
-    <input type="text" name="title" id="title">
+    <input type="text" name="title" id="title" required>
     </div>
     <div><label for="description">DESCRIPCION:</label>
-    <input type="text" name="description" id="description">
+    <input type="text" name="description" id="description" required>
     </div>
     <div><label for="code">CODIGO:</label>
-    <input type="text" name="code" id="code">
+    <input type="text" name="code" id="code" required>
     </div>
     <div><label for="price">PRECIO:</label>
-    <input type="number" name="price" id="price">
+    <input type="number" name="price" id="price" required>
     </div>
     <div><label for="stock">STOCK:</label>
-    <input type="number" name="stock" id="stock">
+    <input type="number" name="stock" id="stock" required>
     </div>
     <div><label for="category">CATEGORIA:</label>
-    <input type="text" name="category" id="category">
+    <input type="text" name="category" id="category" required>
     </div>
     <div><label for="thumbnail">URL IMG: (opcional)</label>
     <input type="text" name="thumbnail" id="thumbnail">
@@ -37,7 +37,7 @@
     <form id="deleteProductForm">
         <div>
             <label for="ID">Ingrese ID:</label>
-            <input type="text" id="IdValue">
+            <input type="text" id="IdValue" required>
         </div>
         <button type="submit">Eliminar</button>
     </form>

@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { productsManager } from './views.router.js';
-import multer from 'multer'
+import { upload } from '../utils.js';
 import { io } from '../app.js';
 export const router=Router()
 
-/* MANEJO DE FORM DATA */
-const upload = multer()
 
 router.post('/', upload.none(),async(req,res)=>{
 

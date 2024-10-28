@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { cartsManager, productsManager } from './views.router.js';
-import multer from 'multer';
+import { upload } from '../utils.js';
 import { io } from '../app.js';
 export const router=Router()
 
@@ -26,7 +26,7 @@ router.post('/:title', async (req,res)=>{
 })
 
 
-router.put('/:id', async (req,res) => {
+router.put('/:id', upload.none(),async (req,res) => {
     let {id} = req.params
     let {title} = req.body
 
@@ -53,11 +53,47 @@ router.put('/:id', async (req,res) => {
     let modifiedCart = await cartsManager.putCart(id, title)
     if(!modifiedCart){
         return res.status(500).json({
-            error: 'internal server error' + error.message,
+            error: 'internal server error'
         });
     }
+
+    io.emit('listCarts', await cartsManager.getCarts())
 
     return res.status(200).json({
         ok: modifiedCart,
     });
+})
+
+
+router.delete('/:id', async (req,res)=>{
+    let {id} = req.params
+
+    let isValid = await productsManager.validID(id)
+    if(isValid == false){
+        return res.status(400).json({
+            error: 'Debe enviar un ID valido'
+        })
+    }
+
+    let cart = await cartsManager.getCartById(id)
+    if(!cart){
+        return res.status(400).json({
+            error: 'No se encontro carrito con el ID ingresado'
+        })
+    }
+
+  
+    let deleteCart = await cartsManager.deleteCart(id)
+    if(!deleteCart){
+        return res.status(500).json({
+            error: 'internal server error'
+        });
+    }
+
+    
+    io.emit('listCarts', await cartsManager.getCarts())
+    return res.status(200).json({
+        ok: deleteCart
+    });
+
 })

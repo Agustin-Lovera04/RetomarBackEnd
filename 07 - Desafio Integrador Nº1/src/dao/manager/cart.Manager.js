@@ -15,7 +15,7 @@ export class CartManager{
     async getCartById(id){
         let cart
         try {
-            cart = await cartsModel.findOne({_id: id}).lean()
+            cart = await cartsModel.findOne({_id: id, status:true}).lean()
             return cart
         } catch (error) {
             console.log(error.message)
@@ -46,4 +46,17 @@ export class CartManager{
         }
     }
 
+
+    async deleteCart(id){
+        try {
+            let deleteCart = await cartsModel.updateOne({_id:id}, {status: false})
+            if (deleteCart.modifiedCount == 0) {
+                return null
+            }
+            return deleteCart
+        } catch (error) {
+            console.log(error)
+            return null            
+        }
+    }
 }
