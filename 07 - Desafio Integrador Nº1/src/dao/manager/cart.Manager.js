@@ -33,4 +33,17 @@ export class CartManager{
         }
     }
 
+    async putCart(id, title){
+        try {
+            let modCart = await cartsModel.updateOne({_id:id}, {title: title})
+            if (modCart.modifiedCount == 0) {
+                return null
+            }
+            return modCart
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
 }
