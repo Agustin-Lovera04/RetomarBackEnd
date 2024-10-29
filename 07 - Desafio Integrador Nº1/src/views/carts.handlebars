@@ -46,9 +46,12 @@
 {{#each carts}}
 <ul>
     <li >
-    Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>
-    Productos: <span>{{this.products}} </span><br>
-    ID: <span>{{this._id}} </span>
+    Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>  
+        Productos:   
+        {{#each this.products}}
+            - {{this.product}}
+        {{/each}} <br>
+    ID de Carrito: <span>{{this._id}} </span>
     </li>
 </ul>
 {{/each}}

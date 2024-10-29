@@ -59,4 +59,36 @@ export class CartManager{
             return null            
         }
     }
+
+
+    async addProductInCart(cid, product){
+        let cart = await this.getCartById(cid)
+        let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product._id.toString())
+
+        if (existProductInCart) {
+            existProductInCart.quantity++
+        } else {
+            cart.products.push({
+                product: product._id,
+                quantity: 1
+            })
+        }
+
+
+        try {
+            let updateCart = await cartsModel.updateOne({_id: cid}, {$set: {products: cart.products}})
+
+            if(updateCart.modifiedCount == 0 ) {
+                console.log('Server Error')
+                return null
+            }
+
+            return updateCart
+
+        } catch (error) {
+            console.log('Error: ' + error)
+        }
+
+}
+
 }

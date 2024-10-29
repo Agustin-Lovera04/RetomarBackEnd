@@ -52,9 +52,9 @@ LEvantamos Servidor Express Basico
 
 
 Quedaste en:
-- CRUD DE PRODUCTS COMPLETADO
-- => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE,  EL SEGUNDO POST, para agregar productos
-(VAMOS a usar un carrito general, harcodeado, hasta que tengamos sessiones)
+- => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE
+Post agregado de productos (Andando desde Postman, controla errores basicamente. Falta en vista.)
+-Actualizada las vistas para control de array con productos
 
 
 FOCUS PUNTUAL:

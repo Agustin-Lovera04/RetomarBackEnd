@@ -93,6 +93,6 @@ router.get('/carts/:id', async (req,res)=>{
         res.setHeader('Content-Type','application/json');
         return res.status(400).json({error: 'No se encontro carrito con el ID ingresado'});
     }
-
+    console.log(cart.products)
     return res.status(200).render('cartDetail', {cart})
 })

@@ -1,0 +1,18 @@
+-Primero, desde el Router, debemos validar cid y pid, que nos llegan.
+
+-Luego validar que el producto y que el carrito existan.
+
+-Validamos la estructura apta en carrito para agreagar productos
+
+-Luego enviar al metodo del manager, encargado de agregar el producto al carrito
+
+-EN MANAGER:
+    -Comprobamos existencia de producto en carrito ( haciendo un find, sobre el array de productos en carrito, y los comparamos con el _id que llega del producto que manda el usuario)
+
+    -En caso de que exista, le aumentamos una unidad a la propiedad quantity.
+    -Si no existe, creamos el producto, haciendole un push al array, con las propuedades necesarias, SIN OLIVDAR "quantity: 1"
+
+
+    -Luego le hacemos un update al carrito, y le seteamos al array de carts, el Nuevo array actualizado con el nuevo producto
+
+    -Devolvemos el carrito desde el manager y luego hacemos lo q queramos en el router

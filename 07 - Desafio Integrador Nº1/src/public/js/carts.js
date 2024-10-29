@@ -1,5 +1,4 @@
 const socket = io()
-
 const postCartForm = document.getElementById('postCartForm')
 const responseFetch = document.getElementById('responseFetch')
 
