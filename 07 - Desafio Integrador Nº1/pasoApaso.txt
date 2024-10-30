@@ -53,7 +53,7 @@ LEvantamos Servidor Express Basico
 
 Quedaste en:
 - => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE
-Post agregado de productos (Andando desde Postman, controla errores basicamente. Falta en vista.)
+Post agregado de productos (Andando desde Postman, controla errores basicamente. Falta en vista. Para eso vamos a crear unos botones en cada producto, y para el id de cadaprpducto en cadaboton vamos a usar el data attribute, como en el integrador nro2. y luego ver como lo maneja en js.)
 -Actualizada las vistas para control de array con productos
 
 
