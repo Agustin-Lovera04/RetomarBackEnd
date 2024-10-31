@@ -49,12 +49,19 @@ LEvantamos Servidor Express Basico
         
         -Implementar Socket.Io para la comunacion entre cliente y servidor, para generar las vistas Hadlebars del CRUD de objetos
 
+        -Recordar, hacer las modificaciones para poder tratar los array de productos, dentro de los carritos En vistas.
+
+    -CARRITO
+        -Creamos vistas y lo manejamos como un metodo mas del crud.
+        Manejamos el envio de datos de compra con url params, enviando pid y cid, luego en el router y en el manager los manejamos correpondientemente.
+        Explicacion al detalle de metodo en CarritoFuncional.txt
 
 
 Quedaste en:
-- => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE
-Post agregado de productos (Andando desde Postman, controla errores basicamente. Falta en vista. Para eso vamos a crear unos botones en cada producto, y para el id de cadaprpducto en cadaboton vamos a usar el data attribute, como en el integrador nro2. y luego ver como lo maneja en js.)
--Actualizada las vistas para control de array con productos
+- => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE, POST AGREGAR PRODUCTO
+
+-HACERFQUE TODAS LAS RESPONSE QUE DEVULVAN UN INTERNAL ERROR => "error"
+
 
 
 FOCUS PUNTUAL:
@@ -65,3 +72,5 @@ SEGUIR CON CRUD DE CARRITO E IMPLEMENTAR CHAT AL PROYECTO
 FOCUS GRAL:
 SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES
 Nos tenemos que poner al dia con las consignas de los tps anteriores, asi luego terminamos las consignas de esta entrega, pero nos falta practicamente todo el crud, comenze por el crud y funcionalidades de los PRoducts, ir guiandose con el desafio Integrador ya entregado, ( ir viendo las funciones qwue tienen los manager y ver que nos falta)
+
+    -DESCUBRI QUE ESTE TRABAJO JUSTAMENTE ERA ESO, HACER TODAS LAS CONSIGNAS DEL CRUD, ANDANDO EN MONGO, ASIQUE APENAS TERMINEMOS LOS CRUDS, CONTROLAR CONSIGNAS, Y LUEGO SEGUIR CON CLASES

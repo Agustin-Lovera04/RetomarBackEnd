@@ -1,4 +1,5 @@
 <h1>Products Page</h1>
+<h3>Id Carrito De usuario: 6723bc6d18e8d4d638ad61fe</h3>
 <hr>
 <div id="responseFetch"></div>
 <div class="formsContainer" style="display: flex; flex-direction: row; justify-content:space-between">
@@ -49,6 +50,8 @@
 <hr>
 
 
+<div id="responseProducts"></div>
+
 
 {{#if empty}}
 <h1>No hay productos Disponibles en este momento...!!! Intente mas tarde</h1>
@@ -62,6 +65,8 @@
     Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>
     Descripcion: <span>{{this.description}} </span><br>
     ID: <span>{{this._id}} </span>
+    <a href="/products/{{this._id}}">Ver Detalle</a>
+    <button class="btn-addProductInCart" data-product-id="{{this._id}}">AGREGAR AL CARRITO</button>
     </li>
 </ul>
 {{/each}}

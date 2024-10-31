@@ -16,3 +16,30 @@
     -Luego le hacemos un update al carrito, y le seteamos al array de carts, el Nuevo array actualizado con el nuevo producto
 
     -Devolvemos el carrito desde el manager y luego hacemos lo q queramos en el router
+
+
+Vistas.
+    En la lista dep roductos, creamos un boton por cada uno, que tenga como atributo personalizado el ID de cada producto.
+    Y listo con eso, luego lo tomamos en JS, y realizamos los fetch correspondientes.
+
+    <button class="btn-addProductInCart" data-product-id="{{this._id}}">AGREGAR AL CARRITO</button>
+
+
+En JS
+    const btnAddProductInCart = document.querySelectorAll(".btn-addProductInCart")
+
+
+    [...btnAddProductInCart].forEach
+
+
+                Atributo HTML: Cuando defines un atributo en HTML que comienza con data-, como data-product-id, JavaScript lo reconoce como un atributo de datos personalizado.
+
+                html
+                Copia codice
+                <button class="btnAddToCart" data-product-id="123">Agregar al carrito</button>
+                Conversión en JavaScript: En el DOM, estos atributos data- se almacenan dentro del objeto dataset del elemento. JavaScript automáticamente transforma el nombre de data-product-id a productId, siguiendo ciertas reglas:
+
+                Se elimina el prefijo data-.
+                Cada guion seguido por una letra (-) se convierte en una letra mayúscula. Por ejemplo, data-product-id se convierte en productId.
+                Este proceso se llama conversión de kebab-case a camelCase.
+                Uso en JavaScript: Ahora puedes acceder a data-product-id como productId a través de element.dataset.productId.

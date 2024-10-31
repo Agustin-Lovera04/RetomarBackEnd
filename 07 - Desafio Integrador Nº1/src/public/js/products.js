@@ -58,6 +58,39 @@ deleteProductForm.addEventListener("submit", (event) =>{
   }
 })
 
+const responseProducts  = document.getElementById('responseProducts')
+
+//Seleccionamos todos los botones con clase, nos devuelve un NodeList con todos los botones.
+const btnAddProductInCart = document.querySelectorAll(".btn-addProductInCart");
+
+//Ustilizamos el Spread dentro de un elemento Array, asi podemos trabajarlo, e iterarlo
+[...btnAddProductInCart].forEach((btn) =>{
+  btn.addEventListener("click", (e) => {
+    let productId = e.target.dataset.productId
+
+
+    try {
+      fetch(`http://localhost:3000/api/carts/6723bc6d18e8d4d638ad61fe/product/${productId}`,{
+        method:"POST"
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          return (responseProducts.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
+        }
+        responseProducts.innerHTML = `<p style="background-color:green;">Producto Agregado al Carrito </p>`
+      })
+
+    } catch (error) {
+      console.log(error)
+      return (responseProducts.innerHTML = `<p style="background-color:red;"> ${error}</p>`);
+    }
+
+  })
+})
+
+
+
 
 
 

@@ -123,13 +123,13 @@ router.post('/:cid/product/:pid', async (req,res) =>{
 
     if(!cart.products || !Array.isArray(cart.products)){
         res.setHeader('Content-Type','application/json');
-        return res.status(500).json({InternalError: 'Estructura no Apta en carrito - Contacte con Administrador'});
+        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
     }
 
     let addProductInCart = await cartsManager.addProductInCart(cid, product)
     if(!addProductInCart){
         res.setHeader('Content-Type','application/json');
-        return res.status(500).json({InternalError: 'Server Error'});
+        return res.status(500).json({error: 'Server Error'});
     }
 
 
