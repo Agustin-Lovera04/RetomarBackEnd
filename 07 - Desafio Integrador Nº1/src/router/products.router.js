@@ -89,7 +89,7 @@ router.delete('/:id', async (req,res)=>{
     let prodDelete = await productsManager.deleteProduct(id)
     if(!prodDelete){
         res.setHeader('Content-Type','application/json');
-        return res.status(500).json('Internal Error Server');
+        return res.status(500).json({error: "Internal Server Error"});
     }
 
     io.emit('listProducts', await productsManager.getProducts())

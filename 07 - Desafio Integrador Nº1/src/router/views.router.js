@@ -31,7 +31,7 @@ router.get('/products',async (req,res) =>{
         return res.status(200).render('products', {products , empty})
     } catch (error) {
         res.setHeader('Content-Type','application/json');
-        return res.status(500).json({InternalError: error.message,});
+        return res.status(500).json({error: error.message,});
     }
 })
 
@@ -74,7 +74,7 @@ router.get('/carts', async (req,res)=>{
 
     } catch (error) {
         res.setHeader('Content-Type','application/json');
-        return res.status(500).json({InternalError: error.message,});
+        return res.status(500).json({error: error.message,});
     }
 })
 
