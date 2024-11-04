@@ -96,3 +96,10 @@ router.get('/carts/:id', async (req,res)=>{
     console.log(cart.products)
     return res.status(200).render('cartDetail', {cart})
 })
+
+
+router.get('/chat', async (req, res) => {
+    return res.status(200).render(
+        'chat'
+    );
+})

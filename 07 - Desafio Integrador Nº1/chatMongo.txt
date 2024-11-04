@@ -1,0 +1,26 @@
+Creamos vista, con su JS, con su ruouter y su manager correspondiente.
+
+
+En app, en el evento de la escucha de nuevo cliente
+
+Recibimos el correo del usuario.
+
+Ir viendo el desafio entregado e ir escribiendo lo que entendemos
+Lo uque hace pareciera, que es simple, router solo renderiza, vista tiene un dom manipulable, y el form de envio de mensaje, y tiene las librerias de pop up y la de socket  el js
+
+el tema esta en el js del cliente y en el manager.
+app lo unico que hace es recibir el nuevo usuario, dar aviso
+y recibir los mensajes y redistribuirlos.
+
+
+Js del cliente, recibe los nuevos usarios deplega pop up, lo mismo con mensajes nuevos, manipula el dom
+COmo asi tambien, se encarga de enviar con socket los nuevos mensajes, junto con la informacion del emisor.
+
+App recibe los nuewvos mensajes los manda al manager.
+
+el manager, recibe el nuevo mensaje y recibe la informacion del usaurio..
+Si el usuario existe, le pushea le nuevo mensaje y si no existe, lo crea, junto con el mensaje.
+
+
+
+((VER DESPUES COMO SE RECUPERA EL HISOTRIAL DE CHAT))
