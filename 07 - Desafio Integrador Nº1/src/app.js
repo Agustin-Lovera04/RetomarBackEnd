@@ -8,6 +8,7 @@ import { router as cartsRouter } from './router/carts.router.js';
 import { router as chatRouter } from './router/chat.router.js';
 import {Server} from 'socket.io'
 import multer from 'multer';
+import { ChatManager } from './dao/manager/chat.manager.js';
 const PORT=3000;
 
 const app=express();
@@ -41,16 +42,24 @@ const server=app.listen(PORT,()=>{
 });
 
 
-
 //VER COMO ELIMINAR TODA ESTA LOGICA DEL APP
+const chatManager = new ChatManager()
+
+
 export const io = new Server(server)
 io.on("connection", (socket) => {
     console.log(`Se conecto un cliente, id: ${socket.id}`)
 
 
     socket.on('correo', correo => {
-        socket.broadcast.emit('newUser', (newUser))
+        socket.broadcast.emit('newUser', (correo))
     })
+
+    socket.on('message', async (datos) => {
+        let saveDatos = await chatManager.saveDatos(datos)
+        io.emit("newMessage", saveDatos);
+    })
+
 })
 
 
