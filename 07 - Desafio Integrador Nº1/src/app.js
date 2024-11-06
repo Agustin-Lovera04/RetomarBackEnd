@@ -43,7 +43,7 @@ const server=app.listen(PORT,()=>{
 
 
 //VER COMO ELIMINAR TODA ESTA LOGICA DEL APP
-const chatManager = new ChatManager()
+export const chatManager = new ChatManager()
 
 
 export const io = new Server(server)

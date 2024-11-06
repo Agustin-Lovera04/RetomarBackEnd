@@ -3,7 +3,11 @@
 <div id="identidad"></div>
 <div class="chat-Container">
     <div id="messages-Container" class="messages-Container">
-
+        {{#each messages}}
+                <strong>{{this.user}}</strong>
+                <p>{{this.message}}</p><hr>
+        {{/each}}
+        <h3 style="background-color: lightgray;">Nueva Sesion</h3>
     </div>
 </div>
 

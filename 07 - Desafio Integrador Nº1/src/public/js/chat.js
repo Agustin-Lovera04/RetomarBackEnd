@@ -55,7 +55,7 @@ Swal.fire({
     newMessage.classList.add('message')
     newMessage.innerHTML = `
     <strong>${datos.user}</strong>
-    <p>${datos.message}</p><br>
+    <p>${datos.message}</p><hr>
     `
     messagesContainer.append(newMessage)
     messagesContainer.scrollTop = messagesContainer.scrollHeight;

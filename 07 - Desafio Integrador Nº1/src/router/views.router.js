@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ProductsManager } from '../dao/manager/products.manager.js';
 import { CartManager } from '../dao/manager/cart.Manager.js';
+import { chatManager } from '../app.js';
 export const router = Router();
 
 export let productsManager = new ProductsManager()
@@ -99,7 +100,8 @@ router.get('/carts/:id', async (req,res)=>{
 
 
 router.get('/chat', async (req, res) => {
+    let messages = await chatManager.getMessages()
     return res.status(200).render(
-        'chat'
-    );
+        'chat',
+    {messages});
 })
