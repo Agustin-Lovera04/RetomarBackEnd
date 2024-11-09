@@ -100,8 +100,6 @@ router.get('/carts/:id', async (req,res)=>{
 
 
 router.get('/chat', async (req, res) => {
-    let messages = await chatManager.getMessages()
     return res.status(200).render(
-        'chat',
-    {messages});
+        'chat');
 })

@@ -58,22 +58,12 @@ LEvantamos Servidor Express Basico
 
 
 Quedaste en:
-- => CRUD DE CARRITO  GET, GETID , POST, PUT, DELETE, POST AGREGAR PRODUCTO
-
--HACERFQUE TODAS LAS RESPONSE QUE DEVULVAN UN INTERNAL ERROR => "error" CORREGIDOOOOOOOOOOOO
-
-
--AVANZE EN CHAT, EN APP, EN MANAGER, ESCRIBIR EN TXT Y ENTENDER LO QUE HICEM PORQUE FUI COPIANDO  Y PEGANDO NOMAS
-    -Corregir error deq que los mensajes de cada usuario, los pone todos juntos como en el mismo mensajes
 
 
 FOCUS PUNTUAL:
-SEGUIR CON CRUD DE CARRITO E IMPLEMENTAR CHAT AL PROYECTO
+
 
 
 
 FOCUS GRAL:
-SEGUIREMOS AVANZANDO ASI Y ANOTAREMOS LOS CAMBIOS IMPORTANTES
-Nos tenemos que poner al dia con las consignas de los tps anteriores, asi luego terminamos las consignas de esta entrega, pero nos falta practicamente todo el crud, comenze por el crud y funcionalidades de los PRoducts, ir guiandose con el desafio Integrador ya entregado, ( ir viendo las funciones qwue tienen los manager y ver que nos falta)
-
-    -DESCUBRI QUE ESTE TRABAJO JUSTAMENTE ERA ESO, HACER TODAS LAS CONSIGNAS DEL CRUD, ANDANDO EN MONGO, ASIQUE APENAS TERMINEMOS LOS CRUDS, CONTROLAR CONSIGNAS, Y LUEGO SEGUIR CON CLASES
+TERMINADAS CONSIGNAS DE TRABAJO.
