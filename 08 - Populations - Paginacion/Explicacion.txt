@@ -1,0 +1,91 @@
+Populations.
+    -Consta de obtener un documento referenciado dentro de otro documento, con el fin de obtener ambos en una sola busqueda.
+    Se almacena el ID ( referencia ) y "populate" refiere a Poblar de un id, a un documento completo.
+        Ejemplo -Datos de un producto dentro de Un CARRITO
+    
+
+
+    -Creamos el modelo de carrito.
+            export const cartsModel = mongoose.model('Carts', new mongoose.Schema(
+                {
+                    title: { type: String, required: true, unique: true }, 
+                
+                    products: { type: [
+                        {
+                            product: {
+                                type: mongoose.Schema.Types.ObjectId,
+                                ref: 'products'
+                            }
+                        }
+                    ]},
+                    status: { type: Boolean, default: true }
+                }
+            ));
+
+    -Populations, debemos crear en la propiedad a poblar un array de objetos, que tenga la propiedad en si ('Product') y que dentro tenga un type: Que indicara que el dato sera un dato especial de Mongoose ('mongoose.Schema.Types.ObjectId').
+    Y debajo debemos poner la "ref" Que debera ser la coleccion que usa el objeto a poblar
+
+
+-Luego al momento de enviar los productos al carrito, en vez de enviar el product entero, solo debemos enviar el ID, obviamente, siempre dentro de la estructura que requiere el model.
+
+
+-Luego al momento de recuperar los carrtios debemos indicarle donde debe Poblar
+
+    Get Cart by ID
+        cart = await cartsModel.findOne({_id: id, status:true}).populate('products.product')
+
+
+
+
+-PODEMOS SETEAR QUE CADA VEZ QUE SE REALIZE UN metodo de recuperacion ('findOne') Se aplique un populate:
+                
+                import mongoose from 'mongoose';
+
+                const cartsSchema = new mongoose.Schema(
+                {
+                    title: { type: String, required: true, unique: true }, 
+                    products: { type: [
+                        {
+                            product: {
+                                type: mongoose.Schema.Types.ObjectId,
+                                ref: 'products'
+                            }
+                        }
+                    ]},
+                    status: { type: Boolean, default: true }
+                    }
+                )
+
+
+                
+//LE HACEMOS UN PRE PARA TAL METODO
+                cartsSchema.pre("findOne", function () {
+                    this.populate('products.product')
+                })
+
+
+
+                export const cartsModel = mongoose.model('carts', cartsSchema)
+
+
+
+-BASICAMENTE NO TUVIMOS QUE CAMBIAR MUCHO, YA QUE NOSOTROS DESDE UN PRINCIPIO SOLO ENVIABAMOS EL ID Y NO EL PRODUCTO ENTERO.
+
+    MODIFICAMOS SOLO ALGUNAS COSAS EN MODEL DE CART, Y LUEGO AGREGAMOS LA INDICACION DEL POPULATE.
+
+
+-Resumen.
+    Sirve para poder obtener informacion de un producto, dentro de otra estructura, ademas de economizar el movimiento de datos ya que solo movemos el ID de producto, y no el producto completo
+
+.Cambios fisicos en codigo
+    Modificamos el modelo de estructura superior (carrito), para que quede apto para recibir un objectId y con la referencia adecuada.
+    Luego le aplicamos unos metodos Pre, con un callback para que ejecute por cada metodo por ejemplo que aplique Populate en cada "findOne"
+
+    -Luego acomodar metodos de CRUD para solo enviar ID de producto
+
+
+
+
+.ERRORRRRRRRRRRR NO PUEDO AGREGAR PRODUCTOS PORQUE  AHORA LÑO QUE LLEGA COMO PRODUCT, SE LLAMA [Object], los manager, no pueden actuar bien
+
+PAGINACION----------------------------------------------
