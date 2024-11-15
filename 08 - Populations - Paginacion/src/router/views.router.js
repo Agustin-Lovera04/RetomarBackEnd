@@ -70,6 +70,8 @@ router.get('/carts', async (req,res)=>{
             carts = carts.slice(0, req.query.limit);
         }
 
+        console.log(carts);
+        
         return res.status(200).render('carts', {carts , empty})
 
     } catch (error) {
@@ -93,6 +95,9 @@ router.get('/carts/:id', async (req,res)=>{
         res.setHeader('Content-Type','application/json');
         return res.status(400).json({error: 'No se encontro carrito con el ID ingresado'});
     }
+
+    console.log(cart);
+
     return res.status(200).render('cartDetail', {cart})
 })
 

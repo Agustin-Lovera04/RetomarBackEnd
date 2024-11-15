@@ -3,7 +3,7 @@ import { cartsModel } from "../models/carts.model.js"
 export class CartManager{
     async getCarts () {
         try {
-            let carts = await cartsModel.find({status: true})
+            let carts = await cartsModel.find({status: true}).populate('products.product')
             return carts
         } catch (error) {
             console.log(error.message)
@@ -14,7 +14,7 @@ export class CartManager{
     async getCartById(id){
         let cart
         try {
-            cart = await cartsModel.findOne({_id: id, status:true}).lean()
+            cart = await cartsModel.findOne({_id: id, status:true})
             return cart
         } catch (error) {
             console.log(error.message)
