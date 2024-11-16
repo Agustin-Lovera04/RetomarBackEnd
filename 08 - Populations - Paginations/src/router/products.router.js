@@ -26,8 +26,8 @@ router.post('/', upload.none(),async(req,res)=>{
         return res.status(500).json({error: 'Server Error Internal'});
     }
     
-
-    io.emit('listProducts', await productsManager.getProducts())
+    let productsData = await productsManager.getProducts()
+    io.emit('listProducts', productsData.products)
 
     return res.status(200).json({ok: newProduct});
 })
@@ -92,7 +92,8 @@ router.delete('/:id', async (req,res)=>{
         return res.status(500).json({error: "Internal Server Error"});
     }
 
-    io.emit('listProducts', await productsManager.getProducts())
+    let productsData = await productsManager.getProducts()
+    io.emit('listProducts', productsData.products)
 
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: prodDelete});

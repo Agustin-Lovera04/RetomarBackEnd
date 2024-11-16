@@ -1,0 +1,202 @@
+Populations.
+    -Consta de obtener un documento referenciado dentro de otro documento, con el fin de obtener ambos en una sola busqueda.
+    Se almacena el ID ( referencia ) y "populate" refiere a Poblar de un id, a un documento completo.
+        Ejemplo -Datos de un producto dentro de Un CARRITO
+    
+
+
+    -Creamos el modelo de carrito.
+            export const cartsModel = mongoose.model('Carts', new mongoose.Schema(
+                {
+                    title: { type: String, required: true, unique: true }, 
+                
+                    products: { type: [
+                        {
+                            product: {
+                                type: mongoose.Schema.Types.ObjectId,
+                                ref: 'products'
+                            },
+                            quantity: Number
+                        }
+                    ]},
+                    status: { type: Boolean, default: true }
+                }
+            ));
+
+    -Populations, debemos crear en la propiedad a poblar un array de objetos, que tenga la propiedad en si ('Product') y que dentro tenga un type: Que indicara que el dato sera un dato especial de Mongoose ('mongoose.Schema.Types.ObjectId').
+    Y debajo debemos poner la "ref" Que debera ser la coleccion que usa el objeto a poblar
+
+
+-Luego al momento de enviar los productos al carrito, en vez de enviar el product entero, solo debemos enviar el ID, obviamente, siempre dentro de la estructura que requiere el model.
+
+
+-Luego al momento de recuperar los carrtios debemos indicarle donde debe Poblar
+
+    Get Cart by ID
+        cart = await cartsModel.findOne({_id: id, status:true}).populate('products.product')
+
+
+
+
+-PODEMOS SETEAR QUE CADA VEZ QUE SE REALIZE UN metodo de recuperacion ('findOne') Se aplique un populate:
+                
+                import mongoose from 'mongoose';
+
+                const cartsSchema = new mongoose.Schema(
+                {
+                    title: { type: String, required: true, unique: true }, 
+                    products: { type: [
+                        {
+                            product: {
+                                type: mongoose.Schema.Types.ObjectId,
+                                ref: 'products'
+                            }
+                        }
+                    ]},
+                    status: { type: Boolean, default: true }
+                    }
+                )
+
+
+                
+//LE HACEMOS UN PRE PARA TAL METODO
+                cartsSchema.pre("findOne", function () {
+                    this.populate('products.product')
+                })
+
+
+
+                export const cartsModel = mongoose.model('carts', cartsSchema)
+
+
+
+-BASICAMENTE NO TUVIMOS QUE CAMBIAR MUCHO, YA QUE NOSOTROS DESDE UN PRINCIPIO SOLO ENVIABAMOS EL ID Y NO EL PRODUCTO ENTERO.
+
+    MODIFICAMOS SOLO ALGUNAS COSAS EN MODEL DE CART, Y LUEGO AGREGAMOS LA INDICACION DEL POPULATE.
+
+
+-Resumen.
+    Sirve para poder obtener informacion de un producto, dentro de otra estructura, ademas de economizar el movimiento de datos ya que solo movemos el ID de producto, y no el producto completo
+
+.Cambios fisicos en codigo
+    Modificamos el modelo de estructura superior (carrito), para que quede apto para recibir un objectId y con la referencia adecuada.
+    Luego le aplicamos unos metodos Pre, con un callback para que ejecute por cada metodo por ejemplo que aplique Populate en cada "findOne"
+
+    -Luego acomodar metodos de CRUD para solo enviar ID de producto
+
+
+
+
+
+
+PAGINACION----------------------------------------------
+    -Sirve para Seccionar la cantidad de datos intercambiados entre Servidor y BD.
+    Para gran volumen de datos
+
+
+            -npm i mongoose-paginate-v2
+    
+    En el model que va a traer a los productos a paginar.
+    hacemos:
+
+        import paginate from .....
+
+
+        -productsSchema.plugin(paginate)
+
+
+
+    .Luego donde hacemos el find a los datos que queremos paginar, que se comunican con el modelo, debemos hacer actuar el plugin.
+
+            async getProducts(){
+        let products
+        try {
+            products  = await productsModel.paginate({status: true}, {limit: 5})
+
+        let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = products
+
+            //paginate devuelve los datos, dentro de DOCS
+            return{ products:products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage}
+        } catch (error) {
+            console.log(error);
+            return []
+        }
+    }
+
+
+
+-AHORA TOCAMOS UN POCO EL ROUTER, CUANDO SE EJECUTA EL GETPRODUCTS
+DEBEMOS ACCEDER DISTINTO YA QUE AHORA LLEGAN MAS PROPIEDADES EN EL GET products
+
+AHORA LO COLOCAMOS DENTRO DE UN DATA, PARA DISTINGUIR LOS PRODUCTOS, DEL RESTO DE PROPIEDADES DE PAGINATE
+
+router.get('/products',async (req,res) =>{
+    let data
+
+    let empty = false
+
+    let page = 1
+    if(req.query.page){
+        page= req.query.page
+    }
+    
+    try {
+        data = await productsManager.getProducts(page)
+        
+        let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = data
+        if(data.products.length === 0){
+            empty = true
+        }
+
+        if (req.query.limit) {
+            data.products = data.products.slice(0, req.query.limit);
+        }
+
+        return res.status(200).render('products', {products: data.products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
+    } catch (error) {
+        res.setHeader('Content-Type','application/json');
+        return res.status(500).json({error: error.message,});
+    }
+})
+
+
+
+
+-OBVIUAMENTE TOCAMOS UN POCO LA PARTE DEL HANDLEBARS, Y CAUNDO ENVIAMOS COSAS CON SOCKET, EN LOS CRUD DE LOS PRODUCTS, TAMBIEN DEBEMOS ENVIAR LOS PRODUCTS, DE MANERA QUE EL JS Y EL HANDLEBARS LO ENTIENDAN. ( por lo tnato debemos toquetear un poquito todos esos puntos)
+    Ejemplo 
+
+
+          let productsData = await productsManager.getProducts()
+            io.emit('listProducts', productsData.products)
+
+
+
+
+AHORA, PARA APLICAR LAS PAGIUNAS, COIMO AL RENDERIZAR TAMBIEN ENVIAMOS LAS PROPIEDADES DE PAGINATE, DEBEMOS HACER EL ACCESO A ESAS PROPIEDADES.
+
+
+
+En handlebarars:
+    <a href="/products/?page=1">Pag.1</a>
+
+    {{#if hasPrevPage}}
+    <a href="/products/?page={{prevPage}}">Pag. Ant.</a>
+    {{/if}}
+
+    {{#if hasNextPage}}
+    <a href="/products/?page={{nextPage}}">Pag. Sig.</a>
+    {{/if}}
+
+    <a href="/products/?page={{totalPages}}">Ult. Pag.</a>
+
+
+Entonces ahi ya tenemos acceso, una vez configuyrado el router, y el manager para recibir los query params, y setear la pagina que llega.
+
+Luego obviamente debemos en cada llamado al getRouter, enviar el page, que creamos conveniente, pero solo es cuestion de ir tocando y acomodando detalles.
+Que no justifica seguir escribiendo aca. lo mas importante esta.
+
+
+-OJO REVIRSAR, PORQUE AHORA NO ME CFREA LOS PRODUCTOS, SE VAN LAS PROPUEDADES AL URL, NO SE PORQUE, DEBE SER ALGO FACIO, OJO CON ARGUMENTO DE PAGE, VER QUE HACER, ahi puede estar el error
+
+
+-OLVIDE QUE GCUANDO VUELVO A MANDAR ALGO CON UN SOCKET OOR EJEMPLO EN PROCUTOSS, NO SE CREAN LOS BOTONES DE AGREAGAR A ACARRITO

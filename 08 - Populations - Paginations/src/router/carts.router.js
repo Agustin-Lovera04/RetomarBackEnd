@@ -19,7 +19,6 @@ router.post('/:title', async (req,res)=>{
         res.setHeader('Content-Type','application/json');
         return res.status(500).json({error: 'Error Internal Server'});
     }
-
     io.emit('listCarts', await cartsManager.getCarts())
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: newCart});

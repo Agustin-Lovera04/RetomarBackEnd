@@ -1,9 +1,10 @@
-import { cartsModel } from "../models/carts.model.js"
+import { cartsModel } from "../models/carts.model.js";
+
 
 export class CartManager{
     async getCarts () {
         try {
-            let carts = await cartsModel.find({status: true}).populate('products.product')
+            let carts = await cartsModel.find({status: true})
             return carts
         } catch (error) {
             console.log(error.message)
@@ -62,7 +63,6 @@ export class CartManager{
 
     async addProductInCart(cid, product){
         let cart = await this.getCartById(cid)
-        console.log(cart)
         let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product._id.toString())
 
         if (existProductInCart) {
@@ -79,6 +79,7 @@ export class CartManager{
             let updateCart = await cartsModel.updateOne({_id: cid}, {$set: {products: cart.products}})
 
             if(updateCart.modifiedCount == 0 ) {
+                console.log('Server Error')
                 return null
             }
 

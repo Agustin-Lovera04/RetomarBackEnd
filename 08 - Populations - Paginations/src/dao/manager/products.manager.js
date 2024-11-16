@@ -13,11 +13,14 @@ export class ProductsManager{
     }
 
 
-    async getProducts(){
+    async getProducts(page){
         let products
         try {
-            products  = await productsModel.find({status: true}).lean()
-            return products
+            products  = await productsModel.paginate({status: true}, {limit: 5, page: page})
+            
+            let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = products
+
+            return{ products:products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage}
         } catch (error) {
             console.log(error);
             return []
@@ -27,7 +30,7 @@ export class ProductsManager{
     async getProductById(id){
         let product
         try {
-            product = await productsModel.findOne({_id: id}).lean()
+            product = await productsModel.findOne({_id: id})
             return product
         } catch (error) {
             console.log(error);   

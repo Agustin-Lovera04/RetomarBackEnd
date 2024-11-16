@@ -47,11 +47,14 @@
 <ul>
     <li >
     Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>  
-        Productos:   
+        Productos: <br>
+        <ul>
         {{#each this.products}}
-          (  - {{this.product}} - Quantity: {{this.quantity}})
+            <li> -Id: {{this.product._id}} - Title: {{this.product.title}}</li>
         {{/each}} <br>
+        </ul>
     ID de Carrito: <span>{{this._id}} </span>
+    <hr>
     </li>
 </ul>
 {{/each}}

@@ -73,5 +73,19 @@
 </div>
 {{/if}}
 
+<a href="/products/?page=1">Pag.1</a>
+
+{{#if hasPrevPage}}
+    <a href="/products/?page={{prevPage}}">Pag. Ant.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/products/?page={{nextPage}}">Pag. Sig.</a>
+{{/if}}
+
+<a href="/products/?page={{totalPages}}">Ult. Pag.</a>
+
+
+
  <script src ="socket.io/socket.io.js"></script>
  <script src="/js/products.js"></script>
