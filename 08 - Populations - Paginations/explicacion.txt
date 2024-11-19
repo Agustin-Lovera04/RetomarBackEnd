@@ -196,7 +196,10 @@ Luego obviamente debemos en cada llamado al getRouter, enviar el page, que cream
 Que no justifica seguir escribiendo aca. lo mas importante esta.
 
 
--OJO REVIRSAR, PORQUE AHORA NO ME CFREA LOS PRODUCTOS, SE VAN LAS PROPUEDADES AL URL, NO SE PORQUE, DEBE SER ALGO FACIO, OJO CON ARGUMENTO DE PAGE, VER QUE HACER, ahi puede estar el error
+PARECIERA SER QUE SOLUCIONE EL ERORR, AHORA HAY QUE VER COM HACER PARA QE NO RECARGUE LA PAGINA CADA VEZ QUE AGREGO UN PRODUCTOA
+
+
+            //Pensando  que si n0 mando page, ago l find normal puede ser una opcion
 
 
 -OLVIDE QUE GCUANDO VUELVO A MANDAR ALGO CON UN SOCKET OOR EJEMPLO EN PROCUTOSS, NO SE CREAN LOS BOTONES DE AGREAGAR A ACARRITO

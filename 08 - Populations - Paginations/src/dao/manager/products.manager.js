@@ -16,11 +16,17 @@ export class ProductsManager{
     async getProducts(page){
         let products
         try {
-            products  = await productsModel.paginate({status: true}, {limit: 5, page: page})
-            
-            let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = products
 
+        if(!page){
+            products = await products.Model({status: true}, {limit: 5} )
+        }else{
+            products  = await productsModel.paginate({status: true}, {limit: 5, page: defPage})
+            let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = products
             return{ products:products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage}
+        }
+
+
+
         } catch (error) {
             console.log(error);
             return []
@@ -42,7 +48,6 @@ export class ProductsManager{
         try {
 
             let newProduct = await productsModel.create({title: title, description: description, code: code, price: Number(price), stock:Number(stock), category: category, thumbnail: thumbnail})
-
             return newProduct
 
         } catch (error) {
