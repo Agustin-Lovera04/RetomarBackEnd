@@ -26,91 +26,84 @@ postProductForm.addEventListener("submit", async (event) => {
         return (responseFetch.innerHTML = `<p style="background-color:green;">Producto Agregado Con Exito</p>`);
       });
   } catch (error) {
-      return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
+    return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
+  }
+});
+
+const deleteProductForm = document.getElementById("deleteProductForm");
+deleteProductForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  let idValue = document.getElementById("IdValue").value;
+
+  try {
+    fetch(`http://localhost:3000/api/products/${idValue}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("fetch enviado");
+        if (data.error) {
+          return (responseFetch.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
+        }
+        deleteProductForm.reset();
+        responseFetch.innerHTML = `<p style="background-color:green;">Producto Eliminado Con Exito</p>`;
+      });
+  } catch (error) {
+    return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
   }
 });
 
 
 
-const deleteProductForm = document.getElementById('deleteProductForm')
-deleteProductForm.addEventListener("submit", (event) =>{
-  event.preventDefault()
+//Cambiamos la logica de seleccionar todos los botones indivudiaulemnte, y apolicamos el "Event Delegation"
 
-  let idValue = document.getElementById('IdValue').value
-
-  try {
-    fetch(`http://localhost:3000/api/products/${idValue}`, {
-      method:"DELETE"
-    })
-
-    .then((response) => response.json())
-    .then((data) => {
-
-      console.log('fetch enviado')
-      if (data.error) {
-        return (responseFetch.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
-      }
-      deleteProductForm.reset();
-      responseFetch.innerHTML = `<p style="background-color:green;">Producto Eliminado Con Exito</p>`
-    })
-  } catch (error) {
-    return (responseFetch.innerHTML = `<p style="background-color:red;">Error inesperado del Servidor </p>`);
-  }
-})
-
-const responseProducts  = document.getElementById('responseProducts')
-
-//Seleccionamos todos los botones con clase, nos devuelve un NodeList con todos los botones.
-const btnAddProductInCart = document.querySelectorAll(".btn-addProductInCart");
-
-//Ustilizamos el Spread dentro de un elemento Array, asi podemos trabajarlo, e iterarlo
-[...btnAddProductInCart].forEach((btn) =>{
-  btn.addEventListener("click", (e) => {
-    let productId = e.target.dataset.productId
-
+// Asigna un único listener al contenedor que contiene los botones
+document.getElementById("containerProducts").addEventListener("click", (e) => {
+  // Verifica si el clic fue en un botón con la clase btn-addProductInCart
+  if (e.target.classList.contains("btn-addProductInCart")) {
+    let productId = e.target.dataset.productId;
+    console.log("ejtra con fetch");
 
     try {
-      fetch(`http://localhost:3000/api/carts/6723bc6d18e8d4d638ad61fe/product/${productId}`,{
-        method:"POST"
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          return (responseProducts.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
+      fetch(
+        `http://localhost:3000/api/carts/6723bc6d18e8d4d638ad61fe/product/${productId}`,
+        {
+          method: "POST",
         }
-        responseProducts.innerHTML = `<p style="background-color:green;">Producto Agregado al Carrito </p>`
-      })
-
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            return (responseProducts.innerHTML = `<p style="background-color:red;">${data.error}</p>`);
+          }
+          responseProducts.innerHTML = `<p style="background-color:green;">Producto Agregado al Carrito</p>`;
+        });
     } catch (error) {
-      console.log(error)
-      return (responseProducts.innerHTML = `<p style="background-color:red;"> ${error}</p>`);
+      console.log(error);
+      return (responseProducts.innerHTML = `<p style="background-color:red;">${error}</p>`);
     }
+  }
+});
 
-  })
-})
+const responseProducts = document.getElementById("responseProducts");
 
+socket.on("listProducts", (products) => {
+  let containerProducts = document.getElementById("containerProducts");
+  containerProducts.innerHTML = "";
 
-
-
-
-
-
-
-
-socket.on('listProducts', (products)=>{
-    let containerProducts = document.getElementById('containerProducts')
-    containerProducts.innerHTML = ''
-
-    products.forEach(product => {
-      const productDOM = `
-      <ul>
-        <li >
-        Nombre: <span style="font-weight: bold;">${product.title}</span><br>
-        Descripcion: <span>${product.description} </span><br>
-        ID: <span>${product._id} </span>
-        </li>
-      </ul>
-    `
-    containerProducts.innerHTML += productDOM
-  })
-})
+  products.forEach((product) => {
+    const productDOM = `
+              <ul>
+                <li >
+                Nombre: <span style="font-weight: bold;">${product.title}</span><br>
+                Descripcion: <span>${product.description} </span><br>
+                ID: <span>${product._id} </span>
+                <a href="/products/${product._id}">Ver Detalle</a>
+                <button class="btn-addProductInCart" data-product-id="${product._id}">AGREGAR AL CARRITO</button>
+                </li>
+              </ul>
+            `;
+    containerProducts.innerHTML += productDOM;
+  });
+});

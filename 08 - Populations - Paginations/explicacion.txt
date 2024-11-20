@@ -195,18 +195,4 @@ Entonces ahi ya tenemos acceso, una vez configuyrado el router, y el manager par
 Luego obviamente debemos en cada llamado al getRouter, enviar el page, que creamos conveniente, pero solo es cuestion de ir tocando y acomodando detalles.
 Que no justifica seguir escribiendo aca. lo mas importante esta.
 
-
-PARECIERA SER QUE SOLUCIONE EL ERORR, AHORA HAY QUE VER COM HACER PARA QE NO RECARGUE LA PAGINA CADA VEZ QUE AGREGO UN PRODUCTOA
-
-    -Lo que hice fue poner como parametros grales en el manbager, que siempre tenga disponible un dato en Page o en limit, Luego caundo es nevesario enviarle esos datos al manager, se los mandamos y cuando no, no
-        y el resto fue ir acomodando cosas de acceso de objetos de datos y demas, porque estuve desestructurando y demas
-
-    -(Parecia que habia unm error al agreagar productos al carrito, pero parece que no, igualemetnte controlar tood antes de seguir y ademas por la razon que explique abajo, asi depaso nos reubicamos en nuestro codigo.
-    
-    NO NO NO NOS PUEDE PASAR LO MISMO QUE ANTES)
-
-    Antes de seguir con las clases, revisar TODOS LOS CRUDS, CADA SOCKET TODO.
-    TOMATE TU TIEMPO PERO QUE NO TE PASE LO MISMO DE PERDERTE EN TU CODIGO
-
-
--OLVIDE QUE GCUANDO VUELVO A MANDAR ALGO CON UN SOCKET OOR EJEMPLO EN PROCUTOSS, NO SE CREAN LOS BOTONES DE AGREAGAR A ACARRITO
+-CRUD PRODUCTS C- R-OK U- D-

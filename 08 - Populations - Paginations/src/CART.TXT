@@ -1,7 +1,0 @@
-Creamos todo el entorno para trabajar, router, manager, modelo etc
-
-
-Luego, renderizazmos la vista, y hacemos el R del CRUD
-
-LUEGO hacemos el POST para crear los carritos.-
-
