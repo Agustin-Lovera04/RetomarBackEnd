@@ -56,7 +56,7 @@ deleteProductForm.addEventListener("submit", (event) => {
 
 
 
-//Cambiamos la logica de seleccionar todos los botones indivudiaulemnte, y apolicamos el "Event Delegation" (ademas tiene ventaja a la hora de mantener activo el escuchador de eventos, cosa que no pasaba si solo estaba preparado para elementos iniciales del DOM)
+//Cambiamos la logica de seleccionar todos los botones indivudiaulemnte, y apolicamos el "Event Delegation"
 
 // Asigna un único listener al contenedor que contiene los botones
 document.getElementById("containerProducts").addEventListener("click", (e) => {

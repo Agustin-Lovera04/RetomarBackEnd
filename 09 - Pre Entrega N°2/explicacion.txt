@@ -1,0 +1,28 @@
+Indexacion
+    -Generar una referencia previa al buscar un documento, y no tener que recorrer tooooda la BD, hasta encontrar dicho valor.
+    
+    -El indice se asocia a un atributo del mismo documento,  que permitira hacer busqueda desde puntos especificos
+
+        -Para indexar documentos, debemos indicarle en el model, la propiedad a indexar:
+            ....
+            first_name: {
+                ...
+                index: true
+                ...
+            }
+            ....
+
+    -El index es recomendalble para proyectos, donde no existan demasiados post constantes, si no mas para proyectos de consultas a grandes volumenes a BD. Ya que generar muchas veces indexacion puede generar perdida de rendiento en la performance de Mongo
+
+
+
+-AGGREGATIONS
+    -Realiacion de multiples operaciones sobre multiples documentos. ej Agrupar doc, con criterio especific,,,, realizar operacion para obtner un solo resultado,,,,, analizar cambios de informacion etc
+
+    -Los aggregations pipelines, son stages, donde cada uno es una operacion a realizar.
+        Los resultados de los stages, son el input de data del siguiente stage.
+
+    Ej: $count ==== $group === $limit ==== $lookup
+
+
+    min 1.40 clase 17

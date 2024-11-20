@@ -195,4 +195,3 @@ Entonces ahi ya tenemos acceso, una vez configuyrado el router, y el manager par
 Luego obviamente debemos en cada llamado al getRouter, enviar el page, que creamos conveniente, pero solo es cuestion de ir tocando y acomodando detalles.
 Que no justifica seguir escribiendo aca. lo mas importante esta.
 
--CRUD PRODUCTS C- R-OK U- D-
