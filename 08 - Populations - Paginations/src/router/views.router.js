@@ -15,28 +15,31 @@ router.get('/',(req,res)=>{
 
 
 router.get('/products',async (req,res) =>{
-    let data
-
     let empty = false
 
-    let page = 1
-    if(req.query.page){
-        page= req.query.page
+    let {page} = req.query
+    if(!page){
+        page = null
+    }
+
+    let {limit} = req.query
+    if(!limit){
+        limit = null
     }
     
     try {
-        data = await productsManager.getProducts(page)
+        let data = await productsManager.getProducts(page, limit)
+
+        let {docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = data
+
+        let products = docs
         
-        let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = data
-        if(data.products.length === 0){
+        if(products.length === 0){
             empty = true
         }
 
-        if (req.query.limit) {
-            data.products = data.products.slice(0, req.query.limit);
-        }
 
-        return res.status(200).render('products', {products: data.products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
+        return res.status(200).render('products', {products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
     } catch (error) {
         res.setHeader('Content-Type','application/json');
         return res.status(500).json({error: error.message,});

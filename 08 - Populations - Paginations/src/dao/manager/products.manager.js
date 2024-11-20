@@ -13,19 +13,17 @@ export class ProductsManager{
     }
 
 
-    async getProducts(page){
-        let products
+    async getProducts(page, limit){
         try {
 
-        if(!page){
-            products = await products.Model({status: true}, {limit: 5} )
-        }else{
-            products  = await productsModel.paginate({status: true}, {limit: 5, page: defPage})
-            let {totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = products
-            return{ products:products.docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage}
-        }
+            let options = {
+                page: page || 1,
+                limit: limit || 10
+            }
 
+            let products  = await productsModel.paginate({status: true}, options)
 
+            return products
 
         } catch (error) {
             console.log(error);

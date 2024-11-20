@@ -27,7 +27,7 @@ router.post('/', upload.none(),async(req,res)=>{
     }
     
     let productsData = await productsManager.getProducts()
-    io.emit('listProducts', productsData.products)
+    io.emit('listProducts', productsData.docs)
 
     return res.status(200).json({ok: newProduct});
 })
@@ -93,7 +93,7 @@ router.delete('/:id', async (req,res)=>{
     }
 
     let productsData = await productsManager.getProducts()
-    io.emit('listProducts', productsData.products)
+    io.emit('listProducts', productsData.docs)
 
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: prodDelete});
