@@ -13,15 +13,27 @@ export class ProductsManager{
     }
 
 
-    async getProducts(page, limit){
+    async getProducts(page, limit, sort, query){
         try {
+            let disp
+
+            if(query.disp){
+                disp = query.disp
+            }
+
+            let category
+
+            if(query.category){
+                category = query.category
+            }
 
             let options = {
                 page: page || 1,
-                limit: limit || 10
+                limit: limit || 10,
+                sort: sort || null
             }
-
-            let products  = await productsModel.paginate({status: true}, options)
+            console.log(disp)
+            let products  = await productsModel.paginate({status: disp/* disp, category: category */}, options)
 
             return products
 

@@ -16,6 +16,11 @@ Indexacion
 
 
 
+
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
 -AGGREGATIONS
     -Realiacion de multiples operaciones sobre multiples documentos. ej Agrupar doc, con criterio especific,,,, realizar operacion para obtner un solo resultado,,,,, analizar cambios de informacion etc
 
@@ -23,6 +28,3 @@ Indexacion
         Los resultados de los stages, son el input de data del siguiente stage.
 
     Ej: $count ==== $group === $limit ==== $lookup
-
-
-    min 1.40 clase 17

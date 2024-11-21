@@ -1,0 +1,31 @@
+A lo ya echo debemos suumar:
+    -Poder recibir en /products: 
+        -page ( opcional ) ----------------------OK
+        -limit (opcional) default: 10 ----------------------OK
+        -sort ( opcional ), por PRICE
+        -query ( opcional ) Filtros a aplicar, ejemplo, status, category etc
+
+        -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price
+
+    -El endp debera devolver un objeto:
+        {
+            status: succes/error
+            payload: Resultado de productos solicitados
+            (todos los de paginate)
+        }
+
+
+    -En router de Carts agregar endp:
+        -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)
+
+        -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos)
+
+        -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)
+
+        -DELETE api/carts/:cid (eliminara todos los productos del carrito)
+
+
+
+-El filtro por DISP esta funcionando en principio
+
+Cuando enviamos algo con socket, me tira error, pasa que modifique los argumentos delgetr product y eso, revisar, igual algo hcie mal, porque todos deberian tener su alternativa, para cuando no me llega alguna propiedad, FIJARSE
