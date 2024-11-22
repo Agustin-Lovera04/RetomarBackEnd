@@ -30,9 +30,15 @@ export class ProductsManager{
             let options = {
                 page: page || 1,
                 limit: limit || 10,
-                sort: sort || null
             }
-            console.log(disp)
+            //Solo si existe sort, le agregamos una propiedad mas a las options de filtro para consulta a BD
+            if(sort){
+                options.sort = {price: sort}
+            }
+
+            console.log(options);
+            
+        
             let products  = await productsModel.paginate({status: disp/* disp, category: category */}, options)
 
             return products

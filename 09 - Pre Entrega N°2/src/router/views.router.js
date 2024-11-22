@@ -16,7 +16,7 @@ router.get('/',(req,res)=>{
 
 router.get('/products',async (req,res) =>{
     let empty = false
-    let {page, limit, sort, category, disp} = req.query
+    let {page, limit, sort, category, disp} = req.query    
 
     if(!page){
         page = null
@@ -25,13 +25,21 @@ router.get('/products',async (req,res) =>{
     if(!limit){
         limit = null
     }
-    if(!sort){
+
+    if(sort){
+       sort = Number(sort)
+        
+    }
+    
+    if(!sort || sort !== 1 && sort !== -1){
         sort = null
     }
+    
     let query={
         category: category || null,
         disp: disp || true
     }
+    
 
     try {
         let data = await productsManager.getProducts(page, limit, sort, query)

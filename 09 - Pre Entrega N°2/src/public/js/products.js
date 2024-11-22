@@ -98,7 +98,8 @@ socket.on("listProducts", (products) => {
                 <li >
                 Nombre: <span style="font-weight: bold;">${product.title}</span><br>
                 Descripcion: <span>${product.description} </span><br>
-                ID: <span>${product._id} </span>
+                ID: <span>${product._id} </span> <br>
+                PRECIO: ${product.price}<br>
                 <a href="/products/${product._id}">Ver Detalle</a>
                 <button class="btn-addProductInCart" data-product-id="${product._id}">AGREGAR AL CARRITO</button>
                 </li>
