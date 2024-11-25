@@ -36,10 +36,13 @@ router.get('/products',async (req,res) =>{
     }
     
     let query={
-        category: category || null,
         disp: disp || true
     }
-    
+
+    if(category){
+        query.category = category
+    }
+
 
     try {
         let data = await productsManager.getProducts(page, limit, sort, query)

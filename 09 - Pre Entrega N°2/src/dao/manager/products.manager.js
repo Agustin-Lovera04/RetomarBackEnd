@@ -15,17 +15,16 @@ export class ProductsManager{
 
     async getProducts(page, limit, sort, query){
         try {
-            let disp
+            let setFilter = {}
 
-            if(query.disp){
-                disp = query.disp
-            }
+            //Hacemos esa comparacion final, para que si el string que llega no es igual a 'true', el resultado sea un BOLEAN, que nos sirva para el filtro, y que deje de ser el string 'false' que llega originalmente
+            setFilter.status = query.disp === 'false' ? false : true;
 
-            let category
-
+            
             if(query.category){
-                category = query.category
+                setFilter.category = query.category
             }
+
 
             let options = {
                 page: page || 1,
@@ -35,12 +34,8 @@ export class ProductsManager{
             if(sort){
                 options.sort = {price: sort}
             }
-
-            console.log(options);
-            
-        
-            let products  = await productsModel.paginate({status: disp/* disp, category: category */}, options)
-
+            console.log(setFilter)
+            let products  = await productsModel.paginate(setFilter, options)
             return products
 
         } catch (error) {

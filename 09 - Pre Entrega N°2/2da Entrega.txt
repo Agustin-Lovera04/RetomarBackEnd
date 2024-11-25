@@ -1,11 +1,11 @@
 A lo ya echo debemos suumar:
-    -Poder recibir en /products: 
-        -page ( opcional ) ----------------------OK
-        -limit (opcional) default: 10 ----------------------OK
-        -sort ( opcional ), por PRICE -------------------- OK
-        -query ( opcional ) Filtros a aplicar, ejemplo, status, category etc
+                        -Poder recibir en /products: 
+                            -page ( opcional ) ----------------------OK
+                            -limit (opcional) default: 10 ----------------------OK
+             OKKKKKK               -sort ( opcional ), por PRICE -------------------- OK
+                            -query ( opcional ) Filtros a aplicar, ejemplo, status, category--------- OK
 
-        -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price ----- OK
+                            -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price ----- OK
 
     -El endp debera devolver un objeto:
         {
@@ -24,5 +24,9 @@ A lo ya echo debemos suumar:
 
         -DELETE api/carts/:cid (eliminara todos los productos del carrito)
 
+
+
+
+-NO SALIO LO DEL STATUS SUCCESS O CON ERRRO SOY UN ESTUPIDO
 
 Cuando enviamos algo con socket, me tira error, pasa que modifique los argumentos delgetr product y eso, revisar, igual algo hcie mal, porque todos deberian tener su alternativa, para cuando no me llega alguna propiedad, FIJARSE
