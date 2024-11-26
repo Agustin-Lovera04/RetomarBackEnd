@@ -87,8 +87,39 @@ export class CartManager{
 
         } catch (error) {
             console.log('Error: ' + error)
+            return null
         }
 
 }
 
+
+
+    async deleteProductInCart(cid,product){
+        let cart = await this.getCartById(cid)
+        let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product._id.toString())
+    
+        if(!existProductInCart){
+            console.log('No existe producto en carrito')
+            return null
+        }
+
+        try {
+            
+            //Es un operador de MongoDB que elimina elementos de un array que coincidan con la condición especificada.
+
+            let updateCart = await cartsModel.updateOne({_id: cid}, {$pull: {products: {product: product}}})
+
+            if(updateCart.modifiedCount == 0 ) {
+                console.log('Server Error')
+                return null
+            }
+
+            return updateCart
+        } catch (error) {
+            console.log('Error: ' + error)
+            return null
+        }
+    }
+
+     
 }

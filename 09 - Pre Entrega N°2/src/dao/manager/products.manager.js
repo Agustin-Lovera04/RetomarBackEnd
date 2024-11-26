@@ -17,6 +17,10 @@ export class ProductsManager{
         try {
             let setFilter = {}
 
+            if(query == undefined){
+                query = {disp: true}
+            }
+
             //Hacemos esa comparacion final, para que si el string que llega no es igual a 'true', el resultado sea un BOLEAN, que nos sirva para el filtro, y que deje de ser el string 'false' que llega originalmente
             setFilter.status = query.disp === 'false' ? false : true;
 
@@ -24,7 +28,6 @@ export class ProductsManager{
             if(query.category){
                 setFilter.category = query.category
             }
-
 
             let options = {
                 page: page || 1,
@@ -34,7 +37,6 @@ export class ProductsManager{
             if(sort){
                 options.sort = {price: sort}
             }
-            console.log(setFilter)
             let products  = await productsModel.paginate(setFilter, options)
             return products
 

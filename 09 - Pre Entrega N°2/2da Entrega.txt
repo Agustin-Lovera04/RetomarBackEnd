@@ -7,12 +7,13 @@ A lo ya echo debemos suumar:
 
                             -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price ----- OK
 
-    -El endp debera devolver un objeto:
-        {
-            status: succes/error
-            payload: Resultado de productos solicitados
-            (todos los de paginate)
-        }
+                        -El endp debera devolver un objeto:
+                            {
+            --------OK
+            -------------              status: succes/error    -----OK 
+                                payload: Resultado de productos solicitados------ OK
+                                (todos los de paginate) ------OK
+                            }
 
 
     -En router de Carts agregar endp:
@@ -27,6 +28,4 @@ A lo ya echo debemos suumar:
 
 
 
--NO SALIO LO DEL STATUS SUCCESS O CON ERRRO SOY UN ESTUPIDO
-
-Cuando enviamos algo con socket, me tira error, pasa que modifique los argumentos delgetr product y eso, revisar, igual algo hcie mal, porque todos deberian tener su alternativa, para cuando no me llega alguna propiedad, FIJARSE
+-CREE ENDPOINT Y METODO PARA ELIMINAR UN PRODUCTO DE CARRITO, AHORA ME FALTA, LA PARTE DEL CLIENTE, TANTO VISTA, COMO JS DE MANEJO

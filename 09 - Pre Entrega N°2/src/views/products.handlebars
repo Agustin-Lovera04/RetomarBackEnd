@@ -1,6 +1,9 @@
 <h1>Products Page</h1>
 <h3>Id Carrito De usuario: 6723bc6d18e8d4d638ad61fe</h3>
 <hr>
+{{#if status.error}}
+    <h1 style="background-color: red;">Error detectado: {{status.error}}</h1>
+{{/if}}
 <div id="responseFetch"></div>
 <div class="formsContainer" style="display: flex; flex-direction: row; justify-content:space-between">
 <div class="formPost-Container">
@@ -59,7 +62,7 @@
 {{else}}
 
 <div id="containerProducts">
-{{#each products}}
+{{#each payload}}
 <ul>
     <li >
     Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>

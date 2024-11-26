@@ -16,6 +16,7 @@ router.get('/',(req,res)=>{
 
 router.get('/products',async (req,res) =>{
     let empty = false
+    let status = {}
     let {page, limit, sort, category, disp} = req.query    
 
     if(!page){
@@ -55,11 +56,13 @@ router.get('/products',async (req,res) =>{
             empty = true
         }
 
-
-        return res.status(200).render('products', {products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
+        if(data){
+            status.success = 'OK'
+        }
+        return res.status(200).render('products', {status, payload: products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
     } catch (error) {
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: error.message,});
+        status.error = error.message
+        return res.status(200).render('products', {status})
     }
 })
 
