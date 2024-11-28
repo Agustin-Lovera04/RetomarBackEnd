@@ -63,7 +63,6 @@ document.getElementById("containerProducts").addEventListener("click", (e) => {
   // Verifica si el clic fue en un botón con la clase btn-addProductInCart
   if (e.target.classList.contains("btn-addProductInCart")) {
     let productId = e.target.dataset.productId;
-    console.log("ejtra con fetch");
 
     try {
       fetch(

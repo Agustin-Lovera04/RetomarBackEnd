@@ -83,10 +83,9 @@ socket.on("listCarts", (carts) => {
 
 //SI ES MAYOR A 0 USAMOS UN O.TERNARIO PARA QUE LISTE LOS PRODUCTOS CON MAP, Y VAYA HACIENDO LA LISTA CON JOIN, Y SI NO HAY PRODUCTOS, QUE DIGA QUE NO HAY PRODUCTOS
     let productsList = cart.products.length > 0 ? cart.products.map(product => `
-        <li>- Id: ${product.product._id} - Title: ${product.product.title}</li>
+        <li>- Id: ${product._id} - Title: ${product.product.title}</li>
     `).join('') 
     : "<li>No hay productos en este carrito.</li>"
-
 
 
     let cartDOM = `

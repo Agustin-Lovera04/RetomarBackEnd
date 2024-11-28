@@ -160,6 +160,12 @@ router.delete('/:cid/product/:pid', async ( req , res) => {
     }
 
 
+    const product = await productsManager.getProductById(pid)
+    if(!product){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'No existe producto con el ID ingresado'});        
+    }
+
     
     let deleteProductInCart = await cartsManager.deleteProductInCart(cid, product)
     if(!deleteProductInCart){
@@ -168,7 +174,9 @@ router.delete('/:cid/product/:pid', async ( req , res) => {
     }
 
 
-    res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: deleteProductInCart});
+    io.emit('cart', await cartsManager.getCartById(cid))
+    return res.status(200).json({
+        ok: deleteProductInCart
+    });
 
 })

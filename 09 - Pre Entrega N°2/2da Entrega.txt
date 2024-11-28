@@ -17,7 +17,7 @@ A lo ya echo debemos suumar:
 
 
     -En router de Carts agregar endp:
-        -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)
+                    -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)  ---------OK
 
         -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos)
 
@@ -27,5 +27,4 @@ A lo ya echo debemos suumar:
 
 
 
-
--CREE ENDPOINT Y METODO PARA ELIMINAR UN PRODUCTO DE CARRITO, AHORA ME FALTA, LA PARTE DEL CLIENTE, TANTO VISTA, COMO JS DE MANEJO
+-RECORDAR PROBAR TODO Y LEGIBILIZAR EL CODIGO, ESTANDARIZAR Y AHORRAR CODIGO, SIEMMPRE ECONOMIZAR, ANTES DE SEGUIR CON LAS CLASES, DEBEMOS ARREGLAR Y ESTETIZAR NUESTRO CODIGO

@@ -1,4 +1,18 @@
 <h1>Detail Cart</h1>
+<hr>
+<h1>Borrar Producto de Carrito</h1>
+<div id="responseFetch"></div>
+<div id="idCart" data-cart-id={{cart._id}} style="display: none;"></div>
+    <form id="deleteProductInCart">
+        <div>
+            <label for="idProduct">Ingrese Id de producto a eliminar:</label>
+            <input type="text" name="idProduct" id="idValue" required>
+        </div>
+        <button type="submit">Eliminar</button>
+    </form>
+<hr>
+
+<div id="containerCart">
 
 <h2>Producto: {{cart.title}}</h2>
 <ul>
@@ -10,4 +24,9 @@
     </li>
     {{/each}}
 </ul>
-<h1>Precio: {{cart._id}}</h1>
+<h1>ID: {{cart._id}}</h1>
+</div>
+
+
+ <script src ="/socket.io/socket.io.js"></script>
+ <script src="/js/cartDetail.js"></script>
