@@ -1,33 +1,31 @@
 A lo ya echo debemos suumar:
-                        -Poder recibir en /products: 
-                            -page ( opcional ) ----------------------OK
-                            -limit (opcional) default: 10 ----------------------OK
-             OKKKKKK               -sort ( opcional ), por PRICE -------------------- OK
-                            -query ( opcional ) Filtros a aplicar, ejemplo, status, category--------- OK
+                                                -Poder recibir en /products: 
+                                                    -page ( opcional ) --------- OK
+                                                    -limit (opcional) default: 10 --------- OK
+                                                    -sort ( opcional ), por PRICE --------- OK
+                                                    -query ( opcional ) Filtros a aplicar, ejemplo, status, category --------- OK
+---------------------------OKKKKKKKK
+                                                    -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price --------- OK
 
-                            -Se debera poder buscar productos segun su disponibilidad (status) y poder aplicarles un sort x price ----- OK
-
+                       
+                       
+                       
                         -El endp debera devolver un objeto:
                             {
-            --------OK
-            -------------              status: succes/error    -----OK 
-                                payload: Resultado de productos solicitados------ OK
-                                (todos los de paginate) ------OK
+                                status: succes/error
+                                payload: Resultado de productos solicitados
+                                (todos los de paginate)
                             }
 
 
     -En router de Carts agregar endp:
-                    -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)  ---------OK
+                    -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)
 
         -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos)
 
         -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)
 
         -DELETE api/carts/:cid (eliminara todos los productos del carrito)
-
-
-
--VISTE QUE TE DIJE QUE ESTO SE FUE DE LAS MANOS, OJO PORQUE PARECE QUE CUANDO GUARDAMOS PRODUCTOS EN EL CARRITO, GUARDAMOS EL PRODUCTO ENTERO, EN VEZ DE GUARDAR CMO HAIAMO SDICHO, SOLO EL _ID, HAY ALHO MAL HI9CE TODO MAL DEVUELTA ME DEJE GANAR POR GPT, YA VOLVER ATRAS NO HAY QUE DAR LUGAR AL ERROR
 
 
 
