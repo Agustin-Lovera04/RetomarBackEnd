@@ -16,6 +16,7 @@ router.get('/',(req,res)=>{
 
 router.get('/products',async (req,res) =>{
     let empty = false
+    let status = {}
 
     let {disp} = req.query
 //Validaciones para corroborar que disp acepte los valores eexactos, y los convierta luego en utilizables para el filter de consulta a BD    
@@ -63,8 +64,9 @@ router.get('/products',async (req,res) =>{
             empty = true
         }
 
-
-        return res.status(200).render('products', {products , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
+        //Acomodamos el status segun la consigna, ya que todo salio bien
+        status.success = true
+        return res.status(200).render('products', {status, payload: {products} , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
     } catch (error) {
         res.setHeader('Content-Type','application/json');
         return res.status(500).json({error: error.message,});

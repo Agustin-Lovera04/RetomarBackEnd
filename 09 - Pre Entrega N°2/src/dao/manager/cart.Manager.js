@@ -73,8 +73,6 @@ export class CartManager{
                 quantity: 1
             })
         }
-
-
         try {
             let updateCart = await cartsModel.updateOne({_id: cid}, {$set: {products: cart.products}})
 
@@ -82,7 +80,6 @@ export class CartManager{
                 console.log('Server Error')
                 return null
             }
-
             return updateCart
 
         } catch (error) {
@@ -91,4 +88,31 @@ export class CartManager{
 
 }
 
+
+async deleteProductInCart(cid, pid){
+    let success = true
+    let cart = await this.getCartById(cid)
+    let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
+
+    if(!existProductInCart){
+        return {success: false, error: 'No existe producto en Carrito'}
+    }
+
+    try {
+        //$pull Operador de mongo que elimina el primer elemento coincidente de una matriz
+        let updateCart = await cartsModel.updateOne({_id: cid}, {$pull: {products: {product: pid}}})
+
+        // ATENCION: aca podemos comparar product completo, contra PID, ya que product en BD solo aloja en product_id, Debido al Populate.
+        //Entonces product: pid ====> product._id: pid
+
+
+        if(updateCart.modifiedCount == 0 ) {
+            return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
+        }
+        return {success, updateCart}
+
+    } catch (error) {
+        return {success: false, error:  `Internal Server Error: ${error.message}`}
+    }
+}
 }

@@ -10,22 +10,30 @@ A lo ya echo debemos suumar:
                        
                        
                        
-                        -El endp debera devolver un objeto:
-                            {
-                                status: succes/error
-                                payload: Resultado de productos solicitados
-                                (todos los de paginate)
-                            }
+                                            -El endp debera devolver un objeto:
+                                                {
+                                                    status: succes/error
+                                                    payload: Resultado de productos solicitados
+---------------------------OKKKKKKKK
+                                                    (todos los de paginate)
+                                                }
 
 
     -En router de Carts agregar endp:
-                    -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito)
+                    -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito) ---------OK
 
         -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos)
 
         -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)
 
         -DELETE api/carts/:cid (eliminara todos los productos del carrito)
+
+
+
+-PUNTUAL: UNA VEZ TERMINADAS LAS CONGSIGNAS, REHACER EL MANEJO DE ERRORES DESDE EL MANAGER, COMO HICE EN el END de Delete De producto en carrito.
+Asi lograr un manejo de erroes mas detallados, solidos, prolijos etc
+Con la variable success, y el detalle del error o exito
+
 
 
 
