@@ -32,7 +32,7 @@ putCartForm.addEventListener("submit", async (event) => {
 
   let formData = new FormData(putCartForm);
   try {
-    fetch(`http://localhost:3000/api/carts/${putIdCart}`, {
+    fetch(`http://localhost:3000/api/carts/modCart/${putIdCart}`, {
       method: "PUT",
       body: formData,
     })

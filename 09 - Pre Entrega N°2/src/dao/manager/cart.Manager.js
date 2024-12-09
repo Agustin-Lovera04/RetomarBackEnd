@@ -115,4 +115,21 @@ async deleteProductInCart(cid, pid){
         return {success: false, error:  `Internal Server Error: ${error.message}`}
     }
 }
+
+
+
+async updateAllProductsInCart(id, products){
+    let success = true
+try {
+    
+    let updateCart = await cartsModel.updateOne({_id: id}, {$set: {products: products}})
+    
+    if(updateCart.modifiedCount == 0 ) {
+        return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
+    }
+    return {success, updateCart}
+} catch (error) {
+    return {success: false, error:  `Internal Server Error: ${error.message}`}
+}}
+
 }

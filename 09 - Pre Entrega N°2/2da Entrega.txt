@@ -22,7 +22,8 @@ A lo ya echo debemos suumar:
     -En router de Carts agregar endp:
                     -DELETE api/carts/:cid/product/:pid  (debera eliminar el producto del carrito) ---------OK
 
-        -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos)
+                    -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos) ---------OK
+
 
         -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)
 
@@ -30,9 +31,12 @@ A lo ya echo debemos suumar:
 
 
 
--PUNTUAL: UNA VEZ TERMINADAS LAS CONGSIGNAS, REHACER EL MANEJO DE ERRORES DESDE EL MANAGER, COMO HICE EN el END de Delete De producto en carrito.
-Asi lograr un manejo de erroes mas detallados, solidos, prolijos etc
-Con la variable success, y el detalle del error o exito
+-PUNTUAL:
+     -UNA VEZ TERMINADAS LAS CONGSIGNAS, REHACER EL MANEJO DE ERRORES DESDE EL MANAGER, COMO HICE EN el END de Delete De producto en carrito.
+        Asi lograr un manejo de erroes mas detallados, solidos, prolijos etc
+        Con la variable success, y el detalle del error o exito
+    
+    -Tambien crear una funcion de validacion d Propiedades permitidas, en general, (en las primeras clases el profe hizo un array con propuedades permitidas, y luego obtenia las keys de lo q llegaba y le hacia un includes al array de propiedades permitidas, jacerlo gral asi se puede aplicar en todo el codig)
 
 
 

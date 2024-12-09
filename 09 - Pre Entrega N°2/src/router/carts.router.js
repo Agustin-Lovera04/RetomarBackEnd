@@ -25,7 +25,7 @@ router.post('/:title', async (req,res)=>{
 })
 
 
-router.put('/:id', upload.none(),async (req,res) => {
+router.put('/modCart/:id', upload.none(),async (req,res) => {
     let {id} = req.params
     let {title} = req.body
 
@@ -171,4 +171,56 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: deleteProductInCart});
+})
+
+
+//Sin FRONT
+/*EJEMPLO DE BODY {
+  "products": [
+    { "product":"670d54db878577e86fbd871f" ,
+    "quantity": 2},
+    { "product":"670d54db878577e86fbd8722",
+    "quantity": 5}
+  ]
+} */
+router.put('/:id', async (req,res) => {
+    let {id} = req.params
+    let {products} = req.body
+    let idIsValid = await productsManager.validID(id)
+
+    if(idIsValid == false){
+        res.setHeader('Content-Type','application/json')
+        return res.status(400).json({error: 'Debe enviar IDs Validos'})
+    }
+
+    const cart = await cartsManager.getCartById(id)
+    if(!cart){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'Carrito Inexistente'});
+    }
+
+    if(!products || !Array.isArray(products)){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'Debe enviar el nuevo listado de productos para el carrito - Controlar estructura correcta de listado'});
+    }
+
+    /* USAMOS METODO FOR OF ( for of (recomendado para arrays antes que for in)), porque el bucle FOR espera a que la iteracion de cada elemento se resuelva, y ante el primer comando de corte como "break o return" Detiene y sale del bucle
+    En cambio forEach es asincronico, no espera la resolucion de cada elemento entonces genera errores por multiples respuestas etc */
+    for (const product of products) {  
+        if(product._id){
+            return res.status(400).json({error: 'No esta permitido generar la propiedad _id'});
+        }
+       if(!product.quantity){
+            return res.status(400).json({error: 'Debe enviar el campo quantity: Number'});
+        }
+    }
+ 
+
+    let updateCart = await cartsManager.updateAllProductsInCart(id, products)
+    if(!updateCart.success){
+        return res.status(400).json({error: updateCart.error});
+    }
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({ok: updateCart});
 })
