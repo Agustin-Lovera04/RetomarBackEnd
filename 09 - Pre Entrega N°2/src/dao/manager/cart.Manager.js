@@ -24,43 +24,52 @@ export class CartManager{
     }
 
     async createCart(title){
+        let success = true
         try {
             let newCart = await cartsModel.create({title:title})
-            return newCart
+            if(!newCart){
+                return {success: false, error:  `Internal Server Error - Contacte con Administrador`}
+            }
+            return {success, newCart}
         } catch (error) {
-            console.log(error.message)
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 
     async putCart(id, title){
+        let success = true
         try {
             let modCart = await cartsModel.updateOne({_id:id}, {title: title})
-            if (modCart.modifiedCount == 0) {
-                return null
+            if (modCart.acknowledged === false) {
+                return {success: false, error: 'Error al modificar carrito'}
             }
-            return modCart
+            return {success,modCart}
         } catch (error) {
-            console.log(error)
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 
 
     async deleteCart(id){
+        let success = true
         try {
             let deleteCart = await cartsModel.updateOne({_id:id}, {status: false})
-            if (deleteCart.modifiedCount == 0) {
-                return null
+            if (deleteCart.acknowledged === false) {
+                return {success: false, error: 'Error al eliminar carrito'}
             }
-            return deleteCart
+            return {success,deleteCart}
         } catch (error) {
-            console.log(error)
-            return null            
+            return {success: false, error:  `Internal Server Error: ${error.message}`}          
         }
     }
 
 
+
+
+/* -----------------------------HASTA ACA HICE MANEJO DE ERRORES------------------------------------------------ */
+
+
+    
     async addProductInCart(cid, pid){
         let cart = await this.getCartById(cid)
         let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
@@ -132,4 +141,45 @@ try {
     return {success: false, error:  `Internal Server Error: ${error.message}`}
 }}
 
-}
+
+//El operador $pull de MongoDB elimina de una matriz todas las instancias de un valor o valores que cumplan con una condición determinada
+async deleteAllProductsInCart(id){
+    let success = true
+    try {
+        let deleteAllProductsInCart = await cartsModel.updateOne({_id: id}, {$pull: {products: {}}})
+    
+        if(deleteAllProductsInCart.modifiedCount == 0 ) {
+            return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
+        }
+        return {success, deleteAllProductsInCart}
+    } catch (error) {
+    return {success: false, error:  `Internal Server Error: ${error.message}`}
+    }
+} 
+
+
+
+async updateQuantityProductInCart(cid, pid, quantity){
+    let success = true
+
+    let cart = await this.getCartById(cid)
+    let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
+
+    if(!existProductInCart){
+        return {success: false, error: 'No existe producto en Carrito'}
+    }
+
+    try {
+      //En las opciones de Filtrado, ya indicamos que filtre el product conincidente con PID dentro del array products.
+      //Luego en el Set usamos el operador $ ("Positional Operator") lo cual identifica el índice del producto coincidente (conseguido mediante el filtro) dentro del array.
+        let updateQuantity = await cartsModel.updateOne({_id: cid, "products.product":pid}, {$set: {"products.$.quantity": quantity}})
+        
+        
+        if(updateQuantity.modifiedCount == 0 ) {
+            return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
+        }
+        return {success, updateQuantity}
+    } catch (error) {
+    return {success: false, error:  `Internal Server Error: ${error.message}`}
+    }
+}}

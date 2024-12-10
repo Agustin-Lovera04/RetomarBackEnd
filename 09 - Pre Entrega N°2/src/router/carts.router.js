@@ -4,7 +4,7 @@ import { upload } from '../utils.js';
 import { io } from '../app.js';
 export const router=Router()
 
-
+//Con FRONT------------------------------
 router.post('/:title', async (req,res)=>{
     let {title} = req.params
 
@@ -13,17 +13,18 @@ router.post('/:title', async (req,res)=>{
         return res.status(400).json({error:'Debe enviar un titulo para el carrito' });
     }
 
-    let newCart = await cartsManager.createCart(title)
-
-    if(!newCart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Error Internal Server'});
+    let data = await cartsManager.createCart(title)
+    if(!data.success){
+        return res.status(400).json({error: data.error});
     }
+
     io.emit('listCarts', await cartsManager.getCarts())
+
     res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: newCart});
+    return res.status(200).json({ok: data.newCart});
 })
 
+//Con FRONT------------------------------
 
 router.put('/modCart/:id', upload.none(),async (req,res) => {
     let {id} = req.params
@@ -49,22 +50,22 @@ router.put('/modCart/:id', upload.none(),async (req,res) => {
         });
     }
 
-    let modifiedCart = await cartsManager.putCart(id, title)
-    if(!modifiedCart){
-        return res.status(500).json({
-            error: 'internal server error'
-        });
+    let data = await cartsManager.putCart(id, title)
+    if(!data.success){
+        return res.status(400).json({error: data.error});
     }
 
     io.emit('listCarts', await cartsManager.getCarts())
 
     return res.status(200).json({
-        ok: modifiedCart,
+        ok: data.modifiedCart,
     });
 })
 
 
-router.delete('/:id', async (req,res)=>{
+//Con FRONT------------------------------
+
+router.delete('/deleteCart/:id', async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)
@@ -82,20 +83,25 @@ router.delete('/:id', async (req,res)=>{
     }
 
   
-    let deleteCart = await cartsManager.deleteCart(id)
-    if(!deleteCart){
-        return res.status(500).json({
-            error: 'internal server error'
-        });
+    let data = await cartsManager.deleteCart(id)
+    if(!data.success){
+        return res.status(400).json({error: data.error});
     }
 
     
     io.emit('listCarts', await cartsManager.getCarts())
     return res.status(200).json({
-        ok: deleteCart
+        ok: data.deleteCart
     });
 
 })
+
+
+
+
+/* -----------------------------HASTA ACA HICE MANEJO DE ERRORES------------------------------------------------ */
+
+
 
 
 
@@ -174,7 +180,8 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 })
 
 
-//Sin FRONT
+//Sin FRONT---------
+
 /*EJEMPLO DE BODY {
   "products": [
     { "product":"670d54db878577e86fbd871f" ,
@@ -223,4 +230,81 @@ router.put('/:id', async (req,res) => {
 
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: updateCart});
+})
+
+
+//Sin FRONT---------
+router.delete('/:id', async (req,res) =>{
+    let {id} = req.params
+    let idIsValid = await productsManager.validID(id)
+
+    if(idIsValid == false){
+        res.setHeader('Content-Type','application/json')
+        return res.status(400).json({error: 'Debe enviar IDs Validos'})
+    }
+
+    const cart = await cartsManager.getCartById(id)
+    if(!cart){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'Carrito Inexistente'});
+    }
+
+    if(!cart.products || !Array.isArray(cart.products)){
+        res.setHeader('Content-Type','application/json');
+        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
+    }
+
+
+    let deleteAllProductsInCart = await cartsManager.deleteAllProductsInCart(id)
+
+    if(!deleteAllProductsInCart.success){
+        return res.status(500).json({error: deleteAllProductsInCart.error});
+    }
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({ok: deleteAllProductsInCart});
+})
+
+
+router.put('/:cid/product/:pid', async (req,res)=>{
+    let {cid, pid} = req.params
+    let {quantity} = req.body
+    let cidIsValid = await productsManager.validID(cid)
+    let pidIsValid = await productsManager.validID(pid)
+
+    if(cidIsValid == false || pidIsValid == false){
+        res.setHeader('Content-Type','application/json')
+        return res.status(400).json({error: 'Debe enviar IDs Validos'})
+    }
+
+    const product = await productsManager.getProductById(pid)
+    if(!product){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'No existe producto con el ID ingresado'});        
+    }
+    const cart = await cartsManager.getCartById(cid)
+    if(!cart){
+        res.setHeader('Content-Type','application/json');
+        return res.status(400).json({error: 'Carrito Inexistente'});
+    }
+
+    if(!cart.products || !Array.isArray(cart.products)){
+        res.setHeader('Content-Type','application/json');
+        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
+    }
+
+    Number(quantity)
+    if(!quantity || isNaN(quantity) === true || quantity <= 0){
+        res.setHeader('Content-Type','application/json');
+        return res.status(404).json({error: ' Debe enviar la propiedad quantity, con un numero valido'});
+    }
+
+    let updateQuantityProductInCart = await cartsManager.updateQuantityProductInCart(cid, pid, quantity)
+    if(!updateQuantityProductInCart.success){
+        return res.status(500).json({error: updateQuantityProductInCart.error});
+    }
+
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({ok: updateQuantityProductInCart});
 })

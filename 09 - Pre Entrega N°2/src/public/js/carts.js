@@ -58,7 +58,7 @@ deleteCartForm.addEventListener("submit", async (event) => {
   let deleteIdCart = document.getElementById("deleteIdCart").value;
 
   try {
-    fetch(`http://localhost:3000/api/carts/${deleteIdCart}`, {
+    fetch(`http://localhost:3000/api/carts/deleteCart/${deleteIdCart}`, {
       method: "DELETE",
     })
       .then((response) => response.json())

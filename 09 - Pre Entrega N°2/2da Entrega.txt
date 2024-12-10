@@ -24,10 +24,10 @@ A lo ya echo debemos suumar:
 
                     -PUT api/carts/:cid  (debera actualizar todo el array de productos, con uno nuevo que pasemos) ---------OK
 
+                    -DELETE api/carts/:cid (eliminara todos los productos del carrito) ---------OK
 
-        -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)
+                    -PUT api/carts/:cid/product/:cid ( actualizar solo la quantity que llega en req.body, del producto seleccionado)  ---------OK
 
-        -DELETE api/carts/:cid (eliminara todos los productos del carrito)
 
 
 

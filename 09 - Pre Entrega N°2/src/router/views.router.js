@@ -107,7 +107,7 @@ router.get('/carts', async (req,res)=>{
         if (req.query.limit) {
             carts = carts.slice(0, req.query.limit);
         }
-        console.log(carts)
+        
         return res.status(200).render('carts', {carts , empty})
 
     } catch (error) {
