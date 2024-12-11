@@ -35,10 +35,9 @@ A lo ya echo debemos suumar:
                         -UNA VEZ TERMINADAS LAS CONGSIGNAS, REHACER EL MANEJO DE ERRORES DESDE EL MANAGER, COMO HICE EN el END de Delete De producto en carrito.
     --------------OK              Asi lograr un manejo de erroes mas detallados, solidos, prolijos etc
                             Con la variable success, y el detalle del error o exito
-    
-    -Tambien crear una funcion de validacion d Propiedades permitidas, en general, (en las primeras clases el profe hizo un array con propuedades permitidas, y luego obtenia las keys de lo q llegaba y le hacia un includes al array de propiedades permitidas, jacerlo gral asi se puede aplicar en todo el codig)
 
     -Economizar codigo, en validaciones de ID, Validaciones en general
 
 
 -RECORDAR PROBAR TODO Y LEGIBILIZAR EL CODIGO, ESTANDARIZAR Y AHORRAR CODIGO, SIEMMPRE ECONOMIZAR, ANTES DE SEGUIR CON LAS CLASES, DEBEMOS ARREGLAR Y ESTETIZAR NUESTRO CODIGO
+PROBAR TODO PORUE HICE MUCHSO CAMBIOS; ¨PROBAR CON ERRORES TODO( hay que haacer espeacio en vistas para el manejo de errores por detalle de producto y que no se encuentre); TOMARSE SU TEIMPO

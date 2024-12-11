@@ -42,11 +42,8 @@ router.put('/:id', async (req,res)=>{
     }
 
     let product = await productsManager.getProductById(id)
-    if(!product){
-        return res.status(401).json({
-            error: 'No se encontro producto con el ID Ingresado'
-        });
-    }
+    if(!product.success){return res.status(400).json({error: product.error})}
+
 
 
     if(req.body._id){
@@ -79,11 +76,7 @@ router.delete('/:id', async (req,res)=>{
     }
 
     let product = await productsManager.getProductById(id) //VER COMO HACER PARA QUE SOLO DEVUELVA UN TRUE, PARA NO ESTAR PASANDO EL PRODUCTO ENTERO INESESARIAMENTE
-    if(!product){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'No se encontro producto con el ID ingresado'});
-    }
-
+    if(!product.success){return res.status(400).json({error: product.error})}
 
     let data = await productsManager.deleteProduct(id)
     if(!data.success){

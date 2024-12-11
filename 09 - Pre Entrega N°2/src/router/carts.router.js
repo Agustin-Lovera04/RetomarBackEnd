@@ -8,19 +8,13 @@ export const router=Router()
 router.post('/:title', async (req,res)=>{
     let {title} = req.params
 
-    if(!title){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error:'Debe enviar un titulo para el carrito' });
-    }
+    if(!title){return res.status(400).json({error:'Debe enviar un titulo para el carrito' })}
 
     let data = await cartsManager.createCart(title)
-    if(!data.success){
-        return res.status(400).json({error: data.error});
-    }
+    if(!data.success){return res.status(400).json({error: data.error});}
 
     io.emit('listCarts', await cartsManager.getCarts())
 
-    res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: data.newCart});
 })
 
@@ -30,36 +24,20 @@ router.put('/modCart/:id', upload.none(),async (req,res) => {
     let {id} = req.params
     let {title} = req.body
 
-    let isValid = await productsManager.validID(id)
-    if(isValid == false){
-        return res.status(400).json({
-            error: 'Debe enviar un ID valido'
-        });
-    }
+    let idValid = await productsManager.validID(id)
+    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
 
-    if(!title){
-        return res.status(400).json({
-            error: 'Debe enviar el nuevo titulo para carrito'
-        });
-    }
-
+    if(!title){return res.status(400).json({error: 'Debe enviar el nuevo titulo para carrito'})}
+    
     let cart = await cartsManager.getCartById(id)
-    if(!cart){
-        return res.status(400).json({
-            error: ' No se encontro carrito con el Id ingresado'
-        });
-    }
+    if(!cart.success){return res.status(400).json({error: cart.error})}
 
     let data = await cartsManager.putCart(id, title)
-    if(!data.success){
-        return res.status(400).json({error: data.error});
-    }
+    if(!data.success){return res.status(400).json({error: data.error});}
 
     io.emit('listCarts', await cartsManager.getCarts())
 
-    return res.status(200).json({
-        ok: data.modifiedCart,
-    });
+    return res.status(200).json({ok: data.modCart})
 })
 
 
@@ -68,32 +46,17 @@ router.put('/modCart/:id', upload.none(),async (req,res) => {
 router.delete('/deleteCart/:id', async (req,res)=>{
     let {id} = req.params
 
-    let isValid = await productsManager.validID(id)
-    if(isValid == false){
-        return res.status(400).json({
-            error: 'Debe enviar un ID valido'
-        })
-    }
+    let idValid = await productsManager.validID(id)
+    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
 
     let cart = await cartsManager.getCartById(id)
-    if(!cart){
-        return res.status(400).json({
-            error: 'No se encontro carrito con el ID ingresado'
-        })
-    }
-
+    if(!cart.success){return res.status(400).json({error: cart.error})}
   
     let data = await cartsManager.deleteCart(id)
-    if(!data.success){
-        return res.status(400).json({error: data.error});
-    }
+    if(!data.success){return res.status(400).json({error: data.error})}
 
-    
     io.emit('listCarts', await cartsManager.getCarts())
-    return res.status(200).json({
-        ok: data.deleteCart
-    });
-
+    return res.status(200).json({ok: data.deleteCart})
 })
 
 
@@ -103,74 +66,46 @@ router.post('/:cid/product/:pid', async (req,res) =>{
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
 
-    if(cidIsValid == false || pidIsValid == false){
-        res.setHeader('Content-Type','application/json')
-        return res.status(400).json({error: 'Debe enviar IDs Validos'})
-    }
+    if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
-    if(!product){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'No existe producto con el ID ingresado'});        
-    }
-    const cart = await cartsManager.getCartById(cid)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Carrito Inexistente'});
-    }
+    if(!product){return res.status(400).json({error: 'No existe producto con el ID ingresado'})}
 
-    if(!cart.products || !Array.isArray(cart.products)){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
-    }
+    const cart = await cartsManager.getCartById(cid)
+    if(!cart.success){return res.status(400).json({error: cart.error})}
+
+
+    if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
 
     let data = await cartsManager.addProductInCart(cid, pid)
-    if(!data.success){
-        return res.status(400).json({error: data.error});
-    }
+    if(!data.success){return res.status(400).json({error: data.error})}
 
-
-    res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: data.addProduct});
+    return res.status(200).json({ok: data.addProduct})
 })
 
 
 
+//sin FRONT
 router.delete('/:cid/product/:pid', async (req, res) => {
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
 
-    if(cidIsValid == false || pidIsValid == false){
-        res.setHeader('Content-Type','application/json')
-        return res.status(400).json({error: 'Debe enviar IDs Validos'})
-    }
+    if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
-    if(!product){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'No existe producto con el ID ingresado'});        
-    }
+    if(!product){return res.status(400).json({error: 'No existe producto con el ID ingresado'})}
+    
     const cart = await cartsManager.getCartById(cid)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Carrito Inexistente'});
-    }
+    if(!cart.success){return res.status(400).json({error: cart.error})}
 
-    if(!cart.products || !Array.isArray(cart.products)){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
-    }
+    if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
 
     let deleteProductInCart = await cartsManager.deleteProductInCart(cid,pid)
-    if(!deleteProductInCart.success){
-        return res.status(400).json({error: deleteProductInCart.error});
-    }
+    if(!deleteProductInCart.success){return res.status(400).json({error: deleteProductInCart.error})}
 
-    res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: deleteProductInCart});
 })
-
 
 //Sin FRONT---------
 
@@ -185,23 +120,15 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 router.put('/:id', async (req,res) => {
     let {id} = req.params
     let {products} = req.body
-    let idIsValid = await productsManager.validID(id)
+    let idValid = await productsManager.validID(id)
 
-    if(idIsValid == false){
-        res.setHeader('Content-Type','application/json')
-        return res.status(400).json({error: 'Debe enviar IDs Validos'})
-    }
+    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
+
 
     const cart = await cartsManager.getCartById(id)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Carrito Inexistente'});
-    }
+    if(!cart.success){return res.status(400).json({error: cart.error})}
 
-    if(!products || !Array.isArray(products)){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Debe enviar el nuevo listado de productos para el carrito - Controlar estructura correcta de listado'});
-    }
+    if(!products || !Array.isArray(products)){return res.status(400).json({error: 'Debe enviar el nuevo listado de productos para el carrito - Controlar estructura correcta de listado'})}
 
     /* USAMOS METODO FOR OF ( for of (recomendado para arrays antes que for in)), porque el bucle FOR espera a que la iteracion de cada elemento se resuelva, y ante el primer comando de corte como "break o return" Detiene y sale del bucle
     En cambio forEach es asincronico, no espera la resolucion de cada elemento entonces genera errores por multiples respuestas etc */
@@ -216,14 +143,14 @@ router.put('/:id', async (req,res) => {
  
 
     let updateCart = await cartsManager.updateAllProductsInCart(id, products)
-    if(!updateCart.success){
-        return res.status(400).json({error: updateCart.error});
-    }
+    if(!updateCart.success){return res.status(400).json({error: updateCart.error})}
 
-    res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: updateCart});
 })
 
+
+
+//SOlucionando error de estructuara no apta para borrar
 
 //Sin FRONT---------
 router.delete('/:id', async (req,res) =>{

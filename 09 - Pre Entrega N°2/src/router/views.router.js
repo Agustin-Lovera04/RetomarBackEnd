@@ -84,12 +84,9 @@ router.get('/products/:id', async (req,res)=>{
     }
 
     let product = await productsManager.getProductById(id)
-    if(!product){
-        res.setHeader('Content-Type','application/json');
-        return res.status(404).json({error: 'No se encontro producto con el Id ingresado'});
-    }
+    if(!product.success){return res.status(400).json({error: product.error})}
 
-    return res.status(200).render('productDetail', {product})
+    return res.status(200).render('productDetail', product)
 })
 
 
@@ -127,12 +124,9 @@ router.get('/carts/:id', async (req,res)=>{
     }
     
     let cart = await cartsManager.getCartById(id)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'No se encontro carrito con el ID ingresado'});
-    }
-    console.log(cart.products)
-    return res.status(200).render('cartDetail', {cart})
+    if(!cart.success){return res.status(400).json({error: cart.error})}
+
+    return res.status(200).render('cartDetail', cart)
 })
 
 

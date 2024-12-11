@@ -5,11 +5,11 @@ export class ProductsManager{
 
 
     async validID(id){
-        let valid
+        let valid = true
         if(!mongoose.Types.ObjectId.isValid(id)){
-            return valid = false
+            return {valid: false, error: 'Debe enviar un ID valido'}
         }
-        return valid=true
+        return valid
     }
 
 
@@ -47,12 +47,16 @@ export class ProductsManager{
     }
 
     async getProductById(id){
+        let success = true
         let product
         try {
             product = await productsModel.findOne({_id: id})
-            return product
+            if(!product){
+                return {success: false, error:  `No se encontro producto con el ID ingresado`}
+            }
+            return {success, product}
         } catch (error) {
-            console.log(error);   
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 

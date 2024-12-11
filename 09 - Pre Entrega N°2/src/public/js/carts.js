@@ -29,7 +29,6 @@ const putCartForm = document.getElementById("putCartForm");
 putCartForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   let putIdCart = document.getElementById("putIdCart").value;
-
   let formData = new FormData(putCartForm);
   try {
     fetch(`http://localhost:3000/api/carts/modCart/${putIdCart}`, {
@@ -80,7 +79,6 @@ socket.on("listCarts", (carts) => {
   let containerCarts = document.getElementById("containerCarts");
   containerCarts.innerHTML = "";
   carts.forEach((cart) => {
-
 //SI ES MAYOR A 0 USAMOS UN O.TERNARIO PARA QUE LISTE LOS PRODUCTOS CON MAP, Y VAYA HACIENDO LA LISTA CON JOIN, Y SI NO HAY PRODUCTOS, QUE DIGA QUE NO HAY PRODUCTOS
     let productsList = cart.products.length > 0 ? cart.products.map(product => `
         <li>- Id: ${product.product._id} - Title: ${product.product.title}</li>

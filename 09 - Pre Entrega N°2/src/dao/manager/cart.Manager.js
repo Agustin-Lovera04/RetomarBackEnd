@@ -13,13 +13,16 @@ export class CartManager{
     }
 
     async getCartById(id){
+        let success = true
         let cart
         try {
             cart = await cartsModel.findOne({_id: id, status:true})
-            return cart
+            if(!cart){
+                return {success: false, error:  `No se encontro carrito con el ID ingresado`}
+            }
+            return {success, cart}
         } catch (error) {
-            console.log(error.message)
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 
@@ -66,8 +69,8 @@ export class CartManager{
     async addProductInCart(cid, pid){
         let success = true
         let cart = await this.getCartById(cid)
+        cart = cart.cart
         let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
-
         if (existProductInCart) {
             existProductInCart.quantity++
         } else {
