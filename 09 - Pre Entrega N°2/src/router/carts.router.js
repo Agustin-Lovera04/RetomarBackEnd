@@ -97,14 +97,7 @@ router.delete('/deleteCart/:id', async (req,res)=>{
 })
 
 
-
-
-/* -----------------------------HASTA ACA HICE MANEJO DE ERRORES------------------------------------------------ */
-
-
-
-
-
+//Con FRONT------------------------------
 router.post('/:cid/product/:pid', async (req,res) =>{
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
@@ -131,15 +124,14 @@ router.post('/:cid/product/:pid', async (req,res) =>{
         return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
     }
 
-    let addProductInCart = await cartsManager.addProductInCart(cid, pid)
-    if(!addProductInCart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Server Error'});
+    let data = await cartsManager.addProductInCart(cid, pid)
+    if(!data.success){
+        return res.status(400).json({error: data.error});
     }
 
 
     res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: addProductInCart});
+    return res.status(200).json({ok: data.addProduct});
 })
 
 

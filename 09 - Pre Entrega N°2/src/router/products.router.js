@@ -20,16 +20,16 @@ router.post('/', upload.none(),async(req,res)=>{
         })}
 
 
-    let newProduct = await productsManager.createProduct(title, description, code, price, stock, category, thumbnail)
+    let data = await productsManager.createProduct(title, description, code, price, stock, category, thumbnail)
 
-    if(!newProduct){
-        return res.status(500).json({error: 'Server Error Internal'});
+    if(!data.success){
+        return res.status(500).json({error: data.error});
     }
     
     let productsData = await productsManager.getProducts()
     io.emit('listProducts', productsData.docs)
 
-    return res.status(200).json({ok: newProduct});
+    return res.status(200).json({ok: data.newProduct});
 })
 
 router.put('/:id', async (req,res)=>{
@@ -56,15 +56,14 @@ router.put('/:id', async (req,res)=>{
     }
 
 
-    let putProduct = await productsManager.putProduct(id, req.body)
-    if(!putProduct){
-        return res.status(500).json({
-            error: 'internal server error' + error.message,
-        });
+    let data = await productsManager.putProduct(id, req.body)
+    if(!data.success){
+        return res.status(500).json({error: data.error});
     }
+    
 
     return res.status(200).json({
-        ok: putProduct,
+        ok: data.prodMod
     });
 })
 
@@ -86,15 +85,14 @@ router.delete('/:id', async (req,res)=>{
     }
 
 
-    let prodDelete = await productsManager.deleteProduct(id)
-    if(!prodDelete){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: "Internal Server Error"});
+    let data = await productsManager.deleteProduct(id)
+    if(!data.success){
+        return res.status(500).json({error: data.error});
     }
 
     let productsData = await productsManager.getProducts()
     io.emit('listProducts', productsData.docs)
-
+    
     res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: prodDelete});
+    return res.status(200).json({ok: data.productDeleted});
 })

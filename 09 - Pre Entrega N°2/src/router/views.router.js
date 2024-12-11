@@ -25,7 +25,7 @@ router.get('/products',async (req,res) =>{
     }else if(disp === "false"){
         disp = false
     }else(
-        disp = undefined
+        disp = true
     )
 
     let {category} = req.query

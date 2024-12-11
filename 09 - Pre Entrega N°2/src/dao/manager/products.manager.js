@@ -27,11 +27,8 @@ export class ProductsManager{
 
         //Pametro General de Filtros para cosulta
             let filter = {}
+            filter.status = disp
 
-
-            if(disp !== undefined){
-                filter.status = disp
-            }
 
             if(category !== undefined){
                 filter.category = category
@@ -39,7 +36,6 @@ export class ProductsManager{
 
 
 //La razón por la que funciona es que los métodos como .find() o .paginate() están diseñados para aceptar un objeto como argumento, donde las claves son los nombres de los campos de la colección y los valores son las condiciones de búsqueda.
-
             let products  = await productsModel.paginate(filter, options)
 
             return products
@@ -62,42 +58,47 @@ export class ProductsManager{
 
 
     async createProduct(title, description, code, price, stock, category, thumbnail){
+        let success = true
         try {
 
             let newProduct = await productsModel.create({title: title, description: description, code: code, price: Number(price), stock:Number(stock), category: category, thumbnail: thumbnail})
-            return newProduct
+
+            if(!newProduct){
+                return {success: false, error: 'Error al Crear Producto - Contacte un Administrador'}
+            }
+            return {success, newProduct}
 
         } catch (error) {
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 
     async putProduct(id, body){
+        let success = true
         try {
             let prodMod = await productsModel.updateOne({ _id: id }, body)
-            if (prodMod.modifiedCount == 0) {
-                return null
+            if (prodMod.acknowledged === false ) {
+                return {success: false, error: 'Error al Modificar Producto - Contacte un Administrador'}
             }
-            return prodMod
+            return {success,prodMod}
         
         } catch (error) {
-            console.log(error)
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 
     async deleteProduct(id){
+        let success = true
         let productDeleted = await this.getProductById(id)
         try {
             productDeleted = await productsModel.updateOne({_id:id}, {$set: {status: false}})
-            if(productDeleted.modifiedCount == 0){
-                return null
+            if(productDeleted.acknowledged === false ){
+                return {success: false, error: 'Error al Borrar Producto - Contacte un Administrador'}
             }
 
-            return productDeleted
+            return {success,productDeleted}
         } catch (error) {
-            console.log(error)
-            return null
+            return {success: false, error:  `Internal Server Error: ${error.message}`}
         }
     }
 }

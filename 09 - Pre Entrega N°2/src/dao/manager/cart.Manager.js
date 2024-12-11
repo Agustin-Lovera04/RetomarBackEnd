@@ -41,7 +41,7 @@ export class CartManager{
         try {
             let modCart = await cartsModel.updateOne({_id:id}, {title: title})
             if (modCart.acknowledged === false) {
-                return {success: false, error: 'Error al modificar carrito'}
+                return {success: false, error: 'Error al modificar carrito - Contacte un Administrador'}
             }
             return {success,modCart}
         } catch (error) {
@@ -55,22 +55,16 @@ export class CartManager{
         try {
             let deleteCart = await cartsModel.updateOne({_id:id}, {status: false})
             if (deleteCart.acknowledged === false) {
-                return {success: false, error: 'Error al eliminar carrito'}
+                return {success: false, error: 'Error al eliminar carrito - Contacte un Administrador'}
             }
             return {success,deleteCart}
         } catch (error) {
             return {success: false, error:  `Internal Server Error: ${error.message}`}          
         }
     }
-
-
-
-
-/* -----------------------------HASTA ACA HICE MANEJO DE ERRORES------------------------------------------------ */
-
-
     
     async addProductInCart(cid, pid){
+        let success = true
         let cart = await this.getCartById(cid)
         let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
 
@@ -83,16 +77,14 @@ export class CartManager{
             })
         }
         try {
-            let updateCart = await cartsModel.updateOne({_id: cid}, {$set: {products: cart.products}})
-
-            if(updateCart.modifiedCount == 0 ) {
-                console.log('Server Error')
-                return null
+            let addProduct = await cartsModel.updateOne({_id: cid}, {$set: {products: cart.products}})
+            if(addProduct.acknowledged === false ) {
+                return {success: false, error: 'Error al Agregar Producto al carrito - Contacte un Administrador'}
             }
-            return updateCart
+            return {success ,addProduct}
 
         } catch (error) {
-            console.log('Error: ' + error)
+            return {success: false, error:  `Internal Server Error: ${error.message}`}          
         }
 
 }
