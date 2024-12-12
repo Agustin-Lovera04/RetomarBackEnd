@@ -69,7 +69,7 @@ router.post('/:cid/product/:pid', async (req,res) =>{
     if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
-    if(!product){return res.status(400).json({error: 'No existe producto con el ID ingresado'})}
+    if(!product.success){return res.status(400).json({error: product.error})}
 
     const cart = await cartsManager.getCartById(cid)
     if(!cart.success){return res.status(400).json({error: cart.error})}
@@ -94,7 +94,8 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
-    if(!product){return res.status(400).json({error: 'No existe producto con el ID ingresado'})}
+    if(!product.success){return res.status(400).json({error: product.error})}
+
     
     const cart = await cartsManager.getCartById(cid)
     if(!cart.success){return res.status(400).json({error: cart.error})}
@@ -110,20 +111,14 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 //Sin FRONT---------
 
 /*EJEMPLO DE BODY {
-  "products": [
-    { "product":"670d54db878577e86fbd871f" ,
-    "quantity": 2},
-    { "product":"670d54db878577e86fbd8722",
-    "quantity": 5}
-  ]
-} */
+  "products": [{ "product":"670d54db878577e86fbd871f" ,"quantity": 2},{"product":"670d54db878577e86fbd8722","quantity": 5}]}*/
+
 router.put('/:id', async (req,res) => {
     let {id} = req.params
     let {products} = req.body
+
     let idValid = await productsManager.validID(id)
-
     if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
-
 
     const cart = await cartsManager.getCartById(id)
     if(!cart.success){return res.status(400).json({error: cart.error})}
@@ -133,12 +128,9 @@ router.put('/:id', async (req,res) => {
     /* USAMOS METODO FOR OF ( for of (recomendado para arrays antes que for in)), porque el bucle FOR espera a que la iteracion de cada elemento se resuelva, y ante el primer comando de corte como "break o return" Detiene y sale del bucle
     En cambio forEach es asincronico, no espera la resolucion de cada elemento entonces genera errores por multiples respuestas etc */
     for (const product of products) {  
-        if(product._id){
-            return res.status(400).json({error: 'No esta permitido generar la propiedad _id'});
-        }
-       if(!product.quantity){
-            return res.status(400).json({error: 'Debe enviar el campo quantity: Number'});
-        }
+        if(product._id){return res.status(400).json({error: 'No esta permitido generar la propiedad _id'})}
+
+        if(!product.quantity){return res.status(400).json({error: 'Debe enviar el campo quantity: Number'})}
     }
  
 
@@ -157,30 +149,18 @@ router.delete('/:id', async (req,res) =>{
     let {id} = req.params
     let idIsValid = await productsManager.validID(id)
 
-    if(idIsValid == false){
-        res.setHeader('Content-Type','application/json')
-        return res.status(400).json({error: 'Debe enviar IDs Validos'})
-    }
+    if(idIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const cart = await cartsManager.getCartById(id)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Carrito Inexistente'});
-    }
+    if(!cart.success){return res.status(400).json({error: cart.error})}
 
-    if(!cart.products || !Array.isArray(cart.products)){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
-    }
+    if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
 
 
     let deleteAllProductsInCart = await cartsManager.deleteAllProductsInCart(id)
 
-    if(!deleteAllProductsInCart.success){
-        return res.status(500).json({error: deleteAllProductsInCart.error});
-    }
+    if(!deleteAllProductsInCart.success){return res.status(500).json({error: deleteAllProductsInCart.error});}
 
-    res.setHeader('Content-Type','application/json');
     return res.status(200).json({ok: deleteAllProductsInCart});
 })
 
@@ -192,15 +172,12 @@ router.put('/:cid/product/:pid', async (req,res)=>{
     let pidIsValid = await productsManager.validID(pid)
 
     if(cidIsValid == false || pidIsValid == false){
-        res.setHeader('Content-Type','application/json')
         return res.status(400).json({error: 'Debe enviar IDs Validos'})
     }
 
     const product = await productsManager.getProductById(pid)
-    if(!product){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'No existe producto con el ID ingresado'});        
-    }
+    if(!product.success){return res.status(400).json({error: product.error})}
+
     const cart = await cartsManager.getCartById(cid)
     if(!cart){
         res.setHeader('Content-Type','application/json');

@@ -96,6 +96,7 @@ export class CartManager{
 async deleteProductInCart(cid, pid){
     let success = true
     let cart = await this.getCartById(cid)
+    cart = cart.cart
     let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
 
     if(!existProductInCart){
@@ -108,7 +109,6 @@ async deleteProductInCart(cid, pid){
 
         // ATENCION: aca podemos comparar product completo, contra PID, ya que product en BD solo aloja en product_id, Debido al Populate.
         //Entonces product: pid ====> product._id: pid
-
 
         if(updateCart.modifiedCount == 0 ) {
             return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
@@ -125,12 +125,16 @@ async deleteProductInCart(cid, pid){
 async updateAllProductsInCart(id, products){
     let success = true
 try {
-    
-    let updateCart = await cartsModel.updateOne({_id: id}, {$set: {products: products}})
-    
-    if(updateCart.modifiedCount == 0 ) {
-        return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}
+    let cart = await this.getCartById(id)
+    cart = cart.cart
+//Hay que hacer que compruebe por cada elemento de products, si existe dentro de carrito, por eso la validacion dentro de carrito, se hace dentro del bucle de productos
+    for (const product of products){
+        let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product.product.toString())
+        if(!existProductInCart){return {success: false, error: 'No existe producto en Carrito'}}
     }
+
+    let updateCart = await cartsModel.updateOne({_id: id}, {$set: {products: products}})
+    if(updateCart.acknowledged === false ) {return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}}
     return {success, updateCart}
 } catch (error) {
     return {success: false, error:  `Internal Server Error: ${error.message}`}
@@ -158,6 +162,7 @@ async updateQuantityProductInCart(cid, pid, quantity){
     let success = true
 
     let cart = await this.getCartById(cid)
+    cart = cart.cart
     let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === pid.toString())
 
     if(!existProductInCart){

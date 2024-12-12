@@ -36,6 +36,12 @@ A lo ya echo debemos suumar:
     --------------OK              Asi lograr un manejo de erroes mas detallados, solidos, prolijos etc
                             Con la variable success, y el detalle del error o exito
 
+
+
+    -(Controlar en el manager de Cart, las validaciones de operaciones logradas "acknowLedged === false" hay en algunos que nos los cambie)
+
+    -Luego hacer repaso general, entender codigo, legibilizar. Testear todo que tenga manejo de errores. Tomarse el tiempoo
+
     -Economizar codigo, en validaciones de ID, Validaciones en general
 
 
