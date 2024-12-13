@@ -171,36 +171,23 @@ router.put('/:cid/product/:pid', async (req,res)=>{
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
 
-    if(cidIsValid == false || pidIsValid == false){
-        return res.status(400).json({error: 'Debe enviar IDs Validos'})
-    }
+    if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
     if(!product.success){return res.status(400).json({error: product.error})}
 
     const cart = await cartsManager.getCartById(cid)
-    if(!cart){
-        res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error: 'Carrito Inexistente'});
-    }
+    if(!cart.success){return res.status(400).json({error: cart.error})}
 
-    if(!cart.products || !Array.isArray(cart.products)){
-        res.setHeader('Content-Type','application/json');
-        return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'});
-    }
+
+    if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
 
     Number(quantity)
-    if(!quantity || isNaN(quantity) === true || quantity <= 0){
-        res.setHeader('Content-Type','application/json');
-        return res.status(404).json({error: ' Debe enviar la propiedad quantity, con un numero valido'});
-    }
+    if(!quantity || isNaN(quantity) === true || quantity <= 0){return res.status(404).json({error: ' Debe enviar la propiedad quantity, con un numero valido'})}
 
     let updateQuantityProductInCart = await cartsManager.updateQuantityProductInCart(cid, pid, quantity)
-    if(!updateQuantityProductInCart.success){
-        return res.status(500).json({error: updateQuantityProductInCart.error});
-    }
+    if(!updateQuantityProductInCart.success){return res.status(500).json({error: updateQuantityProductInCart.error})}
 
 
-    res.setHeader('Content-Type','application/json');
-    return res.status(200).json({ok: updateQuantityProductInCart});
+    return res.status(200).json({ok: updateQuantityProductInCart})
 })
