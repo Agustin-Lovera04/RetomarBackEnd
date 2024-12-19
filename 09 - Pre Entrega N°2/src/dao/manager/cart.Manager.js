@@ -103,13 +103,6 @@ export class CartManager{
     async updateAllProductsInCart(id, products){
         let success = true
     try {
-        let cart = await this.getCartById(id)
-        cart = cart.cart
-    //Hay que hacer que compruebe por cada elemento de products, si existe dentro de carrito, por eso la validacion dentro de carrito, se hace dentro del bucle de productos
-        for (const product of products){
-            let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product.product.toString())
-            if(!existProductInCart){return {success: false, error: 'No existe producto en Carrito'}}
-        }
 
         let updateCart = await cartsModel.updateOne({_id: id}, {$set: {products: products}})
         if(updateCart.acknowledged === false ) {return {success: false, error: 'Error Interno en BD - Contacte con Administrador'}}

@@ -42,7 +42,6 @@ deleteProductForm.addEventListener("submit", (event) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("fetch enviado");
         if (data.error) {
           return (responseFetch.innerHTML = `<p style="background-color:red;">${data.error} </p>`);
         }
@@ -91,7 +90,6 @@ const responseProducts = document.getElementById("responseProducts");
 socket.on("listProducts", (products) => {
   let containerProducts = document.getElementById("containerProducts");
   containerProducts.innerHTML = "";
-
   products.forEach((product) => {
     const productDOM = `
               <ul>
@@ -99,7 +97,7 @@ socket.on("listProducts", (products) => {
                 Nombre: <span style="font-weight: bold;">${product.title}</span><br>
                 Descripcion: <span>${product.description} </span><br>
                 ID: <span>${product._id} </span>  <br>
-                PRICE: <span>{{this.price}} </span> <br>
+                PRICE: <span>${product.price} </span> <br>
                 <a href="/products/${product._id}">Ver Detalle</a>
                 <button class="btn-addProductInCart" data-product-id="${product._id}">AGREGAR AL CARRITO</button>
                 </li>

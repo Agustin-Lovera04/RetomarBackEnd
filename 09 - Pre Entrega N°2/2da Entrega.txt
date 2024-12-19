@@ -31,8 +31,31 @@ A lo ya echo debemos suumar:
 
 
 
+Saque esto de la parte de pasar un nuevo arreglo para carrito, creo que lo vi inesesario ahora, porqu justamente le poaso nuevos productos, pero por valgo lo abre hecho luego fijarse
+
+        let cart = await this.getCartById(id)
+        cart = cart.cart
+    //Hay que hacer que compruebe por cada elemento de products, si existe dentro de carrito, por eso la validacion dentro de carrito, se hace dentro del bucle de productos
+        for (const product of products){
+            let existProductInCart = cart.products.find((prod)=> prod.product._id.toString() === product.product.toString())
+            if(!existProductInCart){return {success: false, error: 'No existe producto en Carrito'}}
+        }
+
+
+
 -PUNTUAL:
--EConomizar ----- OK
+-EConomizar ----- OK (INFORME:
+                        Products Router: 232 a 62
+                        Produts Manager: 127 a 83
+                        Cart Router: 246 a 193
+                        Cart Manager: 313 a 156
+                        REDUCCION PROMEDIO DE 106 LINEAS POR SCRIPT    
+)
+
+
+
+-Consignas ---- OK
+-Funcionalidades API -----OK
 -Manejo de errores de FRONT ------OK
--Manejo de errores NO FRONT 
--Entender y realizar Grafico
+-Manejo de errores NO FRONT ------OK
+-Entender ------OK

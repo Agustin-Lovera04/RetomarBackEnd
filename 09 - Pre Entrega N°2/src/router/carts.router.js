@@ -25,7 +25,7 @@ router.put('/modCart/:id', upload.none(),async (req,res) => {
     let {title} = req.body
 
     let idValid = await productsManager.validID(id)
-    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
+    if(!idValid.valid){return res.status(400).json({error: idValid.error})}
 
     if(!title){return res.status(400).json({error: 'Debe enviar el nuevo titulo para carrito'})}
     
@@ -47,7 +47,7 @@ router.delete('/deleteCart/:id', async (req,res)=>{
     let {id} = req.params
 
     let idValid = await productsManager.validID(id)
-    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
+    if(!idValid.valid){return res.status(400).json({error: idValid.error})}
 
     let cart = await cartsManager.getCartById(id)
     if(!cart.success){return res.status(400).json({error: cart.error})}
@@ -91,7 +91,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
 
-    if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
+    if(!cidIsValid.valid || !pidIsValid.valid){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
     if(!product.success){return res.status(400).json({error: product.error})}
@@ -118,7 +118,7 @@ router.put('/:id', async (req,res) => {
     let {products} = req.body
 
     let idValid = await productsManager.validID(id)
-    if(idValid.valid == false){return res.status(400).json({error: idValid.error})}
+    if(!idValid.valid){return res.status(400).json({error: idValid.error})}
 
     const cart = await cartsManager.getCartById(id)
     if(!cart.success){return res.status(400).json({error: cart.error})}
@@ -127,7 +127,12 @@ router.put('/:id', async (req,res) => {
 
     /* USAMOS METODO FOR OF ( for of (recomendado para arrays antes que for in)), porque el bucle FOR espera a que la iteracion de cada elemento se resuelva, y ante el primer comando de corte como "break o return" Detiene y sale del bucle
     En cambio forEach es asincronico, no espera la resolucion de cada elemento entonces genera errores por multiples respuestas etc */
-    for (const product of products) {  
+    for (const product of products) {
+
+        let prod = await productsManager.getProductById(product.product)
+        if(!prod.success){return res.status(400).json({error: prod.error})}
+
+
         if(product._id){return res.status(400).json({error: 'No esta permitido generar la propiedad _id'})}
 
         if(!product.quantity){return res.status(400).json({error: 'Debe enviar el campo quantity: Number'})}
@@ -148,14 +153,12 @@ router.put('/:id', async (req,res) => {
 router.delete('/:id', async (req,res) =>{
     let {id} = req.params
     let idIsValid = await productsManager.validID(id)
-
-    if(idIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
+    if(!idIsValid.valid){return res.status(400).json({error: idIsValid.error})}
 
     const cart = await cartsManager.getCartById(id)
     if(!cart.success){return res.status(400).json({error: cart.error})}
 
     if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
-
 
     let deleteAllProductsInCart = await cartsManager.deleteAllProductsInCart(id)
 
@@ -171,7 +174,7 @@ router.put('/:cid/product/:pid', async (req,res)=>{
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
 
-    if(cidIsValid == false || pidIsValid == false){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
+    if(!cidIsValid.valid || !pidIsValid.valid){return res.status(400).json({error: 'Debe enviar IDs Validos'})}
 
     const product = await productsManager.getProductById(pid)
     if(!product.success){return res.status(400).json({error: product.error})}

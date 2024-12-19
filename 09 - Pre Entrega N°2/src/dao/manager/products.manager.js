@@ -7,27 +7,25 @@ export class ProductsManager{
     async validID(id){
         let valid = true
         if(!mongoose.Types.ObjectId.isValid(id)){return {valid: false, error: 'Debe enviar un ID valido'}}
-        return valid
+        return {valid}
     }
 
 
     async getProducts(page, limit, sort, category, disp){
         try {
             //Por recomendacion de la documentacion de mongo, estabelcemos parametros generales de Filtro(filter) y de Orden(options)
-            let options = {page: page,limit: limit}
+            let options = {page: page || 1,limit: limit || 10}
             
             if(sort !== undefined){options.sort = { price: sort}}
 
         //Pametro General de Filtros para cosulta
             let filter = {}
-            filter.status = disp
+            filter.status = disp || true
 
             if(category !== undefined){filter.category = category}
 
-
 //La razón por la que funciona es que los métodos como .find() o .paginate() están diseñados para aceptar un objeto como argumento, donde las claves son los nombres de los campos de la colección y los valores son las condiciones de búsqueda.
             let products  = await productsModel.paginate(filter, options)
-
             return products
 
         } catch (error) {return []}
@@ -71,9 +69,8 @@ export class ProductsManager{
 
     async deleteProduct(id){
         let success = true
-        let productDeleted = await this.getProductById(id)
         try {
-            productDeleted = await productsModel.updateOne({_id:id}, {$set: {status: false}})
+            let productDeleted = await productsModel.updateOne({_id:id}, {$set: {status: false}})
             if(productDeleted.acknowledged === false ){return {success: false, error: 'Error al Borrar Producto - Contacte un Administrador'}}
 
             return {success,productDeleted}

@@ -4,7 +4,7 @@ import { upload } from '../utils.js';
 import { io } from '../app.js';
 export const router=Router()
 
-
+//FRONT
 router.post('/', upload.none(),async(req,res)=>{
 
     let {title, description, code, price, stock, category, thumbnail} = req.body
@@ -18,46 +18,47 @@ router.post('/', upload.none(),async(req,res)=>{
     if(!data.success){return res.status(500).json({error: data.error})}
     
     let productsData = await productsManager.getProducts()
+
     io.emit('listProducts', productsData.docs)
 
     return res.status(200).json({ok: data.newProduct});
 })
 
+//NO FRONT
 router.put('/:id', async (req,res)=>{
     let {id} = req.params //lo estoy haciendo desde parametro para Postman
 
     let isValid = await productsManager.validID(id)
-    if(isValid == false){return res.status(401).json({error: 'Ingrese un ID valido'})}
+    if(!isValid.valid){return res.status(404).json(isValid.error);}
+
 
     let product = await productsManager.getProductById(id)
     if(!product.success){return res.status(400).json({error: product.error})}
 
-
-
     if(req.body._id){return res.status(401).json({error: 'NO SE PUEDE MODIFICAR LA PROPIEDAD: _ID'})}
-
 
     let data = await productsManager.putProduct(id, req.body)
     if(!data.success){return res.status(500).json({error: data.error})}
-    
 
     return res.status(200).json({ok: data.prodMod})
 })
 
+//CON FRONT
 router.delete('/:id', async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)
-    if(isValid == false){return res.status(400).json({error: 'ingrese un ID valido'});}
+    if(!isValid.valid){return res.status(404).json({error: isValid.error})}
 
     let product = await productsManager.getProductById(id)
     if(!product.success){return res.status(400).json({error: product.error})}
 
     let data = await productsManager.deleteProduct(id)
     if(!data.success){return res.status(500).json({error: data.error})}
-
-    let productsData = await productsManager.getProducts()
-    io.emit('listProducts', productsData.docs)
     
+    let productsData = await productsManager.getProducts()
+
+    io.emit('listProducts', productsData.docs)
+
     return res.status(200).json({ok: data.productDeleted});
 })

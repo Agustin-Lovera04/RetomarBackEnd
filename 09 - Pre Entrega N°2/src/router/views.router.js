@@ -57,7 +57,7 @@ router.get('/products/:id', async (req,res)=>{
     let {id} = req.params
     
     let isValid = await productsManager.validID(id)
-    if(isValid == false){return res.status(404).json({error: 'Ingrese un ID valido'});}
+    if(!isValid.valid){return res.status(404).json(isValid.error);}
 
     let product = await productsManager.getProductById(id)
     if(!product.success){return res.status(400).json({error: product.error})}
@@ -84,11 +84,10 @@ router.get('/carts/:id', async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)
-    if(isValid == false){return res.status(404).json({error: 'Ingrese un ID valido'});}
+    if(!isValid.valid){return res.status(404).json(isValid.error);}
     
     let cart = await cartsManager.getCartById(id)
     if(!cart.success){return res.status(400).json({error: cart.error})}
-
     return res.status(200).render('cartDetail', cart)
 })
 
