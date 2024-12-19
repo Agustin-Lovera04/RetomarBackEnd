@@ -1,0 +1,264 @@
+creamos un endpoint, luego de haber configurado todo el sessions etc. etc.
+
+Debemos tener un endpoint preparado para recibir credenciales, corrobar que hayan llegado en un formato correcto, corroborar que esas credenciales sean de un usuario existente y luego en caso de exito crear la session de vinculo
+
+            app.get('/login',(req,res)=>{
+                
+                let {email, password} = req.query
+
+                if(!email || !password){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(404).json({error: 'debe enviar email y password'});
+                }
+
+                let userExist = coleccionDeUsuarios.find(user => user.email === email && user.password === password)
+                if(!userExist){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(404).json({error: 'Credenciales incorrectas'});
+                }
+
+
+                req.session.user = userExist
+
+                res.setHeader('Content-Type','application/json');
+                res.status(200).json({
+                    ok: 'Sesion iniciada'
+                });
+            });
+
+
+        
+    -Luego debemos crear un middleware, que corrobore si existe una session iniciada de usuario. Con el midle luego debemos proteger los endp que solo se podrian acceder si hay un usuario logueado
+
+        const auth = (req,res, next) => {
+            if(!req.session.user){
+                res.setHeader('Content-Type','application/json');
+                return res.status(404).json({error: 'No has iniciado sesion});
+            }
+
+            next()
+        }
+
+
+        app.get('/datos', auth ,(req,res)=>{
+            
+            res.setHeader('Content-Type','application/json');
+            res.status(200).json({
+                ok: 'Acceso a datos concedido'
+            });
+        });
+
+
+
+
+    -Para el LOGOUT
+        app.get('/logout',auth,(req,res)=>{
+            
+            req.session.destroy(error =>{
+                if(error){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(500).json({InternalError: 'Error Inesperado'});
+                }
+            })
+
+            res.setHeader('Content-Type','application/json');
+            res.status(200).json({
+                ok: 'Sesion Cerrada'
+            });
+        });
+
+
+
+
+Existen 3 opciones de almacenamiento.
+    -MEMORY STAGE, (SON LOS EJEMPLOS QUE HICIMOS ARRIBA)No es escalable, ya que si el servidor, se reinicia o se cae, se pierde toda la informacion
+
+    -Persistencia en ARCHIVO, Funciona, pero no es escalable debido a que generaria muy rapido colapso de datos, por cuello de botella
+
+    -Persistencia en BD, opcion Recomendada.
+
+
+
+
+PERSISTENCIA EN ARCHIVO------------
+    npm i sessions-file-store
+
+    import sessions ....
+    import FileStore...
+
+    configuracion de SESSIONS
+
+    const fileStore = FileStore(sessions)
+
+
+    app.use(sessions({
+        store: new fileStore({
+            path: './src/sessions', ttl: 3000, retries: 5 //gralmente son 5 intentos
+        }),
+        secrect: 'claveSecreta'
+        ......
+        .....
+        ....
+    }))
+
+
+
+
+
+PERSISTENCIA EN BD--------------------------------------------------------------------
+
+    -npm i connect-mongo
+
+    import mongoStore
+
+
+    .......sessions({
+        store: mongoStore.create({
+            mongoUrl: 'Usamos el url de conexion a BD',
+            mongoOptions: {dbName: 'sessions'},
+            ttl: 60
+        })
+    })
+
+
+
+
+
+
+
+LOGIN ZARPADO
+
+    -creamos todas las vistas(login, registro, logout, perfil), con sus debidos formularios y links de navegacion.
+    Tabien configuramos sessions, connect mongo, y el middleware de auth
+
+
+    FORMULARIO DE REGISTRO => '/api/sessions/registro
+        .Debe tener tambien un if, que analize si llega un {{#if error}}
+        .recordar que cada input debe tener su name, asi se envian bine los datos al ejecutar el submit
+
+    -En sesions.router
+
+        //Encriptador nativo de NODE
+        import crypto from 'crypto'
+
+
+        router.post('/registro', async(req,res)=>{
+        
+        if(!nombre || !email || !password){
+            res.redirect('/registro?error=Debe Completar Los datos requeridos para registrar')
+        }
+        
+        //aaqui podemnos poner expresiones regulares para el email
+
+        //Corroborar que no exista un usuario con los datos que estan queriendo registrar
+        let existUser = await usuarioModelo.findOnde({email: email})
+        if(existUser){
+            res.redirect('/registro?error=Ya existen usuarios grabados con el email ingresado')
+        }
+
+
+        password = crypto.createHmac("sha256", "claveSecreta").update(password).digest("hex")
+
+        let user
+
+        try{
+            user =await usuariosModelo.create({nombre,email, password})
+            res.redirect('/login?mensaje=Usuario Registrado Con Exito')
+        } catch(error){
+            res.redirect('/registro?error=Error Inesperado')
+        }
+
+
+            res.status(200).json({ok: ok})
+        })
+
+
+
+
+
+    ViewsRouter
+        .....get('/login')....
+        .......
+        let {error, mensaje} = req.query
+
+        return res.status(200).render('login', {error, mensaje});
+
+
+        .....get('/registro')....
+        .......
+        let {error, mensaje} = req.query
+
+        return res.status(200).render('registro', {error, mensaje});
+
+
+
+    SessionsRouter
+        ....Login
+        ....
+            if(!email || !password){......}
+
+
+        //Comparar encriptados de contraseñas
+        password = crypto.createHmac("sha256", "claveSecreta").update(password).digest("hex")
+
+
+        let existUser = await usuariosModelo.findOne({emal: emial, password: password})
+        if(!existUser){
+            return res.redirect('/login?error=Credenciales Incorrectas')
+        }
+
+
+        //Ahora creamos la session
+
+        req.session.usuario={
+            nombre: existUser.nombre, email: existUser.email
+        }
+
+        res.redirect('/perfil')
+
+
+
+
+           ....get('/perfil', auth, (req,res) .....) {
+            ...
+            ..
+            let usuario = req.sessions.usuario
+
+            res.render('perfil', {usuario})
+        }
+
+
+        ....get('/logout').....{
+            req.session.destroy(error =>{
+                if(error){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(500).json({InternalError: 'Error Inesperado'});
+                }
+            })
+                
+            res.redirect('/login')
+        }
+
+
+VIEWSTROUTER
+           ....get('/perfil', auth, (req,res) .....) {
+            ...
+            ..
+            let usuario = req.sessions.usuario
+
+            res.render('perfil', {usuario})
+        }
+
+
+        ....get('/logout', auth, (res....)).....{
+            req.session.destroy(error =>{
+                if(error){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(500).json({InternalError: 'Error Inesperado'});
+                }
+            })
+                
+            res.redirect('/login')
+        }
+
+

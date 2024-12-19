@@ -1,0 +1,122 @@
+COOKIES.
+    -Archivo muy pequeño de datos, que se guarda dentro del navegador. De manera que podamos utilizar esa informacion en nuestras peticiones.
+        Generalmente, Nombre, Id de usuario, etc
+
+    -NUNCA guardar informacion Sensible en una Cookie.
+    
+    -Se les puede configurar TIEMPO DE VIDA
+
+    -Se les puede asignar Claves, para mejorar su seguridad
+
+(vamos a usar cookie-parser, es una libreria que nos ayuda y aliviana el manejo de cookies, donde realiza automaticamente la manipulacion de ellas, configurando los headers, parseado etc)
+
+            -npm i cookie-parser
+
+
+            -En APP.js
+                        -import cookie-parser
+                        
+                        //se ejecuta como middleware
+                        app.use(cookieParser())
+
+
+            -Luego en cualquier ENDP
+                    .....
+                    res.cookie("nombreCookie", info, {maxAge: 1000 * 5}) 
+                                //Podemos no mandarle tiempo de expiracion, solo enviar {}
+
+                    
+
+            -Luego cuando la querramos tomar o leer, la obtenemos desde la req.cookie
+
+                    return res.status(200).json(req.cookie);
+
+            
+
+            
+            -DELETE cookie
+                let cookie= //obtenemos cookie
+
+                res.clearCookie(cookie)
+
+
+
+
+    SIGNED COOKIES
+        Cuando Configuramos el cookie parser, en app, le añadimos una clave ("firma"), que se usara como metodo de seguridad.
+        Lo que pasara, es que cuando detecte que la cookie a sido alterada, devolvera un false, impidiendo que luego se puedan realizar operaciones que utilizen la cookie
+
+
+
+            -app.use(cookieParser("firmaSecreta"))
+
+
+        Luego cuando creamos la cookie, en el objeto debemos indicar que estara firmada
+
+            -res.cookie('cookieFirmada', info, {signed: true})
+
+        
+        Para recuperarla
+
+            -req.signedCookie
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SESSIONS
+    Se usara para persistir informacion entre peticiones, y contiene mas almacenamiento que una cookie comun, ya que se almacenan del lado del servidor, se borran al cerrar el navegador.
+    Ademas se usa como vinculo, ya que genera un sesionId, cuando el user se conecta al servidor
+
+    Utiliza como medio de transporte tambien la request.
+
+        -npm i express-session
+
+        -import sessions ....
+    
+    
+    -en app.js  
+        -app.use(sessions({
+            secret: "clave",
+            resave: true // guarda igual la info, auqneu haya inactividad,
+            saveUnitialized: true // guardar igual aunque no hayan ingresado datos
+        }))
+
+
+    Crear session
+        -req.session.nombreSessions
+
+
+    en cualquier ENDP--------------------------------
+        para tomar la informacion de sessions.
+
+        -req.session.nombreSession
+
+
+    Para DELETE----------------------------------------
+            req.session.destroy(error=>{
+                if(error){
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(500).json({error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`})
+                }
+            })
+
+            res.setHeader('Content-Type','application/json');
+            res.status(200).json({
+                resultado:"Session reiniciada...!!!"
+            });
+
+
+
+
+15.50hs - 17hs
+recreo
+17.35
+17.35 - 19.10
+
+Hoy estuve aproximadamente 2.30hs. Objetivo llegar a 3hs casi diarias, si queremos mejorar.
+
+Quedamos en para arrancar el desafio clase 19.
