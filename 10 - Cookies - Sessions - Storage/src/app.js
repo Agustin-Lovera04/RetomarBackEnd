@@ -6,7 +6,10 @@ import { router as viewsRouter} from './router/views.router.js';
 import { router as productsRouter } from './router/products.router.js';
 import { router as cartsRouter } from './router/carts.router.js';
 import { router as chatRouter } from './router/chat.router.js';
+import { router as sessionsRouter } from './router/sessions.router.js';
 import {Server} from 'socket.io'
+import session from 'express-session'
+import mongoStore from 'connect-mongo'
 import multer from 'multer';
 import { ChatManager } from './dao/manager/chat.manager.js';
 const PORT=3000;
@@ -25,6 +28,18 @@ app.engine('handlebars', engine({
         allowProtoMethodsByDefault: true,
     },
 }))
+
+app.use(session({
+    store: mongoStore.create({
+        mongoUrl: 'mongodb+srv://AgustinLovera:45507271Udmv@cluster0.govus.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+        mongoOptions: {dbName: 'RetomarEccomerce'},
+        ttl: 60
+    }),
+    secret: "UDMV",
+    resave: false, // guarda igual la info, auqneu haya inactividad,
+    saveUnitialized: false // guardar igual aunque no hayan ingresado datos, Lo desactivo ya que apenas el servidor detecta una solicitud entrante crea una session y eso genera mucho residuo en BD
+}))
+
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 
@@ -32,6 +47,7 @@ app.set('views', __dirname + '/views')
 app.use('/api/chat' , chatRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/products' , productsRouter)
+app.use('/api/sessions' , sessionsRouter)
 app.use('/' , viewsRouter)
 
 

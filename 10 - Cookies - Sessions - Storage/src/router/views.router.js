@@ -2,8 +2,10 @@ import { Router } from 'express';
 import { ProductsManager } from '../dao/manager/products.manager.js';
 import { CartManager } from '../dao/manager/cart.Manager.js';
 import { chatManager } from '../app.js';
+import { SessionsManager } from '../dao/manager/sessions.manager.js';
 export const router = Router()
 export let productsManager = new ProductsManager()
+export let sessionsManager = new SessionsManager()
 export let cartsManager = new CartManager()
 
 router.get('/',(req,res)=>{
@@ -93,3 +95,19 @@ router.get('/carts/:id', async (req,res)=>{
 
 
 router.get('/chat', async (req, res) => {return res.status(200).render('chat')})
+
+router.get('/register',(req,res)=>{
+    let {error} = req.query
+    res.status(200).render('register', {error})
+});
+
+router.get('/login',(req,res)=>{
+    let {message} = req.query
+
+    res.status(200).render('login', {message})
+});
+
+router.get('/perfil',(req,res)=>{
+    
+    res.status(200).render('perfil')
+});

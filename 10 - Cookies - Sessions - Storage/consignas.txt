@@ -1,0 +1,14 @@
+-Implementar LOGIN
+    -REGISTRO
+    -LOGIN
+    -PERFIL
+    - botn LOGOUT
+    -adminCoder@coder.com adminCod3r123 Tenga rol ADMIN
+
+
+
+
+-me desorganize un poco, estaba bien, esta casi completo el registro, pero vamos a releer todo el codigo tranuqi, enteneidno que hicmos hasta ahoira, porque nos mareamos solos.
+hay que solucionar que caudno creamos un usuario se crea tambnien un session quye no queremos.
+Fijarse que pasa, pq todaia no llegamos a crar la session en el metodo, osea no deberia guardarse ninguna session.
+Register
