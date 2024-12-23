@@ -3,6 +3,8 @@ import { ProductsManager } from '../dao/manager/products.manager.js';
 import { CartManager } from '../dao/manager/cart.Manager.js';
 import { chatManager } from '../app.js';
 import { SessionsManager } from '../dao/manager/sessions.manager.js';
+import session from 'express-session'
+import { accesscontrol, auth } from '../utils.js';
 export const router = Router()
 export let productsManager = new ProductsManager()
 export let sessionsManager = new SessionsManager()
@@ -102,12 +104,18 @@ router.get('/register',(req,res)=>{
 });
 
 router.get('/login',(req,res)=>{
-    let {message} = req.query
+    let {message, error} = req.query
 
-    res.status(200).render('login', {message})
+    res.status(200).render('login', {message, error})
 });
 
-router.get('/perfil',(req,res)=>{
-    
-    res.status(200).render('perfil')
-});
+router.get('/perfil', auth ,async(req,res)=>{
+    let {error} = req.query
+    let user = req.session.user
+
+    return res.status(200).render('perfil', {user: user, error})
+})
+
+router.get('/testAccess', auth, accesscontrol, (req,res)=>{
+    return res.status(200).json({accesoConcedido: 'Eres un Administrador - MiddleWare funcionando'})
+})

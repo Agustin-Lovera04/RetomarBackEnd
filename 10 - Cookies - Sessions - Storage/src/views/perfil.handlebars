@@ -1,1 +1,21 @@
 <h1>Perfil</h1>
+
+{{#if error}}
+<div style="background-color: red;">
+    <h2>{{error}} </h2>
+</div>
+{{/if}}
+
+Nombre de usuario: {{user.name}} <br>
+Email Registrado: {{user.email}} <br>
+rol: {{user.rol}}
+
+<br><br>
+<button onclick="logout()">Cerrar Sesion</button>
+
+
+<script>
+    function logout(){
+        window.location.href = '/api/sessions/logout'
+    }
+</script>

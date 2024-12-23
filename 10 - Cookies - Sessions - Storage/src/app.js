@@ -33,10 +33,10 @@ app.use(session({
     store: mongoStore.create({
         mongoUrl: 'mongodb+srv://AgustinLovera:45507271Udmv@cluster0.govus.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
         mongoOptions: {dbName: 'RetomarEccomerce'},
-        ttl: 60
+        ttl: 60 * 30 // media hora
     }),
     secret: "UDMV",
-    resave: false, // guarda igual la info, auqneu haya inactividad,
+    resave: true, // guarda igual la info, auqneu haya inactividad,
     saveUnitialized: false // guardar igual aunque no hayan ingresado datos, Lo desactivo ya que apenas el servidor detecta una solicitud entrante crea una session y eso genera mucho residuo en BD
 }))
 

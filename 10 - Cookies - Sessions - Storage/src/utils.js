@@ -18,3 +18,18 @@ const storage = multer.diskStorage({
 })
 
 export const upload = multer()
+
+
+export const auth = (req,res, next) => {
+    if(!req.session.user){
+        return res.redirect('/login?error=Acceso denegado, Inicia Sesion.')
+    }
+    next()
+}
+
+export const accesscontrol = (req,res,next) => { 
+    if(req.session.user.rol !== 'Admin'){
+        return res.redirect('/perfil?error=Acceso denegado, solo apto para Administradores.')
+    }
+    next()
+}
