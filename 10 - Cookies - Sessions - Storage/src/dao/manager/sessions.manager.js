@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {usersModel} from '../models/user.model.js'
+import { validPassword } from "../../utils.js";
 
 export class SessionsManager{
 
@@ -48,9 +49,10 @@ export class SessionsManager{
         let success = true
 
         try {
-            let existUser = await usersModel.findOne({email: email, password: password})
+            let existUser = await usersModel.findOne({email: email})
             if(!existUser){return {success: false, error: `Credenciales Incorrectas`}}
- 
+            if(!validPassword(password, existUser.password)){return {success: false, error: `Credenciales Incorrectas`}}
+                
             return {success, existUser}
         } catch (error) {return {success: false, error: `Internal Server Error: ${error.message}}`}}
     }

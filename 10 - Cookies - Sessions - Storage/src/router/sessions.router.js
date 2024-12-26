@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import session from 'express-session'
 import { sessionsManager } from './views.router.js';
-import crypto from 'crypto'
+/* import crypto from 'crypto' */
+import { hashPassword, validPassword } from '../utils.js';
 import { auth } from '../utils.js';
 export const router=Router()
 
@@ -19,7 +20,12 @@ router.post('/register',async(req,res)=>{
     let rol
     if(email=== 'adminCoder@coder.com' && password === 'adminCod3r123'){rol = 'Admin'}
 
-    password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex")
+
+    //Reemplazamos el hasheo de cripto, por la libreria Bcrypt
+  /*   password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex") */
+
+
+    password = hashPassword(password)
 
     let user = await sessionsManager.createUser(name,email, password, rol)
     if(!user.success){return res.redirect(`/register?error=${user.error}`)}
@@ -35,7 +41,7 @@ router.post('/login', async(req, res) =>{
     let valid = exReg.test(email)
     if(valid === false){return res.redirect('/login?error=Debes enviar un email valido.')}
 
-    password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex")
+    /* password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex") */
 
     let existUser = await sessionsManager.compareUserData(email, password)
     if(!existUser.success){return res.redirect(`/login?error=${existUser.error}`)}

@@ -1,5 +1,14 @@
 <h1>Perfil</h1>
-
+{{#if message}}
+<div style="background-color: green;">
+    <h2>{{message}} </h2>
+</div>
+{{/if}}
+{{#if warning}}
+<div style="background-color:yellow;">
+    <h2>{{warning}} </h2>
+</div>
+{{/if}}
 {{#if error}}
 <div style="background-color: red;">
     <h2>{{error}} </h2>
@@ -12,6 +21,8 @@ rol: {{user.rol}}
 
 <br><br>
 <button onclick="logout()">Cerrar Sesion</button>
+
+{{>navegation1}}
 
 
 <script>

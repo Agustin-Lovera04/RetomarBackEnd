@@ -1,0 +1,26 @@
+- Ya arranco el tema en el txt de login.
+Pero aca vamos a usar medidas mas avanzadas
+
+Encriptar contraseñas, passport etc
+
+
+
+
+Autenticacion: Cliente, autenticando credenciales y datos ya creados en BD
+
+Autorizacion: Comprobar si un usuario ya registrado tiene permisos para consumir determinados recursos
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Bcrypt
+
+npm i bcrypt
+
+import bcrypt from 'bcrypt'
+export const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+export const validPassword = ( enteredPassword , password) => bcrypt.compareSync( enteredPassword , password)
+
+
+Luego manipulamos los manager para enviar los argumentos como exigen las funciones, pero es una boludez

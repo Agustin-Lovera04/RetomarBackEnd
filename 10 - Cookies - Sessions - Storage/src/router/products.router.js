@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { productsManager } from './views.router.js';
 import { upload } from '../utils.js';
+import { auth } from '../utils.js';
 import { io } from '../app.js';
 export const router=Router()
 
 //FRONT
-router.post('/', upload.none(),async(req,res)=>{
+router.post('/',upload.none(), auth ,async(req,res)=>{
 
     let {title, description, code, price, stock, category, thumbnail} = req.body
     if(!title || !description || !code || !price || !stock || !category){return res.status(400).json({error: 'Debe enviar todos los campos solicitados.'})}
@@ -25,7 +26,7 @@ router.post('/', upload.none(),async(req,res)=>{
 })
 
 //NO FRONT
-router.put('/:id', async (req,res)=>{
+router.put('/:id', auth,async (req,res)=>{
     let {id} = req.params //lo estoy haciendo desde parametro para Postman
 
     let isValid = await productsManager.validID(id)
@@ -44,7 +45,7 @@ router.put('/:id', async (req,res)=>{
 })
 
 //CON FRONT
-router.delete('/:id', async (req,res)=>{
+router.delete('/:id', auth,async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)

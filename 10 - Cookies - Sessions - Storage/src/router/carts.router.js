@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { cartsManager, productsManager } from './views.router.js';
 import { upload } from '../utils.js';
 import { io } from '../app.js';
+import { auth } from '../utils.js';
 export const router=Router()
 
 //Con FRONT------------------------------
-router.post('/:title', async (req,res)=>{
+router.post('/:title', auth,async (req,res)=>{
     let {title} = req.params
 
     if(!title){return res.status(400).json({error:'Debe enviar un titulo para el carrito' })}
@@ -20,7 +21,7 @@ router.post('/:title', async (req,res)=>{
 
 //Con FRONT------------------------------
 
-router.put('/modCart/:id', upload.none(),async (req,res) => {
+router.put('/modCart/:id', upload.none(),auth,async (req,res) => {
     let {id} = req.params
     let {title} = req.body
 
@@ -43,7 +44,7 @@ router.put('/modCart/:id', upload.none(),async (req,res) => {
 
 //Con FRONT------------------------------
 
-router.delete('/deleteCart/:id', async (req,res)=>{
+router.delete('/deleteCart/:id',  auth ,async (req,res)=>{
     let {id} = req.params
 
     let idValid = await productsManager.validID(id)
@@ -61,7 +62,7 @@ router.delete('/deleteCart/:id', async (req,res)=>{
 
 
 //Con FRONT------------------------------
-router.post('/:cid/product/:pid', async (req,res) =>{
+router.post('/:cid/product/:pid', auth , async (req,res) =>{
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
@@ -86,7 +87,7 @@ router.post('/:cid/product/:pid', async (req,res) =>{
 
 
 //sin FRONT
-router.delete('/:cid/product/:pid', async (req, res) => {
+router.delete('/:cid/product/:pid',  auth ,async (req, res) => {
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
@@ -113,7 +114,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 /*EJEMPLO DE BODY {
   "products": [{ "product":"670d54db878577e86fbd871f" ,"quantity": 2},{"product":"670d54db878577e86fbd8722","quantity": 5}]}*/
 
-router.put('/:id', async (req,res) => {
+router.put('/:id',  auth ,async (req,res) => {
     let {id} = req.params
     let {products} = req.body
 
@@ -150,7 +151,7 @@ router.put('/:id', async (req,res) => {
 //SOlucionando error de estructuara no apta para borrar
 
 //Sin FRONT---------
-router.delete('/:id', async (req,res) =>{
+router.delete('/:id',  auth ,async (req,res) =>{
     let {id} = req.params
     let idIsValid = await productsManager.validID(id)
     if(!idIsValid.valid){return res.status(400).json({error: idIsValid.error})}
@@ -168,7 +169,7 @@ router.delete('/:id', async (req,res) =>{
 })
 
 
-router.put('/:cid/product/:pid', async (req,res)=>{
+router.put('/:cid/product/:pid',  auth ,async (req,res)=>{
     let {cid, pid} = req.params
     let {quantity} = req.body
     let cidIsValid = await productsManager.validID(cid)

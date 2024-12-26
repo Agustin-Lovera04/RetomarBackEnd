@@ -4,7 +4,7 @@ import { CartManager } from '../dao/manager/cart.Manager.js';
 import { chatManager } from '../app.js';
 import { SessionsManager } from '../dao/manager/sessions.manager.js';
 import session from 'express-session'
-import { accesscontrol, auth } from '../utils.js';
+import { accessControl, auth, authReverse } from '../utils.js';
 export const router = Router()
 export let productsManager = new ProductsManager()
 export let sessionsManager = new SessionsManager()
@@ -15,7 +15,7 @@ router.get('/',(req,res)=>{
 })
 
 
-router.get('/products',async (req,res) =>{
+router.get('/products', auth ,async (req,res) =>{
     let empty = false
     let status = {}
 
@@ -57,7 +57,7 @@ router.get('/products',async (req,res) =>{
 })
 
 
-router.get('/products/:id', async (req,res)=>{
+router.get('/products/:id',  auth ,async (req,res)=>{
     let {id} = req.params
     
     let isValid = await productsManager.validID(id)
@@ -69,7 +69,7 @@ router.get('/products/:id', async (req,res)=>{
     return res.status(200).render('productDetail', product)
 })
 
-router.get('/carts', async (req,res)=>{
+router.get('/carts',  auth ,async (req,res)=>{
     let carts
     let empty = false
     try {
@@ -84,7 +84,7 @@ router.get('/carts', async (req,res)=>{
 })
 
 
-router.get('/carts/:id', async (req,res)=>{
+router.get('/carts/:id', auth , async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)
@@ -96,26 +96,26 @@ router.get('/carts/:id', async (req,res)=>{
 })
 
 
-router.get('/chat', async (req, res) => {return res.status(200).render('chat')})
+router.get('/chat',  auth ,async (req, res) => {return res.status(200).render('chat')})
 
-router.get('/register',(req,res)=>{
+router.get('/register', authReverse,(req,res)=>{
     let {error} = req.query
     res.status(200).render('register', {error})
 });
 
-router.get('/login',(req,res)=>{
+router.get('/login',authReverse,(req,res)=>{
     let {message, error} = req.query
 
     res.status(200).render('login', {message, error})
 });
 
 router.get('/perfil', auth ,async(req,res)=>{
-    let {error} = req.query
+    let {error,warning} = req.query
     let user = req.session.user
 
-    return res.status(200).render('perfil', {user: user, error})
+    return res.status(200).render('perfil', {user: user, error, warning})
 })
 
-router.get('/testAccess', auth, accesscontrol, (req,res)=>{
+router.get('/testAccess', auth, accessControl, (req,res)=>{
     return res.status(200).json({accesoConcedido: 'Eres un Administrador - MiddleWare funcionando'})
 })
