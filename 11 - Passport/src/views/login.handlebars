@@ -1,0 +1,19 @@
+<h1>LOGIN</h1>
+{{#if message}}
+<div style="background-color: green;">
+    <h2>{{message}} </h2>
+</div>
+{{/if}}
+{{#if error}}
+<div style="background-color: red;">
+    <h2>{{error}} </h2>
+</div>
+{{/if}}
+
+<form action="/api/sessions/login" method="post">
+    <label for="email">Email: </label><input name="email" type="text" required>
+    <label for="password">Contraseña: </label><input name="password" type="password"  required>
+    <button type="submit">Inciar Sesion</button>
+</form>
+
+{{>navegation1}}

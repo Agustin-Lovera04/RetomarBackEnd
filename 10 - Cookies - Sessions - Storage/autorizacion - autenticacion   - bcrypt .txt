@@ -24,3 +24,4 @@ export const validPassword = ( enteredPassword , password) => bcrypt.compareSync
 
 
 Luego manipulamos los manager para enviar los argumentos como exigen las funciones, pero es una boludez
+
