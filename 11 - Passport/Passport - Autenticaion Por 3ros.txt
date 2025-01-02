@@ -1,0 +1,174 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PASSPORT 
+Generador de estrategias de autenticacion y autorizacion, es un middleware, sirve para encapsular, las estrategias de Autenticacion y autorizacion.
+
+            npm i passport
+
+
+EN la documentacion de passport, tiene muchisimas estrategias segun lo que necesitemos ( en este caso passport-local)
+
+    npm i passport-local
+
+
+
+Para implementar son 3 grandes pasos.
+
+
+        1- Generar una carpeta "config" / config,passport.js
+
+
+            Dentro del archivo creado importamos passport y local.
+
+            Luego cremos una funcion de callback que inicie passport y q cree una nueva estrategia por cada paso de nuestro sistema de Autenticacion.
+
+                            import passport from 'passport'
+                            import local from 'passport-local'
+
+
+                            export const initPassport = () => {
+
+                                passport.use('register', new local.Strategy(
+                                    {
+                                        passReqToCallback: true,
+                                        usernameField: 'email'
+                                    },
+                                    async( req , username , password , done)=>{
+                                        try {
+                                            
+                                            
+
+                                        } catch (error) {
+                                            done(error, false)
+                                        }
+                                    }
+                                ))
+
+                            }
+
+
+
+Ahora para devolver informacion en vez de devolver con response, devolvemnos con el metodo done(error, user)
+
+
+Ahora debemos crear un SERIALIZADOR Y DESERIALIZADOR
+    
+    passport.serializeUser((user, done)=>{
+        return done(null, user._id)
+    })
+
+
+    passport.deserializeUser(async(id, done)=>{
+        let user = await sessionsManager.getUserbyId(id)
+        return done(null, user.user)
+    })
+
+
+
+    2- DEBEMOS CONFIGURAR PASSPORT EN EL SERVIDOR (app.js)
+
+        //CONFIGURACION DE PASSPORT
+        initPassport()
+        app.use(passport.initialize())
+        app.use(passport.session())
+
+
+    3- Reacondicionar Router de sessiones.
+            router.post('/register', passport.authenticate('register', {failureRedirect: '/register?error=Error en proceso de registro'}) ,async(req,res)=>{
+            
+            return res.redirect('/login?message=Usuario Registrado Con Exito')
+        })
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+AUTENTICACION POR TERCEROS
+    Nos sirve estrategicamente para apoyarnos en plataformas mas grandes y solidas en cuanto a codigo y manejo de informacion.
+    Mjora la experiencia del usuario en gran medida...!!!!!
+
+    Ejemplo con GITHUB
+
+
+
+        1. Registrarse como desarrolklador de app y crear una aplicacion interna
+        
+            -En github, nos vamos a Settings
+            -Developer Settings
+            -new github app
+            -Completamos datos ( Nombre de sitio, URl raiz (localhost:3000))
+            -CALLABACK URL :
+                    Debemos poner el urlRaiz y sumarle el endpoint de nuestra api donde utilizaremos para interactuar
+
+                        http://localhost:3000/api/sessions/callBackGithub
+
+            -Desactivar WebHoock
+
+            -Account Permisos
+                .Email Addres => "READ ONLY"
+                .Profile => "READ AND WRITE"
+
+
+            -Una vez creada Debemos guardar los siguientes datos:
+                App ID: 
+                Client ID: 
+
+            -Luego debemos generar una nueva clave "CLIENT SECRET"
+                Y guardarla si o si en este caso: 42370b4bacf305a5849aca486e2800880b987fe4
+
+            -Save Changes
+        
+
+
+
+        2. Configurar el SERVIDOR
+
+            -npm i passport-github2
+            -import github form passport...
+            -Crear la estrategia
+
+                    passport.use('github', new github.Strategy(
+                    {
+                        clientID: "Iv23liDMGvDJhISp9iCI",
+                        clientSecret: "42370b4bacf305a5849aca486e2800880b987fe4",
+                        callbackURL:"http://localhost:3000/api/sessions/callBackGithub"
+                    },
+                    async(accessToken, refreshToken, profile ,done)=>{
+                        try {
+
+                            //Primero debemos buscar si el usuario ya existe en BD
+
+                            //Si existe, lo buscamos por email y listo, porque tema contraseña  y eso se encarga Github
+
+                            //Ahora si no existe, debemos crearlo, pero obviasmente no mandaremos la contraseña ya qeu eso es privado del usuario en github.
+
+                            //POR LO TANTO DEBI MODIFICAR EL METODO EN MANAGER PARA QUE LA CONTRASEÑA NO SEA OBLIGATORIA, al igual que en el MODELO.
+                            //Pero para evitar errores, todo lo que sea fronted, y ek resto de opciones locales, para registrar un usuario que sea obigatorio siempre quie el cliente envie una password
+
+
+                        } catch (error) {
+                            return done(error)
+                        }
+                    }
+                ))
+
+            
+            -Crear el enpoint de vista, seria de acceso al cliente, un get, donde este autenticado con la estrategia de giyhub
+
+                    router.get('/github', passport.authenticate('github',{}),async(req,res)=>{})
+
+
+
+
+        3.Configurar un callback utilizable para mi SERVIDOR
+
+            -Tambien en /api/sessions debemos configuarr el endpoitn para callback
+
+                router.get('/callBackGithub',passport.authenticate('github', {failureRedirect: '/login?error=Error en proceso de Registro con github'}), async(req,res)=>{
+                    
+                    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol}
+                    return res.redirect('/perfil')
+                })

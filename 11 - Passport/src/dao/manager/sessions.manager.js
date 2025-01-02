@@ -15,13 +15,13 @@ export class SessionsManager{
     }
 
 
-    async searchUserInBD(email){
+    async searchUserByEmail(email){
         let success = true
         try {
-            let existUser = await usersModel.findOne({email: email})
-            if(existUser){return {success: false, error: `Ya existen usuarios con el email: ${email}`}}
+            let user = await usersModel.findOne({email: email}).lean()
+            if(!user){return {success: false, error: `No existen usuarios con el email: ${email}`}}
             
-            return {success}
+            return {success, user}
 
         } catch (error) {return {success: false, error: `Internal Server Error: ${error.message}}`}}
     }
@@ -29,15 +29,15 @@ export class SessionsManager{
 
     async createUser(name, email, password, rol){
         let success = true
-        
-        let userData = {name: name, email: email, password: password}
 
+        let userData = {name: name, email: email}
+        if(password){userData.password = password}
         if(rol){userData.rol = rol}
+
 
         try {
            let user =await usersModel.create(userData)
            if(!user){return {success: false, error: `Error Interno al registrar usuario - Contacte un Administrador`}}
-
            return {success, user}
 
         } catch (error) {return {success: false, error: `Internal Server Error: ${error.message}}`}}
@@ -49,7 +49,8 @@ export class SessionsManager{
         let success = true
 
         try {
-            let existUser = await usersModel.findOne({email: email})
+            // Se usa el lean, para poder despues eliminar la propueidad password, sin problema
+            let existUser = await usersModel.findOne({email: email}).lean()
             if(!existUser){return {success: false, error: `Credenciales Incorrectas`}}
             if(!validPassword(password, existUser.password)){return {success: false, error: `Credenciales Incorrectas`}}
                 

@@ -12,21 +12,9 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/r
     return res.redirect('/login?message=Usuario Registrado Con Exito')
 })
 
-router.post('/login', async(req, res) =>{
-    let {email, password} = req.body
-    if(!email || !password){return res.redirect('/login?error=Debes completar todos los campos.')}
+router.post('/login', passport.authenticate('login', {failureRedirect: '/login?error=Error en proceso de login'}),async(req, res) =>{
 
-    let exReg = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
-    let valid = exReg.test(email)
-    if(valid === false){return res.redirect('/login?error=Debes enviar un email valido.')}
-
-    /* password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex") */
-
-    let existUser = await sessionsManager.compareUserData(email, password)
-    if(!existUser.success){return res.redirect(`/login?error=${existUser.error}`)}
-
-
-    req.session.user = {name: existUser.existUser.name, email: email, rol: existUser.existUser.rol}
+    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol}
 
     return res.redirect('/perfil')
 })
@@ -38,4 +26,14 @@ router.get('/logout', auth, async (req,res)=>{
     })
 
     return res.redirect('/login')
+})
+
+
+
+router.get('/github', passport.authenticate('github',{}),async(req,res)=>{})
+
+router.get('/callBackGithub',passport.authenticate('github', {failureRedirect: '/login?error=Error en proceso de Registro con github'}), async(req,res)=>{
+    
+    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol}
+    return res.redirect('/perfil')
 })
