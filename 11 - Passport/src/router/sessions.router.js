@@ -2,7 +2,7 @@ import { Router } from 'express';
 import session from 'express-session'
 import { sessionsManager } from './views.router.js';
 /* import crypto from 'crypto' */
-import { hashPassword, validPassword } from '../utils.js';
+import { authReverse, hashPassword, validPassword } from '../utils.js';
 import { auth } from '../utils.js';
 import passport from 'passport';
 export const router=Router()
@@ -14,8 +14,8 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/r
 
 router.post('/login', passport.authenticate('login', {failureRedirect: '/login?error=Error en proceso de login'}),async(req, res) =>{
 
-    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol}
-
+    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol, _id: req.user._id}
+    
     return res.redirect('/perfil')
 })
 
@@ -30,10 +30,10 @@ router.get('/logout', auth, async (req,res)=>{
 
 
 
-router.get('/github', passport.authenticate('github',{}),async(req,res)=>{})
+router.get('/github', authReverse , passport.authenticate('github',{}),async(req,res)=>{})
 
-router.get('/callBackGithub',passport.authenticate('github', {failureRedirect: '/login?error=Error en proceso de Registro con github'}), async(req,res)=>{
+router.get('/callBackGithub', authReverse , passport.authenticate('github', {failureRedirect: '/login?error=Error en proceso de Registro con github'}), async(req,res)=>{
     
-    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol}
+    req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol, _id: req.user._id}
     return res.redirect('/perfil')
 })

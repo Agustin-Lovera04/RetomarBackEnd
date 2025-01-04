@@ -1,0 +1,156 @@
+JsonWebToken
+
+Es una alternativa a Sessiones, es bastante mas utilizada.
+Es una implementacion sin estado para mantener el ciclo de vida del usuario,  y su informacion, pero sin el almacenamiento que implican las sessiones,
+
+
+1.Al momento de autenticarse ( Loguearse) el servidor generara un token con la info de usuario
+
+2. EL FRONT debera  enviar entodas las peticiones del usuario el token.
+
+3.Y el back debera comprobar qe siempre llegue ese TOken, por el contrario debera autenticarse nuevamente el usuario
+
+
+Es escalable, ya que soluciona en comparacion a las sessiones, tema almacenamiento y trafico inecesario
+
+
+
+
+
+    1. npm i jsonwebtoken
+    
+    2.Luego debemos generar el token al momento de loguear al usuario.
+        En LOGIN:
+    
+        import jwt
+
+        let token = jwt.sign({...user}, "clave Secreta" , {expiresIn: "1h"})
+
+                    
+
+
+                    .Tenemos diferentes maneras de hacer el manejo de envio de TOKEN, lo importante es que se guarde en los headers de la req.  y por convencion "Bearer token"
+    
+
+                    OPCION 1: LOCAL STORAGE
+                        Lo que hariamos aca, seria usar el almacenamiento del navegador.
+                        Lo que hacemos es manejar el envio de Fomulario de login, Con JS.
+                        E incluir en la response del servidor, el token generado, entonces, en la respuesta del Fetch vamos a tener disponible el Token, del lado del cliente y ahi lo guardamos en el localStorage:
+                            localStorage.setItem("nombreToken", token)
+
+                        
+                        Luego al momento de redirigir hacia el perfil, o a la pantalla donde vaya a continuacion del login, debemos enviar el los req.headers el atuhorizacion con lo recuperado del local storage. .:... SIEMPRE DEL JS DEL CLIENTE
+
+                        ...ejemplo abajo de haber guardado en el localStorage, ejemplo un link a aalgun endpoint protegido por el middle de verificacion.
+                        Y dentro de los Headers del fetch de solicitud, debemos enviarle un authorization con lo reguperado del localStorage
+
+                         let respuesta=await fetch("http://localhost:3000/perfil", {
+                            headers:{
+                                "Authorization":`Bearer ${localStorage.getItem("coderToken")}`
+                            }) 
+                            .....
+
+                    DEpeus trabajanbdo en la respuesta, ya podriamos tener disponible, la ifnroamcon desglosada del usuario.
+
+                    RESUMEN;
+                        Form LOGIN => Servidor Generar TOken => Guardar Token en LocalStorage => Solicitud a endpoint con midle enviandole header con el token del Storage
+
+
+
+
+                
+                OPCION 2: ENVIO POR COOKIE (OPOCION RECOMENDADDA)
+
+
+                    -npm i cookie-parser
+                    - (Toda explicacion en el txt de cookiess)
+
+
+                    Luego de generar el token, lo guardamos en una cookie
+                    res.cookie("tokenCookie", token, {maxAge: 1000*60*60, httpOnly: true,  signed:true})
+
+
+                    Ahora debemos modificar el middle auth par que funcione con cookies y no con funciones
+                            -lo pusimos abajo
+
+
+    3. Luego debemos diseñar el middle para entender y desglosar ese token y corroborar su existencia obviamente
+
+
+
+    --HEADERS----
+            export const authJWT = (req,res,next)=>{
+
+            if(!req.headers.authorization){
+                return res.status(404).json({error: 'usuario no autenticado'});
+            }
+
+
+            let token = req.headers.authorization.split(" ")[1]
+            try {
+                jwt.verify(token, SECRETKEY)
+                req.user = user
+                next()
+            } catch (error) {
+                return res.status(404).json({error: error});
+            }
+
+        }
+
+
+
+    ----COOKIES
+
+                            const SECRETKEY = "UDMV"
+
+                        export const auth = async (req,res,next)=>{
+                            if(!req.signedCookies.tokenCookie){
+                                return res.status(404).json({error: 'Acceso Denegado, debes iniciar session'});
+                            }
+
+
+                            let token = req.signedCookies.tokenCookie
+                            try {
+                                let user = await jwt.verify(token, SECRETKEY)
+                                req.user = user
+                                next()
+                            } catch (error) {
+                                return res.status(404).json({error: error});
+                            }
+
+                        }
+
+
+
+--------PASSPORT + COOKIE PARA JWT
+
+        -npm i passport-jwt
+
+
+        en config. CREAMOS LA ESTRATEGIA
+
+        funcion SearchToken ( solo buscara el token en las cookies y lo devuelve)
+
+             passport.use('jwt', new passportJWT.Strategy(
+            {
+                secretOrKey: SECRETKEY,
+                jwtFromRequest: passportJWT.ExtractJwt.fromExtractors([searchToken])
+            },
+            async(contentToken, done)=> {
+                try {
+                    return (null, contentToken)
+                } catch (error) {
+                   return done(error)
+                }
+            }
+        ))
+
+
+        -Reemplazamoos los middle de auth, y ponemos el passport.authenticate('jwt', {session: false})
+
+
+
+
+-Objetivo, eliminar todo lo que trabaje con sessiones, sacar de juego el auth y corregir, el resto de middle para que se acople al proyecyto, no dejamos la compu hasta que corrigamos, si correjimos, premio y solta
+
+cooregir AUTHS
