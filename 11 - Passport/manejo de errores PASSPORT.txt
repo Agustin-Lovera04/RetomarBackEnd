@@ -1,0 +1,28 @@
+Para enviar detallados los mensajes de errores, lo que vamos a hacer.
+
+1- NO vamos a llamar normalmente con passport.authenticate('estrategia').
+    Si no que vmaos a realizar una function de callBack, que es una alternativa de Passport, donde podemos manejar de manera personalizada, los errores, y que resutlados da Passport a la hora de realizar las autenticaciones.
+
+
+
+1. En UTILS creamos la function
+
+        export const passportCall = (strategy) => function ( req,res,next) {
+            passport.authenticate(strategy, function(error, user, info, status){
+
+                if(error) { return next(error)}
+                if(!user) { 
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(401).json({message: info.message ? info.message : info.toString()})
+                }
+
+                req.user = user
+                
+                next()
+            }),(req,res,next)
+        }
+
+
+2. Ahora reemplazamos los middle de passport en los endpoint para colocar al funcion creada
+
+.....passportCall('jwt') .....

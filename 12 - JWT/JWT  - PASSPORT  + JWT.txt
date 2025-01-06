@@ -147,10 +147,3 @@ Es escalable, ya que soluciona en comparacion a las sessiones, tema almacenamien
 
 
         -Reemplazamoos los middle de auth, y ponemos el passport.authenticate('jwt', {session: false})
-
-
-
-
--Objetivo, eliminar todo lo que trabaje con sessiones, sacar de juego el auth y corregir, el resto de middle para que se acople al proyecyto, no dejamos la compu hasta que corrigamos, si correjimos, premio y solta
-
-cooregir AUTHS
