@@ -1,0 +1,100 @@
+El router de manera manual, es dificil que sea un sistema que pueda escalar facilmente.
+
+Para eso se crea basicamente el CUSTOM ROUTER. Ventajas:
+
+    .Manejo Sistematizado de respuestas
+
+    .Gestion de Middlewares interiorizada
+
+    .Etc
+
+
+Como crear:
+    El custom router se basa en una clase de JS principal y luego se iran desprendiendo los distintos routers que requiera el pryecto
+
+    import Router
+
+    export class MiRouter{
+        constructor(){
+            this.router = Router()
+            this.init()
+        }
+
+
+        init(){}
+
+    //Obtener el propio router que llega
+        getRouter(){
+            return this.router
+        }
+
+
+    //Configuramos el metodo plantilla de ejecucion de endp
+    
+    get(ruta, ...funciones){
+        this.router.get(ruta, funciones)
+    }
+}
+
+
+
+    Luego creamos un Router normal como veniamos haciendo. pero lo que hacemos es una clase. que sea una EXTENSION DEL ROUTER PRINCIPAL, ES DECIR DE LA CLASE PRINCIPAL
+
+
+        export class PruebasRouter extends MiRouter{
+
+
+            //Al ser una extencion de la clase, Por un principio de JS, el pricipio de "HERENCIA" tenemos dispoonibles todos los metodos de la clase padre
+            init(){
+
+                this.get("/" , (req,res) => {
+
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(200).json({ok: "REspuestas que querramos"});
+
+                })
+            }
+        }
+
+
+
+
+    Luego en APP.js Instanciamos la EXTENSION y usamos su metodo para inizializar el Router del constructor
+
+        app.use('/api/pruebas', instanciaPruebasRouter.getRouter())
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    Ventajas Practicas:
+
+        this.get('/:id', (req,res) => {
+            let {id} = req.params
+
+            etc .... 
+            etc ....
+
+
+            res.setHeader('Content-Type','application/json');
+            return res.status(200).json({ok: heroeByID});
+        })
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    EN CALSE PADRE:
+
+            post(ruta, ...funciones){
+            this.router.post(ruta, funciones)
+            }
+
+    EN EXTENSION
+
+        this.post('/crear-user'....)
+            ....
+            //logica comun de de creacion post
+    
+

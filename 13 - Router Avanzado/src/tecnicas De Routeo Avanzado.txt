@@ -1,0 +1,71 @@
+Para manejo avanzado x params
+
+....('/:numero([0-9]+)')
+
+Se agrega una EX. REGULAR en el URL
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Para solo letras
+
+'/:palabra([a-zA-Z%20]+)'
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+PARA EVITAR EL 404 NOT FOUND:
+
+...('/*', ...){
+    res.setHeader('Content-Type','application/json');
+    return res.status(404).json({error: 'PAGE NOT FOUND'});
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ERRORES GENERALES:
+
+....('/error/:codigo')...
+    let codigo = req.params.codigo
+
+    let mensaje = "Error Desconocido
+    if(errores[codigo]){
+        mensaje= errores[codigo]
+    }
+
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({mensaje});
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PARA EVITAR REPETICIONES DE CODIGO POR PARAMETRO
+
+router.params('codigo', (req,res,next, codigo) =>{
+
+    req.mensaje = "ERROR DESCOOCIDO"
+    if(errores[codigo]){
+        req.mensaje = errores[codigo]
+    }
+
+    return next
+})
+
+
+Entonces despues dodne lo tengamo squ eusar tomamos todo del req directamente EJ:
+
+....('/error/:codigo')...
+
+//TODO ESTO SE VA
+    let codigo = req.params.codigo
+
+    let mensaje = "Error Desconocido
+    if(errores[codigo]){
+        mensaje= errores[codigo]
+    }
+
+//SOLO SE PONE EL REQ.MENSAJE
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({req.mensaje});
+
