@@ -35,7 +35,6 @@ export class SessionsManager{
         if(password){userData.password = password}
         if(role){userData.role = role}
 
-
         let cartUser = await cartsManager.createCart(`Carro de: ${last_name}, ${first_name}`)
         if(!cartUser.success){
             return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador`}

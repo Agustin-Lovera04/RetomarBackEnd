@@ -7,19 +7,19 @@
                             -cart: (id Con referencia a CARTS)
                             -role: String(default: 'user')
 
-2- Desarrollar Estrategias de Passport para que funcionen con modelo de user
-    |Register Funcionando, falta login y el resto
+    ------OK     2- Desarrollar Estrategias de Passport para que funcionen con modelo de user
+   
 
 
-3- Modificar el Login para trabaar con JWT
+    ------OK     3- Modificar el Login para trabaar con JWT
 
-4- Desarrollar una estrategia "Current" para extraer la cookie que contiene el token para obtener el usuario asociado al token, caso contrario devolver un error de passport.
+    ------OK     4- Desarrollar una estrategia "Current" para extraer la cookie que contiene el token para obtener el usuario asociado al token, caso contrario devolver un error de passport.
 
-5-Afrefar añ rputer /api/sessions/current la cual devolvera el usuario asociado (seria un perfil)
+    ------OK     5-Afrefar añ rputer /api/sessions/current la cual devolvera el usuario asociado (seria un perfil)
 
-6- Realizar el manejo de errores detallados con Passport (txt en carpeta 11)
+    ------OK     6- Realizar el manejo de errores detallados con Passport (txt en carpeta 11)
 
-7- Realizar modificacion para que los usuarios agregen productos a su carrito y no a uno Hardcodeado
+    ------OK     7- Realizar modificacion para que los usuarios agregen productos a su carrito y no a uno Hardcodeado
 
 8- Realizar un control de accesos,ejemplo que no cualquier pueda crear carritos de por si, organizar errores, vistas etc. Son muchos detallesitos que ahora podemos mejorar, al haber avanzado tanto
 
@@ -27,3 +27,7 @@ QUE HICIMOS NOSOTROS:
     .Modificamos el modelo con estructura para poblar carts, y con los pre seteados para poblar.
 
     .Debimos modificar la estrategia para crear usuarios, por dos razones, una porque camnbiaron las propiedades, otra, porque demos crear un carrito personal para cada usuario al momento de registrarlo.
+
+    -ME OLVIDE DE ANOTAR LA RE PUTA MADRE
+
+    -Pero Fui puliendo mas que nada detalles, es todo por envion lo q hice, de sentido comun, a medida que tenia que aplicar cambios segun consigna. Los cambios mas zarpados, los hice en los dos primeros puntos y eso si anote.

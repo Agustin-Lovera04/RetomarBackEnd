@@ -51,7 +51,7 @@ router.get('/products',passportCall('jwt'), accessControl(["PUBLIC"]) ,async (re
         if(products.length === 0){empty = true}
         //Acomodamos el status segun la consigna, ya que todo salio bien
         status.success = true
-        return res.status(200).render('products', {status, payload: {products} , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
+        return res.status(200).render('products', {status, cartUserID: req.user.cart._id, payload: {products} , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
     
     } catch (error) {return res.status(500).json({error: error.message,})}
 })
@@ -66,7 +66,8 @@ router.get('/products/:id',passportCall('jwt'), accessControl(["PUBLIC"]) ,async
     let product = await productsManager.getProductById(id)
     if(!product.success){return res.status(400).json({error: product.error})}
 
-    return res.status(200).render('productDetail', product)
+
+    return res.status(200).render('productDetail', {product, cartUserID:req.user.cart._id})
 })
 
 router.get('/carts',  passportCall('jwt'), accessControl(["PUBLIC"]) ,async (req,res)=>{
@@ -109,11 +110,16 @@ router.get('/login',authReverse,(req,res)=>{
     res.status(200).render('login', {message, error})
 });
 
-router.get('/perfil', passportCall('jwt'), accessControl(["PUBLIC"]) /* passport.authenticate('jwt', {session: false}) */,async(req,res)=>{
+router.get('/current', passportCall('jwt'), accessControl(["PUBLIC"]) /* passport.authenticate('jwt', {session: false}) */,async(req,res)=>{
     let {error,warning} = req.query
-    let user = req.user
+    let user
+    if(req.user._doc){
+        user = req.user._doc
+    }else{
+        user = req.user
+    }
     
-    return res.status(200).render('perfil', {user: user, error, warning})
+    return res.status(200).render('current', {user: user, error, warning})
 })
 
 router.get('/testAccess',  passportCall('jwt'), accessControl(["ADMIN"]), (req,res)=>{

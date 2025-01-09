@@ -30,19 +30,19 @@ export const initPassport = () => {
                 if(!first_name || !last_name || !email || !age || !password) {
                     //Para devolver ahora utilizaremos el metodo done
                     /* return res.redirect('/register?error=Debes completar todos los campos.' */
-                    return done(null, false)
+                    return done(null, false, {message: 'Debes enviar todas los campos requeridos'})
                 }
                 
                 if(isNaN(age)){
-                    return done(null, false)
+                    return done(null, false, {message: 'la edad debe ser un numero Valido'})
                 }
 
                 let exReg = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
                 let valid = exReg.test(email)
-                if(valid === false){return done(null, false)}
+                if(valid === false){return done(null, false, {message: 'El formato de email ingresado es incorrecto'})}
             
                 let existUser = await sessionsManager.searchUserByEmail(email)
-                if(existUser.success){return done(null, false)}
+                if(existUser.success){return done(null, false, {message: 'Ya existen usuarios creados con el email Ingresado'})}
                     
                 let role
                 if(email=== 'adminCoder@coder.com' && password === 'adminCod3r123'){role = 'Admin'}
@@ -50,7 +50,7 @@ export const initPassport = () => {
                 password = hashPassword(password)
             
                 let user = await sessionsManager.createUser(first_name, last_name,email, age,password, role)
-                if(!user.success){return done(null, false)}
+                if(!user.success){return done(null, false,  {message: 'Error Interno del Servidor - Contacte un administrador'})}
             
                 return done(null, user.user)
 
@@ -67,16 +67,16 @@ export const initPassport = () => {
         },
         async(username, password, done)=>{
             try {
-                    if(!username || !password){return done(null, false)}
+                    if(!username || !password){return done(null, false,  {message: 'Debes enviar todas los campos requeridos'})}
                 
                     let exReg = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
                     let valid = exReg.test(username)
-                    if(valid === false){return done(null, false)}
+                    if(valid === false){return done(null, false, {message: 'El formato de email ingresado es incorrecto'})}
                 
                     /* password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex") */
                 
                     let existUser = await sessionsManager.compareUserData(username, password)
-                    if(!existUser.success){return done(null, false)}
+                    if(!existUser.success){return done(null, false, {message: `${existUser.error}`})}
 
                     
                     delete existUser.existUser.password
@@ -106,9 +106,8 @@ export const initPassport = () => {
                 //Pero para evitar errores, todo lo que sea fronted, y ek resto de opciones locales, para registrar un usuario que sea obigatorio siempre quie el cliente envie una password
                 
                 if(!user.success){
-
-                    user = await sessionsManager.createUser(profile._json.name,profile._json.email)
-                    if(!user.success){return done(null, false)}
+                    user = await sessionsManager.createUser(profile._json.name, " GITHUB/USER ",profile._json.email, 0)
+                    if(!user.success){return done(null, false,{message: 'Error Interno del Servidor - Contacte un administrador'})}
                 }
 
                 return done(null, user.user)

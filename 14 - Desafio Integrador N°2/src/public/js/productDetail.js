@@ -4,9 +4,9 @@ btnAddCart.addEventListener("click", async (event) => {
     event.preventDefault()
 
     let productId = event.target.dataset.productId
-
+    let cartUserID = document.getElementById('cartUserID').getAttribute('cartUserID')
     try {
-        fetch(`http://localhost:3000/api/carts/6723bc6d18e8d4d638ad61fe/product/${productId}`,{
+        fetch(`http://localhost:3000/api/carts/${cartUserID}/product/${productId}`,{
         method:"POST"
        })
 
@@ -19,7 +19,6 @@ btnAddCart.addEventListener("click", async (event) => {
         })
   
       } catch (error) {
-        console.log(error)
         return (responseFetch.innerHTML = `<p style="background-color:red;"> ${error}</p>`);
       }  
 })

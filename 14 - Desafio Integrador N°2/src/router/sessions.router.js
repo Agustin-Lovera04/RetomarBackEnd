@@ -15,7 +15,7 @@ router.post('/login', passportCall('login'), accessControl(["PUBLIC"]),async(req
     res.cookie("tokenCookie", token, {maxAge: 1000*60*60, httpOnly: true, signed:true})
 
 
-    return res.redirect('/perfil')
+    return res.redirect('/current')
 })
 
 
@@ -37,10 +37,9 @@ router.get('/github', passportCall('github'),async(req,res)=>{})
 router.get('/callBackGithub', passportCall('github'), async(req,res)=>{
     
     /* req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol, _id: req.user._id} */
-    
     let token = await genToken(req.user)
     res.cookie("tokenCookie", token, {maxAge: 1000*60*60, httpOnly: true, signed:true})
 
 
-    return res.redirect('/perfil')
+    return res.redirect('/current')
 })

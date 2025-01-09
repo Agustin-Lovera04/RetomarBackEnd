@@ -28,10 +28,7 @@ export const passportCall = (strategy) => function (req, res, next) {
     passport.authenticate(strategy, function (err, user, info, status) {
         if (err) { return next(err) }
         if (!user) {
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(401).json({
-                mensaje: info.message ? info.message : info.toString()
-            })
+            return res.status(401).render('login',{error: info.message ? info.message : info.toString()})
         }
         req.user = user
         return next()
@@ -47,14 +44,14 @@ export const accessControl = (access = []) => function (req, res , next){
     }
     
     if(!access.includes(req.user.role.toLowerCase())){
-        return res.redirect('/perfil?error=ACCESO DENEGADO, No tienes privilegios para el accesso a este recurso')
+        return res.redirect('/current?error=ACCESO DENEGADO, No tienes privilegios para el accesso a este recurso')
     }
     next()
 }
 
 export const authReverse = (req,res, next) => {
     if(req.signedCookies.tokenCookie){
-        return res.redirect('/perfil?warning=Ya has Iniciado Session.')
+        return res.redirect('/current?warning=Ya has Iniciado Session.')
     }
     next()
 }
