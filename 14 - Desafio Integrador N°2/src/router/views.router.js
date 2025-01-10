@@ -126,7 +126,7 @@ router.get('/testAccess',  passportCall('jwt'), accessControl(["ADMIN"]), (req,r
     return res.status(200).json({accesoConcedido: 'Eres un Administrador - MiddleWare funcionando'})
 })
 
-router.get('/*', async(req,res)=> {
+router.get('/*', accessControl(["PUBLIC"]), async(req,res)=> {
 
     return res.status(404).render('notFound');
 })

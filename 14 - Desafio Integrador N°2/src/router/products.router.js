@@ -7,7 +7,7 @@ import passport from 'passport';
 export const router=Router()
 
 //FRONT
-router.post('/',  passportCall('jwt'), accessControl(["PUBLIC"]),upload.none(),async(req,res)=>{
+router.post('/',  passportCall('jwt'), accessControl(["ADMIN"]),upload.none(),async(req,res)=>{
 
     let {title, description, code, price, stock, category, thumbnail} = req.body
     if(!title || !description || !code || !price || !stock || !category){return res.status(400).json({error: 'Debe enviar todos los campos solicitados.'})}
@@ -27,7 +27,7 @@ router.post('/',  passportCall('jwt'), accessControl(["PUBLIC"]),upload.none(),a
 })
 
 //NO FRONT
-router.put('/:id',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)=>{
+router.put('/:id',passportCall('jwt'), accessControl(["ADMIN"]),async (req,res)=>{
     let {id} = req.params //lo estoy haciendo desde parametro para Postman
 
     let isValid = await productsManager.validID(id)
@@ -46,7 +46,7 @@ router.put('/:id',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)
 })
 
 //CON FRONT
-router.delete('/:id', passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)=>{
+router.delete('/:id', passportCall('jwt'), accessControl(["ADMIN"]),async (req,res)=>{
     let {id} = req.params
 
     let isValid = await productsManager.validID(id)

@@ -32,9 +32,9 @@ router.get('/logout', passportCall('jwt'), accessControl(["PUBLIC"]),async (req,
 
 
 
-router.get('/github', passportCall('github'),async(req,res)=>{})
+router.get('/github', passportCall('github'),accessControl(["PUBLIC"]),async(req,res)=>{})
 
-router.get('/callBackGithub', passportCall('github'), async(req,res)=>{
+router.get('/callBackGithub', passportCall('github'), accessControl(["PUBLIC"]),async(req,res)=>{
     
     /* req.session.user = {name: req.user.name, email: req.user.email, rol: req.user.rol, _id: req.user._id} */
     let token = await genToken(req.user)

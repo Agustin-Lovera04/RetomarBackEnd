@@ -7,7 +7,7 @@ import passport from 'passport';
 export const router=Router()
 
 //Con FRONT------------------------------
-router.post('/:title',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)=>{
+router.post('/:title',passportCall('jwt'), accessControl(["ADMIN"]),async (req,res)=>{
     let {title} = req.params
 
     if(!title){return res.status(400).json({error:'Debe enviar un titulo para el carrito' })}
@@ -22,7 +22,7 @@ router.post('/:title',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,
 
 //Con FRONT------------------------------
 
-router.put('/modCart/:id', passportCall('jwt'), accessControl(["PUBLIC"]),upload.none(),async (req,res) => {
+router.put('/modCart/:id', passportCall('jwt'), accessControl(["ADMIN"]),upload.none(),async (req,res) => {
     let {id} = req.params
     let {title} = req.body
 
@@ -45,7 +45,7 @@ router.put('/modCart/:id', passportCall('jwt'), accessControl(["PUBLIC"]),upload
 
 //Con FRONT------------------------------
 
-router.delete('/deleteCart/:id', passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)=>{
+router.delete('/deleteCart/:id', passportCall('jwt'), accessControl(["ADMIN"]),async (req,res)=>{
     let {id} = req.params
 
     let idValid = await productsManager.validID(id)
@@ -63,7 +63,7 @@ router.delete('/deleteCart/:id', passportCall('jwt'), accessControl(["PUBLIC"]),
 
 
 //Con FRONT------------------------------
-router.post('/:cid/product/:pid',passportCall('jwt'), accessControl(["PUBLIC"]), async (req,res) =>{
+router.post('/:cid/product/:pid',passportCall('jwt'), accessControl(["USER", "ADMIN"]), async (req,res) =>{
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
@@ -88,7 +88,7 @@ router.post('/:cid/product/:pid',passportCall('jwt'), accessControl(["PUBLIC"]),
 
 
 //sin FRONT
-router.delete('/:cid/product/:pid', passportCall('jwt'), accessControl(["PUBLIC"]),async (req, res) => {
+router.delete('/:cid/product/:pid', passportCall('jwt'), accessControl(["USER", "ADMIN"]),async (req, res) => {
     let {cid, pid} = req.params
     let cidIsValid = await productsManager.validID(cid)
     let pidIsValid = await productsManager.validID(pid)
@@ -115,7 +115,7 @@ router.delete('/:cid/product/:pid', passportCall('jwt'), accessControl(["PUBLIC"
 /*EJEMPLO DE BODY {
   "products": [{ "product":"670d54db878577e86fbd871f" ,"quantity": 2},{"product":"670d54db878577e86fbd8722","quantity": 5}]}*/
 
-router.put('/:id', passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res) => {
+router.put('/:id', passportCall('jwt'), accessControl(["USER", "ADMIN"]),async (req,res) => {
     let {id} = req.params
     let {products} = req.body
 
@@ -152,7 +152,7 @@ router.put('/:id', passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res
 //SOlucionando error de estructuara no apta para borrar
 
 //Sin FRONT---------
-router.delete('/:id',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res) =>{
+router.delete('/:id',passportCall('jwt'), accessControl(["USER", "ADMIN"]),async (req,res) =>{
     let {id} = req.params
     let idIsValid = await productsManager.validID(id)
     if(!idIsValid.valid){return res.status(400).json({error: idIsValid.error})}
@@ -170,7 +170,7 @@ router.delete('/:id',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,r
 })
 
 
-router.put('/:cid/product/:pid',passportCall('jwt'), accessControl(["PUBLIC"]),async (req,res)=>{
+router.put('/:cid/product/:pid',passportCall('jwt'), accessControl(["USER", "ADMIN"]),async (req,res)=>{
     let {cid, pid} = req.params
     let {quantity} = req.body
     let cidIsValid = await productsManager.validID(cid)

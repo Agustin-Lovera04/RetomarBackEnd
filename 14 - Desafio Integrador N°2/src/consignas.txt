@@ -21,7 +21,7 @@
 
     ------OK     7- Realizar modificacion para que los usuarios agregen productos a su carrito y no a uno Hardcodeado
 
-8- Realizar un control de accesos,ejemplo que no cualquier pueda crear carritos de por si, organizar errores, vistas etc. Son muchos detallesitos que ahora podemos mejorar, al haber avanzado tanto
+    ------OK     8- Realizar un control de accesos,ejemplo que no cualquier pueda crear carritos de por si, organizar errores, vistas etc. Son muchos detallesitos que ahora podemos mejorar, al haber avanzado tanto
 
 QUE HICIMOS NOSOTROS:
     .Modificamos el modelo con estructura para poblar carts, y con los pre seteados para poblar.
