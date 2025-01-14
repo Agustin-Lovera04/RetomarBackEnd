@@ -122,6 +122,7 @@ router.get('/current', passportCall('jwt'), accessControl(["PUBLIC"]) /* passpor
     return res.status(200).render('current', {user: user, error, warning})
 })
 
+
 router.get('/testAccess',  passportCall('jwt'), accessControl(["ADMIN"]), (req,res)=>{
     return res.status(200).json({accesoConcedido: 'Eres un Administrador - MiddleWare funcionando'})
 })
