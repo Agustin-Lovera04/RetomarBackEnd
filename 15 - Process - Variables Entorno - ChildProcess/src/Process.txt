@@ -1,0 +1,154 @@
+Process
+        Cada vez que corremos un proceso en node, esto geenra un objeto llamado process, que guarda informacion del mismo ej(Process.cwd(),Process.pid(), Process.MemoryUsage()) etc
+
+        ej console.log("Directorio del Script:", process.cwd())
+           console.log("Id de proceso:", process.pid())
+           console.log("Sistema Operativo:", process.platform)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Commander
+    Sirve para ordenar y simplificar el envio de argumentos con process
+
+        npm i commander
+
+        import {Command, Option} from 'commander'
+
+        const programa=new Command()
+
+        programa
+            .option("-p, --port <port>", "Puerto donde va a escuchar el server", 3000)
+            .option("-d, --debug", "Si está presente este flag, se activa al modo debug")
+            .option("-n, --numeros [numeros...]", "Numeros para sumar...",[1,2,3])
+            .requiredOption("-u, --user <user>", "Usuario que ejecuta el script", )
+            .addOption(new Option("-m, --mode <mode>", "Modo de ejecución del script (prod / dev / test)").choices(["dev","test","prod"]).default("dev"))
+
+
+        programa.allowUnknownOption()
+
+        programa.parse()
+
+        let opts=programa.opts()
+        console.log(opts)
+        console.log(opts.numeros)
+
+        console.log(programa.args)
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+VARIABLES DEL ENTORNO
+    El entorno del codigo, es justamente el habitat donde el codigo desarrollado funciona perfectamente, la configuracion de su habitad, serian estas "variables de entorno"
+
+   Ademas es una manera un poco mas segura, de guardar estas configuraciones, urls, claves etc.
+
+
+    DOTENV
+    Dependencia para simplificar manejo de variables de entorno, generando un archivo .env, donde alamacenaremos varibles de entorno simuladas.
+
+        -npm i dotenv
+
+        -creamos el archivo .env dentro de src
+
+        -creamos las variables de entorno dentro del .env
+
+            PORT=3000
+            MONGO_URL= ....
+            etc
+
+        -Creamos dentro de la carpeta config, un archivo config.js
+            import dotenv 
+            
+            dotenv.config(
+                {
+                    //FUERZA UTILIZAR ESTAS VARIABLES Y NO LAS EXISTENTES EN EL EQUIPO
+                    override: true
+                    path: "ruta archivo .env"
+                }
+            )
+
+            export const config={
+                PORT: process.env.PORT || 8080
+                MONGO_URL: process.env.MONGO_URL
+                etc
+            }
+
+
+        -LUEGO IMPORTAMOS EL CONFIG EN CADA ARCHIVO DONDE NECESITAMOS REEMPLAZAR POR VARIABLES DE ENTORNO Y LISTO
+            ej conexion cpn mongodb
+
+                await mongoose.conect(config.MONGO_URL, {dbName: config.dbName})
+                etc
+
+
+    
+
+    EJEMPLO SI QUIESIERA USAR UN ENTORNO PARA DEVELOPMENT Y OTRO ENTORNO PARA PRODUCCTION DEBEMMOS CREAR LOS .ENV CORRESPONDIENTES EJ ( ".env.develpoment" ) Y luego en el path del config, hacer un ternario segun el modo que se elija,  ( aclarar que el modo se lo pasaremos por consola al momento de ejecutar el programa), ej:
+
+        import Command from commander
+
+        const program = new Command()
+
+        program 
+            .option("-m, --mode <mode>", "mode de ejecucion de proyecto (prod / dev), "dev")
+
+
+        program.parse()
+
+        let opts = program.opts()
+
+    // Validar que solo se acepten las flags que amnde, arriba en el txt esta como se hace practicamente, luego buscar explicacion
+
+        const mode=opts.mode
+
+        ...
+        ...
+        path: mode === "dev" ? ".src/.env.develpoment" : ".env.production"
+        ...
+        ...
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+LISTENERS
+    Para procesos pesados o lentos, le decimos que se ejecute asincronicamente para que el servidor no brinde una mala experiencia al consumidor
+
+
+    COn process podemos configurar LISTENERS son esccuhadores de eventos para el servidor ej on 'exit', etc
+
+
+    EJ en un script cualquiera
+
+        process.on("exit", (code)=>{
+        console.log("El script ha terminado...!!!", code)
+        })
+
+        process.on("uncaughtException", (error)=>{
+            console.log(`Error inesperado. Detalle: ${error.message}. Contacte al administrador`)
+        })
+
+        let numero=0    
+        setInterval(() => {
+            numero++
+            console.log(numero)
+            if(numero===8){
+                process.exit(-4)
+            }
+        }, 1000);
+
+        setTimeout(() => {
+            let nombre=undefined
+            console.log(nombre.toLowerCase())
+        }, 3000);
+
+        setTimeout(() => {
+            throw new Error("Error de prueba...")
+        }, 6000);
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROCESS CHILD
