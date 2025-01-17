@@ -152,3 +152,34 @@ LISTENERS
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROCESS CHILD
+
+    Sirve para generar procesos que son èpesados, generar que se relaizen asincronicamente asi no afectan a lfuncionamiento de todo el servidor.
+
+        Pasos basicos:
+            El proceso padre realiza un FORK al proceso hijo, y le envia un mensaje
+            EL proceso hijo recibe el mensaje y entiende que debe inicializar, gracias al listener que le debemos poner
+            Resuelve el rpoceso y envia su respuesta al servidor
+            El servidor cuenta ocn el resultado del proceso pesados
+        
+        PASOS:
+
+            Scrip de proceso pesado:
+                
+                process.on("message", mensaje=>{
+                        //proceso pesado
+                process.send(numero)
+                })
+
+            En proceso padre ( app en este caso)
+                app.get('/calculoFork',(req,res)=>{
+                let child=fork("./src/calculo.js")
+
+                child.send(`Soy el proceso con pid ${process.pid}, y necesito que te ejecutes...!!!`)
+
+                child.on("message", resultado=>{
+                    res.setHeader('Content-Type','application/json');
+                    res.status(200).json({
+                        resultado
+                    });
+
+                })

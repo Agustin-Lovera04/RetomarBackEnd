@@ -16,7 +16,8 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport';
 import { config } from './config/config.js';
 
-const PORT=config.PORT
+const PORT= config.PORT
+export const SECRETKEY = config.SECRET_KEY_TOKEN
 
 const app=express();
 
@@ -33,16 +34,6 @@ app.engine('handlebars', engine({
     },
 }))
 
-/* app.use(session({
-    store: mongoStore.create({
-        mongoUrl: 'mongodb+srv://AgustinLovera:45507271Udmv@cluster0.govus.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-        mongoOptions: {dbName: 'RetomarEccomerce'},
-        ttl: 60 * 30 // media hora
-    }),
-    secret: "UDMV",
-    resave: true, // guarda igual la info, auqneu haya inactividad,
-    saveUnitialized: false // guardar igual aunque no hayan ingresado datos, Lo desactivo ya que apenas el servidor detecta una solicitud entrante crea una session y eso genera mucho residuo en BD
-})) */
 
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
@@ -95,9 +86,9 @@ io.on("connection", (socket) => {
 
 
 try {
-    // await mongoose.connect('mongodb+srv://AgustinLovera:45507271Udmv@cluster0.govus.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {dbName: 'RetomarEccomerce'})
-    await mongoose.connect(config.MONGO_URL, {dbName: config.DBNAME})
-    console.log('Conexion Existosa con DB')
+   // await mongoose.connect('mongodb+srv://AgustinLovera:45507271Udmv@cluster0.govus.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {dbName: 'RetomarEccomerce'})
+   await mongoose.connect(config.MONGO_URL, {dbName: config.DBNAME})
+   console.log('Conexion Existosa con DB')
 } catch (error) {
     console.log(error.message)
 }

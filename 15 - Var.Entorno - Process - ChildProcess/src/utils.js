@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport';
 import multer from 'multer'
-import { config } from './config/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,7 +59,9 @@ export const authReverse = (req,res, next) => {
 
 
 //QUEDA SIN USAR
-export const SECRETKEY = config.SECRET_KEY_TOKEN
+/* import { config } from './config/config.js'; */
+/* export const SECRETKEY = /* config.SECRET_KEY_TOKEN */
+import { SECRETKEY } from './app.js';
 
 export const auth = async (req,res,next)=>{
     if(!req.signedCookies.tokenCookie){

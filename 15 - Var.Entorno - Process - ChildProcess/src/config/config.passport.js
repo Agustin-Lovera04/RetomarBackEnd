@@ -3,8 +3,9 @@ import local from 'passport-local'
 import passportJWT from 'passport-jwt'
 import { hashPassword, validPassword } from '../utils.js';
 import { sessionsManager } from '../router/views.router.js';
-import { SECRETKEY } from '../utils.js';
+import { SECRETKEY } from '../app.js';
 import github from 'passport-github2'
+import {config} from './config.js'
 
 
 const searchToken = (req) => {
@@ -91,9 +92,9 @@ export const initPassport = () => {
 
     passport.use('github', new github.Strategy(
         {
-            clientID: "Iv23liDMGvDJhISp9iCI",
-            clientSecret: "42370b4bacf305a5849aca486e2800880b987fe4",
-            callbackURL:"http://localhost:3000/api/sessions/callBackGithub"
+            clientID: config.CLIENT_ID ,
+            clientSecret: config.CLIENT_SECRET,
+            callbackURL: config.CALLBACK_URL
         },
         async(accessToken, refreshToken, profile ,done)=>{
             try {
@@ -132,26 +133,6 @@ export const initPassport = () => {
                 }
             }
         ))
-
-
     }
-
-
-
-
-//---------LOS SERIALIZADORES SON SOLO POARA SESIONES
-/* 
-    passport.serializeUser((user, done)=>{
-        return done(null, user._id)
-    })
-
-
-    passport.deserializeUser(async(id, done)=>{
-        let user = await sessionsManager.getUserbyId(id)
-        if(!user.success){
-            done(null, false)
-        }
-        return done(null, user.user)
-    }) */
 
 
