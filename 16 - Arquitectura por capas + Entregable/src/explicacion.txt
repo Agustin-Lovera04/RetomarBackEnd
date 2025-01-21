@@ -1,0 +1,105 @@
+ARQUITECTURA POR CAPAS
+    Patron de diseño donde los modulos de nuestro proyecto se separa por "capas"
+    Refiriendo a separar por ROL o responsabilidades los modulos.
+
+        Ejemplo: Capa de PRESENTACION ==>       
+                 Capa de Dominio/Negocio ==>      CAPA DE SOPORTE
+                 Capa de acceso de datos ==>
+
+Cononidas mejor como  "CAPAS BASE"
+
+                        CONTROLLER(mediator)
+
+VIEW(interfazo de usuario)                MODEL(acceso a datos)
+
+
+Capa de persistnecia: Como principal objetico conexion directa con el modelo de persisntencia, conectar con BD Unicamente
+
+Capa de negocio: Desarrollar la logica necesaria para el funcioanmiento de el proyecto buscado, ejemplo un Eccomerce
+
+Capa de vistas o Renderizacion: Encargada de desarrollar la interfaz del usuario y de devolver correctamente los resultados solicitados al servidor, funcionando como puente grafico del usuario y el servidor.
+
+
+
+CAPAS EXTRAS: 
+    CAPA DE ROUTING: Contendra todos los archivos tipo "router"
+    Distribuira todo tipo de solicitudes, hacia donde sea necesario
+
+    CAPA DE SERVICIOS: capa de servicios entre la capa de negocio y la capa de Persistencia, funcionaria como un tunel, para independizar cada una de la otra.
+
+
+
+PASOSS Y MODIFICACIONES:
+
+    Luego de crear el router, y conectarlo con la raiz del proyecto, en nuestro endpoint no renderizaremos nada sino que: 
+
+        -Crear carpeta CONTROLLER, y dentro creamos el controller, necesario para cubrir la solicitud de dicho endpoint
+
+        -ej Usuarios.controller.js que contendra una clase donde sus metodos seran el callback de cada endpoint reemplazado
+
+                export class UsuariosController {
+                    constructor(){}
+
+                    static async getUser(req,res){
+                        let user = obtenerUsuariosByBD
+                    }
+
+                    res.setHeader('Content-Type','application/json');
+                    return res.status(200).json({ok: user});
+                }
+
+
+        -Luego en el router, y en el endpoint invocamos al rmetodo statico del controller
+            
+            router.get('/', UsuariosController.getUser)
+
+
+
+        -Luego para las capas de Persistencia es exactamnte el mismo proceso
+            -Crear Carpeta DAO > UsuariosMemoryDAO.js
+
+                Y creamos el class que accedera y tendra los metodos necesarios que requeira el services para funcionar acorde al proyecto
+
+        -Para trabajar con el NEXO "SERVICES" Debemos:
+
+            -Crear carpeta services > usuariosServices.js
+                Y creamos el class que accedera y tendra los metodos necesarios que requeira el controller para funcionar acorde al proyecto
+
+                    static async getUser(){
+                        return await UsuariosMemoryDAO.getUser()
+                    }
+
+        -Entonces el CONTROLLER PARA CONSULTAR A BD ==> ...usuariosServices.getUser()
+
+
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SIEMPREA HAY QUE PENSAR EN DESARROLLAR RESPENTANDO SUS PROPIOS PRINCIPIOS
+
+EJ: Dry Don´t repeat yourself
+    KISS
+    No seas Stupid
+    S.O.L.I.D
+
+    CLEAN CODE : OBTENER INFOMACION https://github.com/andersontr15/clean-code-javascript-es?tab=readme-ov-file
+
+
+
+LOS PATRONES DE DISEÑO:
+    So justamente pratones, que se siguen para evitar problemas comunes de desarrollos, serian soluciones replocables.
+    Los patrones no son codigo YA realizado, si no que son descripciones acerca de como abordar problemas comunes del desarrollo.
+
+
+    CADENA DE RESPONSABILIDADES: Modularizar todo y, tratarlo con la idea mental de (SENDER) y (RECIVER)
+
+    DECORADOR: PERmite mantener un objeto incial generico para poder procesar la informacion y luego irlo transformando mediante conextos.
+
+    PROXY: Consiste en tener un Surrogate ( sustituto ) El cual reciba las peticiones y controle el acceso hacia otro Subject( objeto ).
+
+    SINGLETON: Es un patron utilizado para tener una sola INstancia Global de alguna entidad, a nivel app.
+    En ocasiones se requiere tener una unica instancia para ciertas acciones ( ej Conexion a BD)
+    El patron sirve para corroborar que solo exista una sola instancia de determinado tipo.
+
+        cliente ---
+        cliente --- UNIQUE INSTANCE
+        cliente ---

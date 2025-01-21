@@ -1,0 +1,10 @@
+ 1  - Reestructurar nuestro pryoecto para incluir Modelo de Capas
+
+        Capas: 
+            Routing
+            Controller
+            Services
+            DAO
+
+ 2 - Mover todos las claves y partes coomprometedoras como variables de entorno.
+
