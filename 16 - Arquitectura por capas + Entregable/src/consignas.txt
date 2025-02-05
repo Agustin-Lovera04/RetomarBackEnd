@@ -6,5 +6,8 @@
             Services
             DAO
 
+Debemos cambiar desde el config, aplicar el modelo de capas desde ahi
+
+
  2 - Mover todos las claves y partes coomprometedoras como variables de entorno.
 

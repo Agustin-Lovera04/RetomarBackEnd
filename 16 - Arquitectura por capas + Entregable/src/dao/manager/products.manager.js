@@ -26,7 +26,6 @@ export class ProductsManager{
 
 //La razón por la que funciona es que los métodos como .find() o .paginate() están diseñados para aceptar un objeto como argumento, donde las claves son los nombres de los campos de la colección y los valores son las condiciones de búsqueda.
             let products  = await productsModel.paginate(filter, options)
-            console.log(products)
             return products
 
         } catch (error) {return []}

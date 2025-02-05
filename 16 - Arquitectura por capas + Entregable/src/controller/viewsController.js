@@ -1,6 +1,6 @@
-import { ProductsManager } from "../dao/manager/products.manager.js"
-
-export let productsManager = new ProductsManager()
+import { cartsManager } from "../router/views.router.js"
+import { cartsService } from "../services/carts.Service.js"
+import { productsService } from "../services/products.Service.js"
 
 export class ViewsController{
     constructor(){}
@@ -9,7 +9,7 @@ export class ViewsController{
        return res.status(200).render('Home')
     }
 
-    static async renderProducts(req,res){
+    static async getProducts(req,res){
             let empty = false
             let status = {}
         
@@ -35,7 +35,7 @@ export class ViewsController{
             if(sort !==-1 && sort !==1){sort = undefined}
         
             try {
-                let data = await productsManager.getProducts(page, limit, sort, category, disp)
+                let data = await productsService.getProducts(page, limit, sort, category, disp)
         
                 let {docs, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage} = data
         
@@ -47,7 +47,82 @@ export class ViewsController{
 
                 return res.status(200).render('products', {status, cartUserID: req.user.cart._id, payload: {products} , empty, totalPages, hasNextPage, hasPrevPage, prevPage, nextPage})
             
-            } catch (error) {return res.status(500).json({error: error.message,})}
+            } catch (error) {return res.status(500).json({error: error.message})}
         
     }
+
+
+    static async getProductById(req,res){
+            let {id} = req.params
+            
+            try {
+                let isValid = await productsService.validID(id)
+                if(!isValid.valid){return res.status(404).json(isValid.error);}
+                
+                let product = await productsService.getProductById(id)
+                if(!product.success){return res.status(400).json({error: product.error})}
+                
+                
+                return res.status(200).render('productDetail', {product, cartUserID:req.user.cart._id})
+            } catch (error) {return res.status(500).json({error: error.message})}
+    }
+
+
+
+    static async getCarts(req,res){
+            let carts
+            let empty = false
+            try {
+                carts = await cartsService.getCarts()
+                if(carts.length === 0){empty = true}
+        
+                if (req.query.limit) {carts = carts.slice(0, req.query.limit)}
+        
+                return res.status(200).render('carts', {carts , empty})
+        
+            } catch (error) {return res.status(500).json({error: error.message})}
+    }
+
+
+
+    static async getCartById(req,res){
+        let {id} = req.params
+        try {
+                let isValid = await productsService.validID(id)
+                if(!isValid.valid){return res.status(404).json(isValid.error);}
+                
+                let cart = await cartsService.getCartById(id)
+                if(!cart.success){return res.status(400).json({error: cart.error})}
+                return res.status(200).render('cartDetail', cart)
+        } catch (error) {return res.status(500).json({error: error.message});}
+    }
+
+
+    static renderChat (req,res){
+        return res.status(200).render('chat')
+    }
+
+    static renderRegister(req,res){
+            let {error} = req.query
+            res.status(200).render('register', {error})
+    }
+
+    static renderLogin(req,res){
+            let {message, error} = req.query
+        
+            res.status(200).render('login', {message, error})
+    }
+
+    static renderCurrent(req,res){
+            let {error,warning} = req.query
+            let user
+            if(req.user._doc){
+                user = req.user._doc
+            }else{
+                user = req.user
+            }
+            
+            return res.status(200).render('current', {user: user, error, warning})
+    }
+
 }
