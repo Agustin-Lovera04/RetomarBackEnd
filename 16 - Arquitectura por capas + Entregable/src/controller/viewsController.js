@@ -1,4 +1,3 @@
-import { cartsManager } from "../router/views.router.js"
 import { cartsService } from "../services/carts.Service.js"
 import { productsService } from "../services/products.Service.js"
 

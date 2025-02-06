@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { CartManager } from '../dao/manager/cart.Manager.js';
 import { SessionsManager } from '../dao/manager/sessions.manager.js';
 import { accessControl,  authReverse, passportCall} from '../utils.js';
 import { ViewsController } from '../controller/viewsController.js';
 export const router = Router()
 export let sessionsManager = new SessionsManager()
-export let cartsManager = new CartManager()
+/* export let cartsManager = new CartManager() */
 
 router.get('/', ViewsController.renderHome)
 

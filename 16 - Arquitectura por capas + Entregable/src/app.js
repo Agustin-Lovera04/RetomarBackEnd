@@ -7,10 +7,8 @@ import { router as productsRouter } from './router/products.router.js';
 import { router as cartsRouter } from './router/carts.router.js';
 import { router as chatRouter } from './router/chat.router.js';
 import { router as sessionsRouter } from './router/sessions.router.js';
-import {Server} from 'socket.io'
-import mongoStore from 'connect-mongo'
-import multer from 'multer';
-import { ChatManager } from './dao/manager/chat.manager.js';
+import {Server} from 'socket.io';
+import {chatService} from './services/chat.Service.js'
 import { initPassport } from './config/config.passport.js';
 import cookieParser from 'cookie-parser'
 import passport from 'passport';
@@ -63,8 +61,7 @@ const server=app.listen(PORT,()=>{
 });
 
 
-//VER COMO ELIMINAR TODA ESTA LOGICA DEL APP
-export const chatManager = new ChatManager()
+
 
 
 export const io = new Server(server)
@@ -77,7 +74,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on('message', async (datos) => {
-        let saveDatos = await chatManager.saveDatos(datos)
+        let saveDatos = await chatService.saveDatos(datos)
         io.emit("newMessage", saveDatos);
     })
 

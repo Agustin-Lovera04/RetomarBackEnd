@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {usersModel} from '../models/user.model.js'
 import { validPassword } from "../../utils.js";
-import { cartsManager } from "../../router/views.router.js";
+import { cartsService } from "../../services/carts.Service.js";
 
 export class SessionsManager{
 
@@ -29,13 +29,15 @@ export class SessionsManager{
 
 
     async createUser(first_name, last_name, email, age,password, role){
+        console.log(first_name, last_name, email, age, password, role)
+
         let success = true
 
         let userData = {first_name: first_name, last_name: last_name, email: email, age:age}
         if(password){userData.password = password}
         if(role){userData.role = role}
 
-        let cartUser = await cartsManager.createCart(`Carro de: ${last_name}, ${first_name}`)
+        let cartUser = await cartsService.createCart(`Carro de: ${last_name}, ${first_name}`)
         if(!cartUser.success){
             return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador`}
         }

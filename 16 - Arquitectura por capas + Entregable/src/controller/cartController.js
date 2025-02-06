@@ -1,5 +1,5 @@
 import { io } from "../app.js";
-import { cartsManager} from "../router/views.router.js";
+import { cartsService } from "../services/carts.Service.js";
 import { productsService } from "../services/products.Service.js";
 
 export class CartController {
@@ -14,12 +14,12 @@ export class CartController {
         .json({ error: "Debe enviar un titulo para el carrito" });
     }
 
-    let data = await cartsManager.createCart(title);
+    let data = await cartsService.createCart(title);
     if (!data.success) {
       return res.status(400).json({ error: data.error });
     }
 
-    io.emit("listCarts", await cartsManager.getCarts());
+    io.emit("listCarts", await cartsService.getCarts());
 
     return res.status(200).json({ ok: data.newCart });
   }
@@ -33,13 +33,13 @@ export class CartController {
     
         if(!title){return res.status(400).json({error: 'Debe enviar el nuevo titulo para carrito'})}
         
-        let cart = await cartsManager.getCartById(id)
+        let cart = await cartsService.getCartById(id)
         if(!cart.success){return res.status(400).json({error: cart.error})}
     
-        let data = await cartsManager.putCart(id, title)
+        let data = await cartsService.putCart(id, title)
         if(!data.success){return res.status(400).json({error: data.error});}
     
-        io.emit('listCarts', await cartsManager.getCarts())
+        io.emit('listCarts', await cartsService.getCarts())
     
         return res.status(200).json({ok: data.modCart})
   }
@@ -51,13 +51,13 @@ export class CartController {
         let idValid = await productsService.validID(id)
         if(!idValid.valid){return res.status(400).json({error: idValid.error})}
     
-        let cart = await cartsManager.getCartById(id)
+        let cart = await cartsService.getCartById(id)
         if(!cart.success){return res.status(400).json({error: cart.error})}
       
-        let data = await cartsManager.deleteCart(id)
+        let data = await cartsService.deleteCart(id)
         if(!data.success){return res.status(400).json({error: data.error})}
     
-        io.emit('listCarts', await cartsManager.getCarts())
+        io.emit('listCarts', await cartsService.getCarts())
         return res.status(200).json({ok: data.deleteCart})
   }
 
@@ -72,13 +72,13 @@ export class CartController {
         const product = await productsService.getProductById(pid)
         if(!product.success){return res.status(400).json({error: product.error})}
     
-        const cart = await cartsManager.getCartById(cid)
+        const cart = await cartsService.getCartById(cid)
         if(!cart.success){return res.status(400).json({error: cart.error})}
     
     
         if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
     
-        let data = await cartsManager.addProductInCart(cid, pid)
+        let data = await cartsService.addProductInCart(cid, pid)
         if(!data.success){return res.status(400).json({error: data.error})}
     
         return res.status(200).json({ok: data.addProduct})
@@ -95,12 +95,12 @@ export class CartController {
         if(!product.success){return res.status(400).json({error: product.error})}
     
         
-        const cart = await cartsManager.getCartById(cid)
+        const cart = await cartsService.getCartById(cid)
         if(!cart.success){return res.status(400).json({error: cart.error})}
     
         if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
     
-        let deleteProductInCart = await cartsManager.deleteProductInCart(cid,pid)
+        let deleteProductInCart = await cartsService.deleteProductInCart(cid,pid)
         if(!deleteProductInCart.success){return res.status(400).json({error: deleteProductInCart.error})}
     
         return res.status(200).json({ok: deleteProductInCart});
@@ -114,7 +114,7 @@ export class CartController {
         let idValid = await productsService.validID(id)
         if(!idValid.valid){return res.status(400).json({error: idValid.error})}
     
-        const cart = await cartsManager.getCartById(id)
+        const cart = await cartsService.getCartById(id)
         if(!cart.success){return res.status(400).json({error: cart.error})}
     
         if(!products || !Array.isArray(products)){return res.status(400).json({error: 'Debe enviar el nuevo listado de productos para el carrito - Controlar estructura correcta de listado'})}
@@ -133,7 +133,7 @@ export class CartController {
         }
      
     
-        let updateCart = await cartsManager.updateAllProductsInCart(id, products)
+        let updateCart = await cartsService.updateAllProductsInCart(id, products)
         if(!updateCart.success){return res.status(400).json({error: updateCart.error})}
     
         return res.status(200).json({ok: updateCart});
@@ -145,12 +145,12 @@ export class CartController {
         let idIsValid = await productsService.validID(id)
         if(!idIsValid.valid){return res.status(400).json({error: idIsValid.error})}
     
-        const cart = await cartsManager.getCartById(id)
+        const cart = await cartsService.getCartById(id)
         if(!cart.success){return res.status(400).json({error: cart.error})}
     
         if(!cart.cart.products || !Array.isArray(cart.cart.products)){return res.status(500).json({error: 'Estructura no Apta en carrito - Contacte con Administrador'})}
     
-        let deleteAllProductsInCart = await cartsManager.deleteAllProductsInCart(id)
+        let deleteAllProductsInCart = await cartsService.deleteAllProductsInCart(id)
     
         if(!deleteAllProductsInCart.success){return res.status(500).json({error: deleteAllProductsInCart.error});}
     
@@ -169,7 +169,7 @@ export class CartController {
     const product = await productsService.getProductById(pid)
     if(!product.success){return res.status(400).json({error: product.error})}
 
-    const cart = await cartsManager.getCartById(cid)
+    const cart = await cartsService.getCartById(cid)
     if(!cart.success){return res.status(400).json({error: cart.error})}
 
 
@@ -178,7 +178,7 @@ export class CartController {
     Number(quantity)
     if(!quantity || isNaN(quantity) === true || quantity <= 0){return res.status(404).json({error: ' Debe enviar la propiedad quantity, con un numero valido'})}
 
-    let updateQuantityProductInCart = await cartsManager.updateQuantityProductInCart(cid, pid, quantity)
+    let updateQuantityProductInCart = await cartsService.updateQuantityProductInCart(cid, pid, quantity)
     if(!updateQuantityProductInCart.success){return res.status(500).json({error: updateQuantityProductInCart.error})}
 
 

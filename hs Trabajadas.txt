@@ -63,6 +63,21 @@ ME COLGUEE
     Total : 2.10hs FLOJOO DALE PONETE LAS PILAS
 
 21/1/25
-    16hs - 
+    16hs - NUNCA MAS ANOTE
+
+
+5/2/25
+    16.20 - 18.10
+
+6/2
+    15.20hs - 
+
+
+
+ANOTACION; AGREGAR EL DETALLE DEL ERROR UE ME LLEGA DE LOS MANAGER; EJEMPLO
+return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador`}
+
+CAMBIAR:   return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador, Detalle: ${cartUser.error}`}
+ 
 
 Primero entregable ==> clase 28

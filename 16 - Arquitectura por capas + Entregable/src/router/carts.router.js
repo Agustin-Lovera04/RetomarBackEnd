@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import { cartsManager, /* productsManager */ } from './views.router.js';
 import { accessControl, passportCall, upload } from '../utils.js';
-import { io } from '../app.js';
-import { auth } from '../utils.js';
-import passport from 'passport';
 import { CartController } from '../controller/cartController.js';
 export const router=Router()
 

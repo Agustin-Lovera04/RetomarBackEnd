@@ -1,13 +1,10 @@
  1  - Reestructurar nuestro pryoecto para incluir Modelo de Capas
 
-        Capas: 
-            Routing
-            Controller
-            Services
-            DAO
-
-Debemos cambiar desde el config, aplicar el modelo de capas desde ahi
-
+                    Capas: 
+                        Routing
+     ----OK                   Controller
+                        Services
+                        DAO
 
  2 - Mover todos las claves y partes coomprometedoras como variables de entorno.
 

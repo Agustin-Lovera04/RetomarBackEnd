@@ -2,7 +2,7 @@ import passport from 'passport'
 import local from 'passport-local'
 import passportJWT from 'passport-jwt'
 import { hashPassword, validPassword } from '../utils.js';
-import { sessionsManager } from '../router/views.router.js';
+import { sessionService } from '../services/session.Service.js';
 import { SECRETKEY } from '../app.js';
 import github from 'passport-github2'
 import {config} from './config.js'
@@ -42,7 +42,7 @@ export const initPassport = () => {
                 let valid = exReg.test(email)
                 if(valid === false){return done(null, false, {message: 'El formato de email ingresado es incorrecto'})}
             
-                let existUser = await sessionsManager.searchUserByEmail(email)
+                let existUser = await sessionService.searchUserByEmail(email)
                 if(existUser.success){return done(null, false, {message: 'Ya existen usuarios creados con el email Ingresado'})}
                     
                 let role
@@ -50,7 +50,9 @@ export const initPassport = () => {
 
                 password = hashPassword(password)
             
-                let user = await sessionsManager.createUser(first_name, last_name,email, age,password, role)
+                let user = await sessionService.createUser(first_name, last_name,email, age,password, role)
+
+
                 if(!user.success){return done(null, false,  {message: 'Error Interno del Servidor - Contacte un administrador'})}
             
                 return done(null, user.user)
@@ -76,7 +78,7 @@ export const initPassport = () => {
                 
                     /* password = crypto.createHmac("sha256", "UDMV").update(password).digest("hex") */
                 
-                    let existUser = await sessionsManager.compareUserData(username, password)
+                    let existUser = await sessionService.compareUserData(username, password)
                     if(!existUser.success){return done(null, false, {message: `${existUser.error}`})}
 
                     
@@ -100,14 +102,14 @@ export const initPassport = () => {
             try {
                 //Primero debemos buscar si el usuario ya existe en BD
                 //Si existe, lo buscamos por email y listo, porque tema contraseña  y eso se encarga Github
-                let user = await sessionsManager.searchUserByEmail(profile._json.email)
+                let user = await sessionService.searchUserByEmail(profile._json.email)
                 //Ahora si no existe, debemos crearlo, pero obviasmente no mandaremos la contraseña ya qeu eso es privado del usuario en github.
                 //POR LO TANTO DEBI MODIFICAR EL METODO EN MANAGER PARA QUE LA CONTRASEÑA NO SEA OBLIGATORIA, al igual que en el MODELO.
                 
                 //Pero para evitar errores, todo lo que sea fronted, y ek resto de opciones locales, para registrar un usuario que sea obigatorio siempre quie el cliente envie una password
                 
                 if(!user.success){
-                    user = await sessionsManager.createUser(profile._json.name, " GITHUB/USER ",profile._json.email, 0)
+                    user = await sessionService.createUser(profile._json.name, " GITHUB/USER ",profile._json.email, 0)
                     if(!user.success){return done(null, false,{message: 'Error Interno del Servidor - Contacte un administrador'})}
                 }
 
