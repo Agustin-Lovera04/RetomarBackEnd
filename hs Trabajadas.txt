@@ -70,14 +70,10 @@ ME COLGUEE
     16.20 - 18.10
 
 6/2
-    15.20hs - 
+    15.20hs - 17hs recreito y sigo
 
+7/2
+    15.30 hs - 16-20 recreo 16-40hs - 18.10hs
+    total: 2.30hs
 
-
-ANOTACION; AGREGAR EL DETALLE DEL ERROR UE ME LLEGA DE LOS MANAGER; EJEMPLO
-return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador`}
-
-CAMBIAR:   return {success: false, error: `Error Interno al crear carro para nuevo usuario - Contacte un Administrador, Detalle: ${cartUser.error}`}
- 
-
-Primero entregable ==> clase 28
+CLASE 29
