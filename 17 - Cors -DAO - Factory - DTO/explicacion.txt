@@ -1,0 +1,69 @@
+PERDI EL ARCHIVO TXT ANTERIOR:
+    Pero en la CLASE 28, muestra como hacer un DTO, muestra tambien como hacer un dinamismo para las distintas persistencias segun el modo de levantar el proyecyo ( dev o prod)
+    Igual tampoco es recontra necesario volver a pasar todo, ya que no es tan dificil, y todo lo dado en clase esta en la cartpeta de la clase 28.
+    https://github.com/diegopolverelli/comision-49975-backend/tree/main/clase28-20240124
+
+
+
+SINGLETON:
+    Singleton es un patrón de diseño creacional que garantiza que tan solo exista un objeto de su tipo y proporciona un único punto de acceso a él para cualquier otro código.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CORS
+    Nosotros hasata ahora veniamos trabjando de manera SSR (server side rendering) es decir rendewriza todo desde el lado del servidor, lo cual sirve para paignas estaticas o de muy bajo dinamismo
+
+    Luego tenemos la manera CSR ( Client side Rendering), el cliente se comunica con el servidor a traez de peticiones y con headers que hacen que se traiga la informacion y el cliente renderiza las vistas (sirve para mas dinamismo) Es decir conectar un BACKEND con FRONTEND.
+
+
+    En proyecto
+
+        npm i cors
+
+        en app.js ( es un middleware)
+
+           const corsOptions = {
+            origin: 'url en especifico || VACIO ', //vacio acepta cualquier url
+            credentials: true, // Para permitir cookies y autenticación
+            };
+
+    app.use(cors(corsOptions));
+
+    lo que hace esta libreria es simplificarnos el echo de configurar los headers con permisos, ( ya qeu no esta permitido enviar informacion entre servireos si no esta configurado el cors)
+
+
+    Luego debemos crear una carpeta que alojara al FRONT y creamos el html y su js.
+    Y mediante solicitudes, le pedimos a neustro servidor que nos envie los datos que querramos.
+
+    Al ser de manera local, los dos se deben levantar ej: servidor ocn nodemon, front con live server.
+
+
+
+    IMPLEMENTADO REACT:
+
+    Para implementar react es el mismo proceso, tenemos nuestros dos nodos separados, pero en vez de crear el html, levantamos el proyecto de React, y luego debemos correr cada proyecto por separado ( si todavia funcionan de manera local)
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+FACTORY:
+    https://refactoring.guru/es/design-patterns/factory-method
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+DTO (data transfer Object) Trabaja los datos que les enviemos, de una manera simepre igual para dejarlos aptos para nuestro servior, ej datos traidos de cualquier DB los deja potable para nuestro servidor
+
+
+https://www.oscarblancarteblog.com/2018/11/30/data-transfer-object-dto-patron-diseno/
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+REPOSITORY  (añade capa de SERVICIOS, para asilar el DAO)
+https://www.arquitecturajava.com/el-patron-repository-y-la-explosion-de-metodos/

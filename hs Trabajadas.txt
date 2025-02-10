@@ -76,4 +76,22 @@ ME COLGUEE
     15.30 hs - 16-20 recreo 16-40hs - 18.10hs
     total: 2.30hs
 
-CLASE 29
+10/2
+    16hs - 17.30 hs  Y me fui a REACT ( solo para arrancar generalemtne vamos a hacer uno x dia);
+
+
+
+//IDea para el DTO (Como nosotros en JWT ya borramos los datos confidenciales, vamos a usar un DTO simbolico ( solo vamos a pasar las propiedaes a mayuscula o miniuscula yesas pavadas-
+ejemlo en el /current enviar el user al DTO 
+
+DTO
+export const currentDTO =(user)=>{
+    user.first_name = user.first_name.toLowerCase()
+    user.last_name = user.last_name.toUpperCase()
+    return user
+}
+
+))
+
+
+INICIAR LA CLASE 30
