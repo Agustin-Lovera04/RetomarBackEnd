@@ -1,0 +1,28 @@
+1º Modificar Persistencia para aplicar conceptos:
+        -----NO LO USAMOS-Factory ( FACTORY VAMOS A USARLO IGUAL PARA APRENDERLO PERO SOLO VAMOS  A TENER MONGO)
+        ----OK -DAO
+        ----OK -DTO 
+
+--------OK    2º Implementar patron Repository para trabajar con DAO
+
+--------OK    3º Modificar ruta current para que utilize el DTO
+
+4º Realizar un middleware con un sistema de autorizacion a endpoints:
+    
+    -----OK     *Solo administrador puede crear, actulizar y eliminar productos
+
+    ------OK    *Solo el usuario puede enviar mensajes al chat
+
+    ------OK    *Solo el user puede agregar productos a SU carrito
+
+
+
+Modelo ya creado, falta el codigo que se genere solo, y luego imprementar el ticket
+
+    *Crear un modelo de TICKET el cual contara con todas las formalizaciones de la compra.
+    Este contara con los campos:
+        -ID ( autogenerado por mongo )
+        -Code: String autogenerarse y ser unico
+        -purchase_datatime: debera guardar la fehca y hora exacta en la cual se hizo la compra ( created_at)
+        -amount: numer, total de la compra
+        -purchaser: Correo del usuario 

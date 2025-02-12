@@ -53,6 +53,75 @@ FACTORY:
     https://refactoring.guru/es/design-patterns/factory-method
 
 
+    Consta en homologar todos los manager que interactuan con base de datos por eje los DAO, para que q funcionen con cualquier persistencia ej, que  en el DAO de mongo y el DAO de FS, q el metodo de recuperacion en los dos se llame GET.
+    Con eso lograriamos que al cambiar dinamitcamente de persitencia el proyecto funcione igual
+
+    ¿Como cambiamos dinamicamente ? Con una variable de entorno
+
+        -config
+            import dotenv from 'dotenv'
+
+            dotenv.config({
+                override:true,
+                path:"./src/.env"
+            })
+
+            export const config={
+                generales:{
+                    PORT:process.env.PORT||3000,
+                    PERSISTENCE:process.env.PERSISTENCE||"FS"
+                },
+                database:{
+                    MONGO_URL:process.env.MONGO_URL,
+                    DBNAME:process.env.DBNAME
+                }
+            }
+
+
+
+        -Luego dentro de la carpeta DAO creamos factory.js
+
+            import mongoose from 'mongoose'
+            import { config } from '../config/config.js'
+
+            const persistencia=config.generales.PERSISTENCE
+            export let DAO
+
+            switch (persistencia) {
+                case "FS":
+                    let {usuariosFsDAO} = await import("./usuariosFsDAO.js") // importacion dinamica
+                    DAO=usuariosFsDAO
+                    break;
+
+                case "MONGO":
+                    try {
+                        await mongoose.connect(config.database.MONGO_URL, {
+                            dbName: config.database.DBNAME
+                        })
+                        console.log("DB Online...!!!")
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    let {usuariosMongoDAO} = await import("./usuariosMongoDAO.js")
+                    DAO=usuariosMongoDAO
+                    break;
+
+                default:
+                    console.log("Error en persistencia seleccionada...!!!")
+                    process.exit()
+                    break;
+            }
+
+
+
+    - Y ahora en la capa de service que maneja la loca de negocio, solo importamos el DAO desde el factory y listo ya se volveria dinamico.-
+
+    -Lo unico debemos luego buscar la manera de modificar la variable de entorno como "dev" o "prod" o lo que sea que pongamos o en este caso == > PERSISTENCE = MONGO o FS
+
+
+
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

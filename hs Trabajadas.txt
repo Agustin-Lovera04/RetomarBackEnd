@@ -80,18 +80,14 @@ ME COLGUEE
     16hs - 17.30 hs  Y me fui a REACT ( solo para arrancar generalemtne vamos a hacer uno x dia);
 
 
+11/2
+    13.35hs - 15.30
 
-//IDea para el DTO (Como nosotros en JWT ya borramos los datos confidenciales, vamos a usar un DTO simbolico ( solo vamos a pasar las propiedaes a mayuscula o miniuscula yesas pavadas-
-ejemlo en el /current enviar el user al DTO 
+12/2
+    15.45 - 16.30 recreo 17-10 
 
-DTO
-export const currentDTO =(user)=>{
-    user.first_name = user.first_name.toLowerCase()
-    user.last_name = user.last_name.toUpperCase()
-    return user
-}
-
-))
+VER DEVUELTA LA CLASE 28 (cuando temrinemos el entregable) y hacer bien el txt que borramos PELOTUDO es una clase importante de patrones de diseño 
+Lo vemos despues ya que nosotros no vamos a usar 2 persistencia, solo MONGO
 
 
-INICIAR LA CLASE 30
+//MOdificar chat, apra que saque el correo desde el token y que no pdia correo en el chat

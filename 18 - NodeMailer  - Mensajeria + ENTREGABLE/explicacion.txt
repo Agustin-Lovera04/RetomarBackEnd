@@ -1,0 +1,157 @@
+Cuando enviamos Mails, estamos usadno el protocolo para mailin SMTP ( simple mail transfer Protocol) 
+Utiliza los puertos 25/TCP o 587/TCP
+
+
+NODEMAILER 
+    Dependencia que se utiliza por defecto para mensajeria, que se conecta con distiintos host y servicios de mialing ( gmail, hotmail, outlok etc)
+
+
+    PASOS:
+        1º - Habilitar contraseña de aplicaciones ( ejemplo con google)
+
+        2º - Habilitar la verificacion de 2 pasos.
+
+        3º - Gestionar tu cuenta de google  ==> Seguridad ==> Verificacion en dos pasos ==> Contraseñas de aplicacion ==> Generar
+
+                (qisb goud unza uioy)
+
+        4º - npm i nodemailer
+
+        5º Debemos generar un "TRANSPORTE"
+
+                import nodemailer
+
+                const transport = nodemailer.createTransport(
+                    {
+                        service: 'gmail',
+                        port: 587 //estos dos datos varian segun el servicio,
+                        auth: {
+                            user: "agusrugbyy@gmail.com",
+                            pass: "qisb goud unza uioy"  // Contraseña de app
+                        }
+                    }
+                )
+
+        6º - Crear funcion de envio de mail
+
+                const enviar = () => {
+                    return transport.sendMail(
+                        {
+                            from: "AGUSTIN LOVERA agusrugbyy@gmail.com",
+                            to: "mail de destino",
+                            subject: "Prueba sujeto de mail",
+                            html: `
+                                <h1>PRUEBA ENVIO</h1>
+                            `
+                        }
+                    )
+                }
+
+        7º sendMail, devulve una promesa, por lo que si queremos una reaccion luego del envio del mail, debemos trabajarlo como promesa
+        Vuelve con dos propiedades ( con respecto al exito o no de la operacion) accepted, o con rejected 
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+Envio de ADJUNTOS; 
+        6º - Crear funcion de envio de mail
+
+                const enviar = () => {
+                    return transport.sendMail(
+                        {
+                            .....
+                        ', // el segundo armgumento es para ek envio de archivos ADJUNTOS
+
+                        attachments: [
+                            {
+                                path: 'url image',
+                                filename: 'nombre con el que llegara'
+                            }
+                        ]
+
+                        }
+                    )
+                }
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INTEGRACION A PROYECTO EXPRESS ( ejemplo de cargar documentacion con multer)
+
+    Cremos un formulario
+
+    1º -  form  action="endpoint" method="POST" enctype="multipart/form-data"
+
+            input ... name ="to" placeholeder="destinatario"
+            ..... .... "subject ..... ="Asunto"
+            ... .... "message" ..... "mensaje"
+            .... type="file" name="adjuntos" multiple>
+
+            ...
+            ...
+
+
+    2º -  mediante los managers y demas, crear una funcion que se encargue de subir la imagenes a una persistencia de DB.
+    Ejemplo con memoria local
+
+        Creamos carpeta "uploads"  y function en el manager:
+
+        import multer from 'multer'
+
+        const storage = multer.diskStorage({
+            destination: function (req, file, cb) {
+            cb(null, './src/uploads')
+            },
+            filename: function (req, file, cb) {
+            //   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+            //   cb(null, file.fieldname + '-' + uniqueSuffix)
+                cb(null, file.originalname)
+            }
+        })
+        
+        export const upload = multer({ storage: storage })
+
+    3º -  y luego en /endpoint, le ponemos de middlwware el manejo de archivos de multer
+
+    ..... upload.array["name De Input de adjuntos En Fomrulario"] .....
+
+        let adjuntos = []
+        req.files.forEach(archivo => {
+            adjuntos.push({
+                path: archivo.path,
+                filename: archivo.originalname
+            })
+        })
+
+
+    4º - Luego creamos las funciones de envio de mail con nodemailer, explicacion mas arriba, quedaria como:
+
+            export const enviarMail=(to, subject, message, adjuntos)=>{
+                return transport.sendMail(
+                    {
+                        from: "Diego R. Polverelli diegopolverelli@gmail.com",
+                        to: to,
+                        subject: subject,
+                        // text: "prueba...",
+                        html: message,
+                        attachments: adjuntos
+                    }
+                )
+            }
+
+
+    5º - Luego en el enpoint llamamos a la funcion de enviar el mail, con los argumetnos requeridos
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MENSAJERIA CON TWILIO
+    Es una plataforma que nos permitira mensajeria mas directa con el cliente, como ser SMS, whatsapp, chatbots etc
+
+    Es una opcion paga, pero la documentacion te lleva solo.
+
+    (hace una porueba con wsp igual sigue siendo pago, pero muestra como hacer las funciones y eso)
