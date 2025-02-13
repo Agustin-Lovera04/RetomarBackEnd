@@ -21,6 +21,25 @@ export class CartManager{
         } catch (error) {return {success: false, error:  `Internal Server Error: ${error.message}`}}
     }
 
+
+ /*    async infoPrices (products){
+        let success = true
+        try {
+            if(!Array.isArray(products) || products.length <= 0 ){
+                {return {success: false, error:  `Error en estructura de carrito - Controle si sus productos se agregaron correctamente al carrito - Si no pudo solucionarlo, contacte a un Administrador.`}}
+            }
+
+            products.forEach(prod => {
+                prod.subtotal = ( prod.product.price * prod.quantity).toFixed(2)
+            })
+
+            let total = products.reduce((acc, prod)=> acc + parseFloat(prod.subtotal), 0).toFixed(2)
+            return{success,products, total}
+        } catch (error) {
+            {return {success: false, error:  `Internal Server Error: ${error.message}`}}
+        }
+    }
+ */
     async createCart(title){
         let success = true
         try {

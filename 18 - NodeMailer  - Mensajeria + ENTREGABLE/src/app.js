@@ -13,6 +13,7 @@ import { initPassport } from './config/config.passport.js';
 import cookieParser from 'cookie-parser'
 import passport from 'passport';
 import { config } from './config/config.js';
+/* import './helpers-handlebars/helpers.js' */
 
 const PORT= config.PORT
 export const SECRETKEY = config.SECRET_KEY_TOKEN

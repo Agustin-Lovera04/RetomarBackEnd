@@ -7,7 +7,14 @@
         Producto ID: {{this.product}}
         <br>
         Cantidad: {{this.quantity}}
+        <br>
+        Subtotal: {{{{!-- multiply  --}}this.product.price  this.quantity}}
     </li>
     {{/each}}
 </ul>
-<h1>Precio: {{cart._id}}</h1>
+<h1>ID: {{cart._id}}</h1>
+
+
+<button id="btn-FinallyBuy"></button>
+
+<script src="/js/cartDetail.js"></script>
