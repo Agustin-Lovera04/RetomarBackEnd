@@ -84,10 +84,24 @@ ME COLGUEE
     13.35hs - 15.30
 
 12/2
-    15.45 - 16.30 recreo 17-10 
+    15.45 - 16.30 recreo 17-10 -17.40hs
 
-VER DEVUELTA LA CLASE 28 (cuando temrinemos el entregable) y hacer bien el txt que borramos PELOTUDO es una clase importante de patrones de diseño 
-Lo vemos despues ya que nosotros no vamos a usar 2 persistencia, solo MONGO
+13/2
+    14.30hs-17hs - recreo 18.25hs - 19-15
+    total: 3.20hs BIEN pero muy cortado y no avanzamos casi nada
+
+18/2
+    14.40hs  - 16hs ( Ahora me paso a React)
+
+19/2
+    9.20 - hasta terminar el entregable aprox 40 main
+
+    18.00  - 20.35 IGUAL CORTE MUCHISIMO EN EL MEDIO
+
+26/2
+    10hs
 
 
-//MOdificar chat, apra que saque el correo desde el token y que no pdia correo en el chat
+RECORDAR NO USAMOS MAS NODEMON, GRACIAS A LA NUEVA VERSION DE NODE TENEMOS LA FUNCIONALIDAD --WATCH
+
+Clase 32

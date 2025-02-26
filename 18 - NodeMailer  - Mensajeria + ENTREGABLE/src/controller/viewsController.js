@@ -93,13 +93,23 @@ export class ViewsController{
                 
                 let cart = await cartsService.getCartById(id)
                 if(!cart.success){return res.status(400).json({error: cart.error})}
-                return res.status(200).render('cartDetail', cart)
+
+                cart.cart.products.forEach(prod => {
+                    prod.subtotal = (prod.product.price * prod.quantity).toFixed(2)
+                });
+
+                const total = cart.cart.products.reduce((acc, prod) => acc + parseFloat(prod.subtotal), 0).toFixed(2);
+              
+                let data = {cart:cart.cart , total}
+
+                return res.status(200).render('cartDetail', data)
         } catch (error) {return res.status(500).json({error: error.message});}
     }
 
 
     static renderChat (req,res){
-        return res.status(200).render('chat')
+        let {user} = req
+        return res.status(200).render('chat', {userName: user.first_name, userEmail: user.email})
     }
 
     static renderRegister(req,res){

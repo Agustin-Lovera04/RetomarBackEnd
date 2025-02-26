@@ -2,11 +2,13 @@ const socket = io()
 
 const chatPageContainer = document.getElementById('chatPage-Container')
 const identidad = document.getElementById('identidad')
+let userName = identidad.dataset.userName
+let userEmail = identidad.dataset.email
 const chatForm = document.getElementById('chat-Form')
 const messagesContainer = document.getElementById('messages-Container')
-let user
 
-Swal.fire({
+
+/* Swal.fire({
     title: "Ingrese su correo electronico",
     input: "email",
     inputPlaceholder: "Ingrese su email aqui",
@@ -22,11 +24,11 @@ Swal.fire({
     identidad.innerHTML = `<h4 style="color:green;">Ingresaste con el email: ${response.value}</h4>`
     user = response.value
     return user
-  })
+  }) */
 
-  socket.on('newUser', (user) => {
+  socket.on('newUser', (userName) => {
     Toastify({
-        text: `Se a conectado un nuevo Usuario ${user}`,
+        text: `Se a conectado un nuevo Usuario ${userName}`,
         className: "info",
         style: {
           background: "linear-gradient(to right, #00b09b, #96c93d)",
@@ -45,7 +47,7 @@ Swal.fire({
       }
 
 
-      socket.emit('message', {user: user, message: message})
+      socket.emit('message', {user: userEmail, message: message})
       inputMessage.value = ''
   })
 
@@ -54,7 +56,7 @@ Swal.fire({
     let newMessage = document.createElement('p')
     newMessage.classList.add('message')
     newMessage.innerHTML = `
-    <strong>${datos.user}</strong>
+    <strong>${userName}</strong>
     <p>${datos.message}</p><hr>
     `
     messagesContainer.append(newMessage)

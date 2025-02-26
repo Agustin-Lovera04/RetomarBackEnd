@@ -1,0 +1,170 @@
+Como hasta el momento ya tenemos un conocimineto para levatnar un servidor con buenas funcionalidades para el usuario.
+Debemos empezar a pensar como hacer para que el servidor sirva para el mundo real, brindando una buena performance.
+
+Para eso debemos pensar en la OPTIMIZACION de nuestro proyecto.
+
+
+1. Trabajar con sincronismo y asincronismo
+2. Realizar un correcto Loggeo
+3. Usar variables de entorno NODE_ENV = production
+4. Clusterizar nuestra APP ( no se hace siempre )
+5. Configurar para que se reincie automaticamente el servidor
+    ej: PM2 esta atento a que si existen errores Fatales, se reinicie y se levante nuevamente el servidor.
+6. Manejo correcto de errores
+7. Realizar balanceos de carga
+8. Realizar compresion
+9. Utilizar un proxy inverso
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+COMPRESION
+    Cuando el servidor se comnica con el cliente, implicaria revisar si existen archivos comprimidos, que deberian descomprimisrse, hay navegadores modernos, que pueden aceptar contenido codificado en los tres metodos de compresion mas utilizados
+
+        Deflate
+        Gzip
+        Brotli
+
+
+!!!! NODE tiene un metodo de compresion nativo llamado "zlib"
+
+    ej:
+        import zlib ...
+
+        let textoLargo = ......
+
+        //gzip
+        let textoComprimido = zlib.gzipSync(textoLargo, {})
+
+        //Brotli
+        let textoComprimido = zlib.brotliSync(textoLargo, {})
+
+
+        //gzip
+        res.setHeader('Content-Encoding', 'gzip')
+
+        //Brotli
+        res.setHeader('Content-Encoding', 'br')
+
+        return res.status(200).send(textoComprimido);
+        
+
+!!!!! TAMBEIN EN LUGAR DE UN TEXTO; PODEMOS MANDAR DIRECTAMENTE LA PLANTILLA QUE USAMOS COMO HTML, la compiamos como template string en el router, comprimimos, y luego lo mandamos a la  vista
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+EXPRESS-COMPRESSION
+
+PERO EL MEJOR METODO DE COMPRESION Y MAS SIMPLE ES UNA LIBRERIA DE EXPRESS
+
+        npm i express-compression
+
+Al ser un middleWare, es recomendable, usarlo a nivel applicacion
+
+En app.js
+
+        import compression ..
+
+        app.use(compression({})) //gzip
+        app.use(compression({brotli: {enabled: true}})) //brotli
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MANEJO DE ERRORES
+
+    Custom Errors:
+        Creamos una carpeta "utils" / CustomErrors.js
+
+            export class CustomError{
+                static CustomError( nombre, mensaje, statusCode, codigoInterno, descripcion){
+                    let error = new Error( mensaje )
+                    error.name = nombre
+                    error.codigo = statusCode
+                    error.codigoInterno = codigoInterno
+                    error.descripcion = descripcion
+
+                    return error
+                }
+            }
+
+        
+        Luego dentro de la misma carpeta "utils" / errores.js
+
+            export const errorArgumentos ( user ) => { 
+                return `
+                     Error en argumentos:
+                        Arugmentos Obligatorios:
+                            -name: tio string, recibido ${user.name}
+                        ....
+                        ..
+                        ....
+                `
+            }
+
+
+
+        Luego tambien dentro de "utils"  / tiposError.js
+
+            export const STATUS_CODES = {
+                NOT_FOUND: 404,
+                ERROR_ARGUMENTOS: 400,
+                ERROR_DATOS_ENVIADOS: 400,
+                ....
+                ....
+                ....
+            }
+
+
+            export cons ERRORES_INTERNOS = {
+                DATABASE: 100,
+                ARGUMENTOS: 200,
+                PERMISOS: 300
+                ..
+                ..
+                ..
+                }
+
+
+
+        Para Utilizar estos errores, nnos vamos a donde necesitemos dar respuesta a los errores.
+            por ej: falta completaar name en el POST de usuario. EN router
+
+                ...
+                ...
+                if(!name){
+                    throw CustomError.CustomError("Complete name", "Falta completar la propiedad name", STATUS_CODES.ERROR_ARGUMENTOS, ERRORES_INTERNOS.ARGUMENTOS, errorArgumentos(" No ingreso name "))
+                }
+
+
+    
+        Luego capturamos los errores creando un middlewate, que consulta si son CustomsErrors o nombre
+
+            En una carpeta "middlewares" / errorHandler.js
+
+                export const errorHandler = (error, req, res, next) => {
+                    if(error)
+                    
+                        //preguntamos si tiene alguna de las propiedades especiales que customizamos
+                        if(error.codigo){
+
+                            res.setHeader('Content-Type','application/json');
+                            return res.status(error.codigo).json({error: `${error.name}: ${error.message}`});
+
+                        }else{
+                            res.setHeader('Content-Type','application/json');
+                            return res.status(500).json({error: error.message});
+                        }
+
+
+                    next()
+                }
+
+
+        
+            Y luego implementeamos el middle a nivel APP,  /// LOS MIDDLES DE ERRORES; SE PONEN AL FINAL DE TODAS LAS RUTAS
+
+
+                app.use(errorHabdler)

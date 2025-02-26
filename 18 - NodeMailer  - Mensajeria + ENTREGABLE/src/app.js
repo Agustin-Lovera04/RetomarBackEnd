@@ -7,6 +7,7 @@ import { router as productsRouter } from './router/products.router.js';
 import { router as cartsRouter } from './router/carts.router.js';
 import { router as chatRouter } from './router/chat.router.js';
 import { router as sessionsRouter } from './router/sessions.router.js';
+import { router as purchaseRouter } from './router/purchase.router.js';
 import {Server} from 'socket.io';
 import {chatService} from './services/chat.Service.js'
 import { initPassport } from './config/config.passport.js';
@@ -51,6 +52,7 @@ app.use('/api/chat' , chatRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/products' , productsRouter)
 app.use('/api/sessions' , sessionsRouter)
+app.use('/api/purchase', purchaseRouter)
 app.use('/' , viewsRouter)
 
 

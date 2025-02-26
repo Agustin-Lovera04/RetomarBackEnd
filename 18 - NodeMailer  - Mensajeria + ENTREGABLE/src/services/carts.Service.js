@@ -13,10 +13,6 @@ class CartsService{
         return await this.dao.getCartById(id)
     }
 
-/*     async infoPrices(products){
-        return await this.dao.infoPrices(products)
-    } */
-
     async createCart(title){
         return await this.dao.createCart(title)
     }
@@ -34,7 +30,7 @@ class CartsService{
     }
 
     async deleteProductInCart(cid,pid){
-        return await this.dao.deleteCart(cid,pid)
+        return await this.dao.deleteProductInCart(cid,pid)
     }
 
     async updateAllProductsInCart(id, product){

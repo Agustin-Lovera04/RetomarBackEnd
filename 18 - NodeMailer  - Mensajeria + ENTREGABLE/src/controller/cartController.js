@@ -187,4 +187,8 @@ export class CartController {
     return res.status(200).json({ok: updateQuantityProductInCart})
   }
 
+
+  static async finallyBuy(req,res){
+      console.log(req.body)
+  }
 }

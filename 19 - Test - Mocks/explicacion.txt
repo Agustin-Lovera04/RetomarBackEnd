@@ -1,0 +1,192 @@
+Test y Mocks
+
+
+TEST
+    En programacion tenemos 3 Tipos principales de errores:
+        -De compilacion: Ocurre cuando un codigo no puede iniciarse directamente
+        -De ejecucion: El codigo compila, pero a lo largo de su ejecucion ocurre un error no controlado "exploto"
+        -Errores Logicos: el xcodigo no tiene ningun error visible, pero la funcionalidad final, no se ejecuta correctamente
+         
+
+    TDD: ( TEST DRIVEN DEVELOPMENT )
+        Consiste en escribir las pruebas del modulo antes incluso de desarrollar dicho modulo, ocn el fin de dirigir le desarrollo para que pase con exito el Test
+        
+            3 pasos en bucle : Escribir prueba fallada   - Hacer que pase la prueba - Refactorizar 
+
+        Ejemplo en clase:
+
+            Creamos suma.test.js
+
+                importamos el modulo de js
+                import {suma} ...
+
+                let contadorPruebas =  0
+                let pruebasCorrectas = 0
+                let esperado
+                let resultado
+
+                contadorPruebas ++
+
+                console.log("si algun arguemnto NO es numero, debe devolver null)
+                resultado = suma(5, "juan")
+                esperado = null
+
+                if(esperado === resultado){
+                    console.log('Prueba correcta ${ contadorPruebas}')
+                    pruebasCorrectas++
+                }else{
+                    console.log("Prueba fallida, ${esperado}, Se obtuvo ${resultado} ")
+                }
+
+                console.log("pruebas Realizadas ${contadorPruebas} ")
+                console.log("pruebas Correctas ${pruebasCorrectas} ")
+
+
+
+    suma.js
+            // export const suma=(a, b)=>{
+            //     if(!a || !b){
+            //         return 0
+            //     }
+
+            //     if(typeof a!=="number" || typeof b!=="number"){
+            //         return null
+            //     }
+
+            //     return a+b
+
+            // }
+
+            let numeros=[1,2,3]  
+            let otrosNumeros=[4,5,6]
+            let todosLosNumeros=[...numeros, ...otrosNumeros]  // los .. son op. spread
+            // console.log(todosLosNumeros)
+
+            let ob1={prop1:100, prop2:200}
+            let ob2={prop3:300, prop4:400}
+            let ob3={
+                ...ob1, ...ob2   // los .. son op. spread
+            }
+            // console.log(ob3)
+
+
+            // export const suma=(...numeros)=>{   // los .. son op. rest
+            //     if(numeros.length===0) return 0
+
+            //     let error=false
+            //     for(let i=0; i<numeros.length; i++){
+            //         if(typeof numeros[i]!=="number"){
+            //             error=true
+            //         }
+            //     }
+
+            //     if(error) return null
+
+            //     let resultado=0
+            //     for(let i=0; i<numeros.length; i++){
+            //         resultado+=numeros[i]
+            //     }
+
+            //     return resultado
+                
+            // }
+
+
+            // export const suma=(...numeros)=>{   // los .. son op. rest
+            //     if(numeros.length===0) return 0
+
+            //     let error=false
+            //     let resultado=0
+            //     for(let i=0; i<numeros.length; i++){
+            //         if(typeof numeros[i]!=="number"){
+            //             error=true
+            //         }else{
+            //             resultado+=numeros[i]
+            //         }
+            //     }
+
+            //     if(error){
+            //         return null
+            //     }else{
+            //         return resultado
+            //     }
+
+            // }
+
+            export const suma=(...numeros)=>{   // los .. son op. rest
+                if(numeros.length===0) return 0
+                if(!numeros.every(numero=>typeof numero==="number")) return null
+                return numeros.reduce((acum, valor)=>acum+=valor,0)
+            }
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JEST
+    Jest es un marco de pruebas de JavaScript diseñado para garantizar la corrección de cualquier código base de JavaScript .
+
+        npm i -D @types/jest jest
+
+en un archivo .test.js comenzamos a trabajar con jest
+
+    importamos el script a testear
+
+
+    //Funcion de jest
+    describe("Pruebas a script "Manager de usuarios" ", () => {
+
+        test("Descripcion del testeo, ej; "Si no envio argumentos deve devolver 0 ", ()=>{
+            expect(suma()).toBe(0)
+        })
+
+        test("Si envio algo que no sea un numero, devuelve NULL", ()=> {
+            expect("juan", 1).toBe(null)
+        })
+
+
+    })
+
+
+-Luego para ejecutar el archivo de prueba hacemos un, el npx jest => ejecuta los arhcivos que tenga el formato .test.js
+    npx jest
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Mocks 
+    Genera datos de simulacion a datos reales. 
+
+    Vamos a usar una libreria conocida "faker.js"
+
+                npm i @faker-js/faker
+
+                import {fakerES as faker} from .. 
+
+                let pajaroSimulado = faker.animal.bird()
+
+                console.log(pajaroSimulado);
+
+    hau mas ejemplos como:
+
+        faker.color.human()
+        faker.commerce.price()
+        faker.commerce.product()
+        faker.person.firstName("female" ) // o poner "man" 
+
+
+    //Ejemplo para un buen producto
+            const generaProducto=()=>{
+            let codigo=faker.string.alphanumeric(5)
+            let descrip=faker.commerce.product()
+            let precio=faker.commerce.price({ min: 100, max: 200, dec: 2, symbol: '$' })
+            let cantidad=faker.number.int({min:1, max:20})
+            let subtotal=cantidad*Number(precio.slice(1))
+            return {
+                codigo, descrip, precio, cantidad, subtotal
+            }
+        }
+
+
+    Mas ejemplos de buen uso de FAKER
+
+        https://github.com/diegopolverelli/comision-49975-backend/blob/main/clase31-20240205/03-Mocks/app.js
