@@ -1,0 +1,164 @@
+LOGGER
+    Dependencias que nos sirven como solucion para la depuracion de que Mostrar y Que no En consola, nos ayudara mejorando la performance de nuestra app.
+    Y ademas mostraremos con mas claridad y podrmeos manipular la informacion impresa en consola.
+
+    ·Podemos mostrar a partir de "niveles" por prioridad
+    ·Enviar informacion a otros recursos a travez de "transportes"
+    ·Determinar lo que queda a produccion y lo que queda en dev
+
+
+WINSTON LOGGER:
+    Diseñado para trabajar con multitransportes para nuestra app, utiliza dos conceptos importantes.
+        ·Transporte: Sistema de almacenamiento de nuestros logs
+        ·Nivel: Sistema de priorirdad de logs
+
+    LOs transportes nativos de Winston permiten a nuestros logs que puedan salir de la consola y enviarse por otros medios  (escribirse en un archivo, enviarse a servidor externo , http)
+
+
+    -Establecer niveles de prioridad es crucial que mostar y que ignorarr gralmente:
+        {
+            error: 0,
+            warn: 1,
+            info: 2,
+            http: 3,
+            verbose: 4,
+            debug: 5,
+            silly: 6
+        }
+
+    
+ATENCION !!!!!!!!!!!!!! Cuando nsootros esablecemos un nivel, el winston lee de mayor a menor es decir si nosotros querriamos registrar en este caso desde http. Se guardaria: http, warn, y error
+
+
+        -npm i winston
+
+
+    2'-Crear un transporte
+            -Crear un transporte
+                import winston
+
+                const logger = winston.createLogger(
+                    {
+                        transports: [
+                            new winston.transports.Console(
+                                {
+                                    level: "debug", // a partir de que nivel guardara
+                                    format: winston.format.combine(
+                                        winston.format.colorize()
+                                        winston.format.simple()
+                                    )
+                                }
+                            ),
+                            //Aca se pueden agregar mas transportes
+                        ]
+                    }
+                )
+
+
+    3-Crear el  middle
+        export const middLog = ( req,res,next ) => {
+            req.logger = logger
+            
+            next()
+        }
+
+    
+    4-Poner el middle en uso a nivel aplicacion
+
+    5-Donde necesitemos utilizar loggers, debemos usarlo asi ( por ej cuando falta "Name")
+
+        if(!name){
+
+            req.logger("warn", "No se completo la propiedad name")   
+            
+            // aca por ejemplo si pongo un "silly" no se va a ver ya que pusimos que el transporte guarde a poartir de "debug"
+
+            ...
+        }
+
+----------------------------------------------------------------------------------------------------------------------
+    CREANDO NUESTRA PROPIA JERARQUIA de niveles
+        const loggerPersonal = Winston.createLogger(
+            {
+                levels: {grave: 0 , medio: 1 , leve: 2 }
+                transport : [
+                    new winston.transport.Console(
+                        format: winston.format.combine(
+                            winston.format.colorize({
+                                colors: {grave: "red", medio:"yellow", leve: "green"}
+                            }),
+                            winston.format.simple()
+                        )
+                    )
+                ]
+            }
+        )
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+WINSTON + DOTENV
+    Decidir que va a produccion y que queda en desarrollo
+
+    Crear el config de dotenv, comunmente.
+
+    ej:
+        -MODE = procces.env.MODE || "development"
+
+
+        -luego creamos el transporte con persistencia en archivo
+
+    const logger = 
+        ...
+        ...
+        new winston.transports.File(
+            {
+                level: "error",
+                filename: 'carpeta error src" 
+                ...
+                ...
+            }
+        )
+
+
+    
+    -LUEWGO cremoas un nuevo transporte con valiacion de MODE
+
+        const transportConsole = new winston.transports.Console(
+            ...
+        )
+
+        if(config.MODE === "development"){
+            logger.add(transportConsole)
+            //Si mode es development, le agregamos al contenedro de transportes, uno nuevo, el que es solo para development
+        }
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+
+
+TESTING DE PERFORMANCE
+
+    Simular carga de peticiones apra verificar que nuestro servidor funcione en la vida real
+
+    Para eso utilizaremos ARTILERRY
+
+
+ARTILLERY toolkit de performance, que generara interautas fakes, que hara una cargad e peticiones, para corroborar una buena performance de nuestro aplicacion
+
+
+    -npm i artillery
+
+
+    y luego en terminal ejecutamos
+
+        artillery quick --count 10 --num 30 'endpoint' > resultadoTest.txt
+
+        //quick =  prueba 
+        //count = interautas
+        //count = peticionXinterauta
+        // > salida de reusltado

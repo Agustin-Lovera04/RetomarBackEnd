@@ -1,0 +1,22 @@
+<h1>Carrito de: {{cart.title}}</h1>
+
+<ul id="product-list">
+    {{#each cart.products}}
+    <li>
+        Producto ID: {{this.product._id}}
+        Titulo: {{this.product.title}}
+        <span class="quantity">Cantidad: {{this.quantity}}</span> 
+        <span  class="product-price">Precio: {{this.product.price}} </span>
+        Subtotal: $<span class="subtotal">0.00</span>
+    </li>
+        <hr>
+    {{/each}}
+</ul>
+
+<h1>Total: ${{total}}</h1>
+<h1>ID: {{cart._id}}</h1>
+
+
+<button id="btn-FinallyBuy">Comprar</button>
+
+<script src="/js/cartDetail.js"></script>

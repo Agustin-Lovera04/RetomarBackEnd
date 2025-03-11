@@ -1,0 +1,95 @@
+<h1>Products Page</h1>
+<div id="cartUserID" cartUserID={{cartUserID}}><h3> Id Carrito De usuario: {{cartUserID}} </h3></div>
+<hr>
+<div id="responseFetch"></div>
+<div class="formsContainer" style="display: flex; flex-direction: row; justify-content:space-between">
+<div class="formPost-Container">
+<h2>Agregar un Producto</h2>
+
+<form id="postProductForm">
+    <div><label for="title">TITULO:</label>
+    <input type="text" name="title" id="title" {{!-- required --}}>
+    </div>
+    <div><label for="description">DESCRIPCION:</label>
+    <input type="text" name="description" id="description" {{!-- required --}}>
+    </div>
+    <div><label for="code">CODIGO:</label>
+    <input type="text" name="code" id="code" required>
+    </div>
+    <div><label for="price">PRECIO:</label>
+    <input type="number" name="price" id="price" required>
+    </div>
+    <div><label for="stock">STOCK:</label>
+    <input type="number" name="stock" id="stock" required>
+    </div>
+    <div><label for="category">CATEGORIA:</label>
+    <input type="text" name="category" id="category" required>
+    </div>
+    <div><label for="thumbnail">URL IMG: (opcional)</label>
+    <input type="text" name="thumbnail" id="thumbnail">
+    </div>
+    <button type="submit">AGREGAR PRODUCTO</button>
+</form>
+</div>
+
+
+<div class="formPost-Container">
+    <h2>Eliminar un Producto</h2>
+    <form id="deleteProductForm">
+        <div>
+            <label for="ID">Ingrese ID:</label>
+            <input type="text" id="IdValue" required>
+        </div>
+        <button type="submit">Eliminar</button>
+    </form>
+
+</div>
+    
+</div>
+
+<hr>
+
+
+<div id="responseProducts"></div>
+
+
+{{#if empty}}
+<h1>No hay productos Disponibles en este momento...!!! Intente mas tarde</h1>
+
+{{else}}
+
+<div id="containerProducts">
+{{#each payload.products}}
+<ul>
+    <li >
+    Nombre: <span style="font-weight: bold;">{{this.title}}</span><br>
+    Descripcion: <span>{{this.description}} </span><br>
+    ID: <span>{{this._id}} </span><br>
+    PRICE: <span>{{this.price}} </span> <br>
+    <a href="/products/{{this._id}}">Ver Detalle</a>
+    <button class="btn-addProductInCart" data-product-id="{{this._id}}">AGREGAR AL CARRITO</button>
+    </li>
+</ul>
+{{/each}}
+</div>
+{{/if}}
+
+<a href="/products/?page=1">Pag.1</a>
+
+{{#if hasPrevPage}}
+    <a href="/products/?page={{prevPage}}">Pag. Ant.</a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/products/?page={{nextPage}}">Pag. Sig.</a>
+{{/if}}
+
+<a href="/products/?page={{totalPages}}">Ult. Pag.</a>
+
+
+
+{{>navegation2}}
+
+
+ <script src ="/socket.io/socket.io.js"></script>
+ <script src="/js/products.js"></script>

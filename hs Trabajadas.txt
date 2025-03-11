@@ -99,9 +99,48 @@ ME COLGUEE
     18.00  - 20.35 IGUAL CORTE MUCHISIMO EN EL MEDIO
 
 26/2
-    10hs
+    10hs - 11.20
+
+    14.10hs Arranco entregable - 14.55 // 15.15 - 16:44 (Customize errores solo en estrategia de Autenticacion...)
+
+    Total: 1.20 + 45 + 1.30 = 3.30hs aprox BUENISIMO! Y nos vamos un ratito a React  ( media horita mas)
+
+27/2
+    17hs - 18.20hs (mensaje en manager y en controladro crear el custom error, luego no olvidar hacer le middle para los endpoint con router común)
+
+05/23
+    8.40 Estoy soluicionando lo de la pagina tambien estamos aprendiendo y  MUCHISIMO
+    -10.20   //  10.40 - Arrancamos con BACK A TERMINAR EL ETNREGABLE
+    -11.40
+
+    TOTAL 2.40hs
+
+6/2
+    10.40 - 11.40
+
+    Total cursado react + back = 2.20hs
+
+7/3
+    9.10 - 10.45 hasta ahora: 1.30 hs aprox. segui de las 10.55 a las 11.20 con el entregable
 
 
-RECORDAR NO USAMOS MAS NODEMON, GRACIAS A LA NUEVA VERSION DE NODE TENEMOS LA FUNCIONALIDAD --WATCH
 
-Clase 32
+-HICE APROXIMADAMENTE 1.30 hs el DOMINGO
+
+            
+
+
+
+
+11/3
+    Hice 2 hs de React
+
+    Ahora me pongo a temrinar el entregable de BACK
+
+    11.40hs - 12.15 (termine entregable)
+
+
+Clase 35 arrancar
+
+
+RECORDAR NO USAMOS MAS NODEMON, GRACIAS A LA NUEVA VERSION DE NODE TENEMOS LA FUNCIONALIDAD --WATCH 

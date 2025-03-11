@@ -1,0 +1,107 @@
+NVM ( NODE VERSION MANAGER )
+
+    Seguramnte alguna vez en neustra carrera como desarrolladores, nos encotnraremos trabajando en proyectos, que necesitan distintas versiones de NODE
+    
+    NVM, es nuestra opcion para movernos entre versiones de NODE
+
+    COMANDOS MAS USADOS:
+
+        nvm list ( muestra versiones instaladas de node)
+        nvm list available ( versiones disponibles para instalar )
+        nvm install 20.8.2 ( instala versiones especificas de node )
+        nvm use 20.8.2 ( pone en uso una version de node)
+
+
+    Se instala cmo cualkquier programa
+    Pero antes de ejecutar el instaldor, debemos borrar todo Node que tengamos, y con su npm obviamente.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ADMINISTRADOR DE PAQUETES
+    Como funciona??
+        Siempre que necesitamos utilziar alguin modulo externo para nuestro proyecto, instalamos dichos modulos de internet, al correr el comando "npm install"
+
+        Este se encarga de buscar las bersiones en interner, a partir de un reposiotorio en la pagina de npm
+        UIna vez instalado lo agrega a nuestro proyecto en e lcampo "dependencias" de nuestrto package.json
+
+    
+        Actualizacion de dependencias
+            Recordemso tambien que es util para el mantenimiento de las dependencias ya instalada.
+
+            el comando NPM OUTDATE  corrobora si hay dependencias con versiones deprecadas y asi podremos solucionarlo
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    NPM
+        ADMINISTRADOR DE PAQUETES NATIVO DE NODE
+
+            ·Descarga e instala paquetes
+            ·Actualizacion y mantenimiento de dependencias, npm outdate  y npm update
+            ·Crear y leer package.json, Para inzializar poaquetes a partir de npm init
+            ·Ejecutar scripts, para ejecutar comandos particulares como npm run
+            ·Desinstalar dependencias npmunistall
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ¿Qué es Yarn?
+
+        Yarn es un gestor de paquetes para JavaScript, similar a npm. Su objetivo es proporcionar una alternativa más rápida, segura y confiable para gestionar las dependencias de tus proyectos.
+
+    Ventajas:
+
+        Velocidad: Yarn utiliza un sistema de caché y paralelización para instalar paquetes más rápido que npm.
+        Seguridad: Yarn utiliza un archivo de bloqueo (yarn.lock) para garantizar que todos los miembros del equipo instalen las mismas versiones de las dependencias.
+        Confiabilidad: El archivo de bloqueo y las sumas de comprobación de los paquetes ayudan a prevenir errores y problemas de compatibilidad.
+        Desventajas:
+
+    Aunque en sus inicios era mas rápido que npm, npm se ha puesto a la par en cuanto a velocidad.
+    Algunos proyectos heredados pueden tener dificultades para migrar a Yarn.
+
+    Comandos más usados:
+
+        yarn install: Instala todas las dependencias del proyecto.
+        yarn add <paquete>: Agrega un nuevo paquete al proyecto.
+        yarn remove <paquete>: Elimina un paquete del proyecto.
+        yarn upgrade <paquete>: Actualiza un paquete a su última versión.
+        yarn start: Ejecuta el script de inicio del proyecto.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Versionado Semántico (SemVer) y Rangos de Dependencias
+
+    El versionado semántico (SemVer) es un sistema para asignar números de versión que comunican el tipo de cambios realizados en un software. Se basa en el formato Mayor.Menor.Parche:
+
+    Mayor: Cambios incompatibles con versiones anteriores.
+    Menor: Se añaden funcionalidades compatibles con versiones anteriores.
+    Parche: Correcciones de errores compatibles con versiones anteriores.
+En la gestión de dependencias (como en npm o Yarn), se utilizan "símbolos raros" para especificar rangos de versiones aceptables, combinando la precisión de SemVer con flexibilidad:
+
+Símbolos de Rangos de Versiones:
+
+        ^ (Caret):
+            Permite actualizaciones dentro de la versión mayor.
+            Ej: ^3.2.0 acepta 3.2.x y 3.x.x, pero no 4.0.0.
+
+        ~ (Tilde):
+            Permite actualizaciones dentro de la versión menor.
+            Ej: ~3.2.0 acepta 3.2.x, pero no 3.3.0 ni 4.0.0.
+
+        * (Asterisco):
+            Acepta cualquier versión. (No recomendado en producción).
+            >, <, >=, <=:
+            Especifican rangos precisos (mayor que, menor que, etc.).
+
+        - (Guion):
+            Especifica rangos de versiones. Ej: "1.2.3 - 1.2.7".
+            || (O lógico):
+            Combina rangos. Ej: "< 2.0.0 || > 3.0.0".
+
+    ¿Cómo se complementan?
+
+    SemVer define el significado de los cambios en las versiones.
+    Los símbolos de rango permiten indicar qué versiones son compatibles con tu proyecto, dentro de los límites definidos por SemVer.
+    Importancia:
+
+    Flexibilidad: Aprovechar actualizaciones sin romper la compatibilidad.
+    Estabilidad: Evitar versiones con errores.
+    Consistencia: Los archivos de bloqueo (package-lock.json, yarn.lock) aseguran que todos usen las mismas versiones exactas.

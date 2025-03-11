@@ -16,14 +16,18 @@ SERVIDOREXPRESS-----------------------------------------------------------------
 -configurar server express(clase 6)
         import express from 'express'
 
+    //asignar un puerto
         const PORT = 3000
 
+    //inizializa express
         const app = express()
 
+    //manejo de datos complejos
         /* Manejo de datos complejos ej req.body */
         app.use(express.json())
         app.use(express.urlencoded({extended:true}))
 
+    //Levanta el server
         const server=app.listen(PORT, () => {
             console.log(`Server Online ${PORT}`)
         })

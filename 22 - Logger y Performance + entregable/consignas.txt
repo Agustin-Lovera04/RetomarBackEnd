@@ -1,0 +1,17 @@
+LO VAMOS A HACER DP DE VER LA CLASE 35  (ppara terminar con artillery)
+
+
+                    -Implementar logger 
+                        -Definir sistema de niveles de la siguiente prioridad:
+        ---OK               debug, http, info, warning, error, fatal
+    
+                -Iplementar logger para desarrollo y otro para production
+
+    ------OK            ·Desarrollo a partir de => debug, solo en consola
+                         ·Production a partir de => info en consola
+
+     ------OK   -Ademas el logger de PRODUCTION, debera enviar en un transporte de archivos a partir del nivel error, en un nombre "errors.log"
+
+     ------OK  -Agregar logs de alto valor en puntos claves del servior y reemplazar todos los clg del servidor para correrlos con logger
+
+    ------OK   -Crear un endpoint /loggerTest que permita probar todos los logs
