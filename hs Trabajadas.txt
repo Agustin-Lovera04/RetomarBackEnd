@@ -140,7 +140,27 @@ ME COLGUEE
     11.40hs - 12.15 (termine entregable)
 
 
-Clase 35 arrancar
+17 / 3 
+    19.55 hs - 21.20
+
+20/3
+
+Arranque 17.00 con BZ . temrine 18.10  // Back arranco 18.45 - 19.20 ( comenze a descargr docker y tuve que parar )
+TErmine de configurar DOCKER Y me fui, porque mañan trabajo.
+
+parcial 2 hs 
+
+MUY FLOJO PELOTUDO, tampoco todo es culpa tuya, el wifi anduvo muy mal !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+HOY QUE DEBVERIA SER EL DIA DE MAYOR PROCUCCION, HICIMOS SOLO 2 hs
+
+AJUSTAR SI O SI, NO negociar con vos mimso ni con nadie el objetivo, tenemos que ser programador, QUE NO VUELVA A PASAR ESTO NUNCA, hoy que pase, perdonatelo, pero trabajalo, no seas boludo
+
+
+24/3
+    15.30hs - 17.20 hs Termine la clase, me voy un rato a react
+
+¡clase 37
 
 
 RECORDAR NO USAMOS MAS NODEMON, GRACIAS A LA NUEVA VERSION DE NODE TENEMOS LA FUNCIONALIDAD --WATCH 

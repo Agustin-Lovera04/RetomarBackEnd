@@ -1,0 +1,151 @@
+DOCKER
+    Plataforma que permite  crear, probar e implementar aplicativos en unidades de software estandarizadas  "contenedores"
+
+    Podemos "virtualizar " el OS de un servidor con el fin de realizaar ejecuciones de aplicaciones con la max. compatibilidad y el mejor entorno
+
+    Evitar el "EN MI PC SI FUNCIONABA"
+
+
+¿AHORA PORQUE NO PODRIA FUNCIONAR EN OTRA PC?
+    Como sabemos el desarrollo no es " ideal" tenemos multiples factores, ademas del codigo en si.
+    Por ej, Hardware, librerias, antivirus, navegador , etc etc
+
+
+-------------------------------------------------------------------------------------------------------------------
+MAQUINAS VIRTUALES
+    Como solucion se plantean las maquinas virtuales, de manera crolla podesmos decir que es cuando nuestra computadora utiliza sus recursos para simular otro OS.
+
+-------------------------------------------------------------------------------------------------------------------
+La evolucion fueron los CONTENEDORES
+    Un contendro es un entorno de ejecucion para un aplicativo en particular.
+    La clave de un contenedor es el CONCEPTO DE AISLAMIENTO
+
+
+DOCKER nos ayuda a generar contenedores, es una plataforma gestora de contenedores
+
+    1º DOCKERFILE:
+        Este cuenta con las intrucciones paso a paso para que nuestro proyecyto genere una imagen.
+        la generacion se realizad con el comando docker build-t "nombre IMG a generar" .
+        (importante finalizar con "." para indifcar que el archvo docker file estaa en el directorio actual)
+
+    2ª Una imagenen es el equivalente de una CLASE, pero con un proyeecto completo.
+    Cuando genermos la img significa que podemos generar multiples contenedores de esa app ( como instanscias )
+
+    3º CONTENEDOR:
+        El punto final en el que ejecutamos el app. Pero esta vez desde el entorno cerrado.
+        se puede generar via DOCKER DESKTOP, o via CLI con el comando
+            docker run --name nombreContenedor -p portExterno:portInterno -d nombreIMG
+
+
+
+
+
+
+    1º Creamos un archivo:
+            
+            Dockerfile
+                                        // ejemplo : para obtner las img buscamos en el buscador de img de la plataforma de dcoker
+                FROM node:20.10.0       //aca ponemos la img desde deonde vamos a partir
+
+                WORKDIR /app            //ruta al servidor
+
+                COPY package*.json ./       //ruta al package de nuestro proyecto (el "./" se refiere al WORKDIR, es decir clonara el package dentro de /app)
+                
+                RUN npm install             //Que comando correra
+
+                COPY ./src ./src            //Copiamos todo el contenido dentro del primer argumento "./src" deentro de la otra ruta (2do argumento "./src")
+
+                EXPOSE 3000             //puerto que expone el proyecto
+
+                CMD ["npm", "star"]       //Gerneralmnete se one el script con el cual se puede levantar el proyecto segun nuestro package.json ( en nuetro caso deberiamos agregarlo a nuestro packgace dentro de "scripts":::: "start": "node ./src/app.js")
+
+    
+    2º AHORA DEBEMOS MONTAR LA IMG DE DOCKER
+
+    !!!RECORDAR ANTES, COMENTAR LA LIBRERIA DE DOTENVT Y LA CONFIGURACION SOLO DEW IMPORTACIONES Y ESO DE DOTENV, PORQUE EL CONTENEDOR, USA VARIABLES DE ENTORNOS Q NOSOTROS CONFUIGUAREMOS DP
+
+        en consola.
+
+
+            docker build -t nombreConetedor .      //recorudar el . ( explicacion mas arriba)
+            
+
+    3º COrrer nuestro contenedor.
+
+        Tenemos 2 opciones desde Consola y desde PlataFomra ( mas facil )
+
+        EN plataforma:
+            Tocamos el boton de play en el contendor:
+                ·Colocamos el nombre de contenedor.
+                ·Colocar Puerto de via de entrada al puerto expiesto en app
+                ·Configurar var: ENTORNO
+
+
+        CONSOLA:
+            
+            docker run --name nombreDeCOntendeor -p PuertodeEntrada:PuertoExpuesto -d mongo
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+¿AHORA COMO SUBIMOS ESTO A LA NUBE?
+    Existe DOCKERHUB, que seria nuestra manera de subir a la nube las images
+
+        1º Una vez levvantada la img y el contenedor de manera local y corroborado que el start funcione.
+
+        2º ( en consola ) docker login
+
+        3º Colocarle un nombre a la img
+
+            docker tag nombreViejo <username>/nombreNuevo
+
+        4º Subir a la nube la img
+
+            docker push <username>/nombreIMG
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+ORQUESTACION DE CONTENEDORES:
+
+    Termino similar a ala clusterizacion. En vez de trabajar con clusters, trabajamos con nodos (contenedores)
+
+    Contaraimso con balanceador de cargas, reincio ante fallos etc
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+KUBERNETES; 
+    Teconolofia de orquestamineto de contenedores.
+        Tomara instrucciones y las ejecutara para poder distribuir PODS; donde cada POD puede tener n contenedoresm de esta forma, todos los contenedores que pertenezcan a un POD, podran funcionar como una entidad unica para intercomunicarse
+
+    
+
+    COMO instalar:
+
+        -Primero para utilzar correctamente es recomendado utiizar la consola de comandos de kubernetes ( llamada "kubectl")
+
+        -Para eso debemos instalar "curl" en nuestra powerShell, para asi poder realizar la descarga de kubectl.
+
+        -Luego una vez tngamos curl (GENERALMENTE EN LOS ULTIMOS WINDOWS, YA VIENE INSTALADO)
+
+
+            curl.exe .LO "ruta para kubectL ("docuemntacon")
+
+        
+
+
+        Luego en la consola de ctl de kubernetes
+
+-------------------------------------------------------------------------------------------------------------------
+
+CTL + MINIKUBES
+    Permite realizar pruebas de orquetacion de contenedoresm
+
+        en ctl
+                minikube start      //descarga img de minuikbe
+
+                mikube kubectl dashboard    //interfaz grafica de el cluster de kubernetes
+
+
+    ....Sigue el proceso en la proxima clase (37)

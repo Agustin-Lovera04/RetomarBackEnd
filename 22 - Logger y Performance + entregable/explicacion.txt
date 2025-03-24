@@ -147,18 +147,68 @@ TESTING DE PERFORMANCE
 
     Para eso utilizaremos ARTILERRY
 
-
 ARTILLERY toolkit de performance, que generara interautas fakes, que hara una cargad e peticiones, para corroborar una buena performance de nuestro aplicacion
 
+
+------------------------------------------------------------------------------------------------------------------
+    ARTILLETY QUICK : puede testear un solo endpoint por vez
 
     -npm i artillery
 
 
     y luego en terminal ejecutamos
 
-        artillery quick --count 10 --num 30 'endpoint' > resultadoTest.txt
+        artillery quick --count 10 --num 30 'endpoint' > resultadoTest.txt  // esto generaria un txt con los resultados
 
         //quick =  prueba 
         //count = interautas
         //count = peticionXinterauta
         // > salida de reusltado
+
+
+
+    !!! MEJOR OPCION ES CON :
+        artillery quick --count 10 --num 30 'endpoint' -o informe.html  // esto generaria un html con graficos y todo, es mucho mejor que el txt!!!! con los resultados
+
+
+------------------------------------------------------------------------------------------------------------------
+
+    ARTILERRY RUN: Puede probar varios endpoint a la vez, por lo tnato puede evaluar un proceso completo.
+
+    Pasos:
+        1º: Crear la ruta de testeo: //OJO QUE TRABAJA CON IDETACION
+            
+            ·Crear "config.yml"
+
+                config:
+                    target: "endpoint"
+                    phases:
+                        - duration: 10                          //Cuanto durara la prueba
+                          arrivalRate: 5                        // hara 5 pruebas x segundo
+                          name: "Fase 1: test"
+                scenarios:
+                    - name: "Prueba registro /login"
+                    flow:                                       //Congifuramos las rutas de testeo
+                        - get:                                  // indicamos los metodos y su endp abajo
+                            url: "/creaUsuarioFAKE"             //aca creamos uusarios fakes con faker por ej
+                            capture:                            //Con "capture" accedemos a la response
+                                - json: "$.usuario.nombre"      //con "$." accedemos al objeto de la respuesta
+                                  as: "nombre"                  // "as" indicamos en que variable guardar el dato
+                                - json: "$.usuario.email"
+                                  as: "email"
+                                - json: "$.usuario.password"
+                                  as: "password"
+                        -post:
+                            url: "/api/sessions/registro"       //abajo del endp indicamos que queremos enviar body
+                            json:                       
+                                nombre: {{nombre}}              //con esa sintaxis tomamos las varibles que gardamo
+                                email: {{apellido}}
+                                password: {{password}}
+
+
+        2º - (en consola)  PARA EJECUTAR:
+            artillery run config.yml
+
+
+    
+    !!!!!!!!!!! ATENCION, ARTILERRY PUEDE TOMAR DATOS COMO POR EJ COOKIES, ENVIARLAS POR HEADERS,  (esot nos serviria por ejemplo  para obtener el token luego de loguar un ususario y usarlo para pruebas de seguirdad de acceso y autorizacon)

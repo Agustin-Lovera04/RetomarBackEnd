@@ -7,8 +7,13 @@ Su estructura se basa en colecciones, llamadas BSON, similares a los JSON.
 utiliza un ORM llamado "mongoose"
 
 
--------------INSTALACION
+-------------INSTALACION-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Instalar la version community Server
+
+¿Poruqe se hace esto? 
+
+    Para que la computadora pueda levantar el servidor de MONGO y asi poder utilziarlo en nuestro codigo correctamente.
+
 
 Ejecutar el instalador como Administrador
 

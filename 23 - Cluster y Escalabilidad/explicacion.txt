@@ -1,0 +1,62 @@
+Luego de realizar los testeos es posible que nos demos cuentas que en sitauciones hipoteticas donde la pagina tendria mucho trafico de consultas, es problable que el servidor NO este preparado para resolverlas y genere por consecunecia erroes....
+
+Por lo tnato, Comenzamos a pensar en metodos de escalabilidad del servidor
+
+    EXISTEN 2 TIPOS: Vertical Y horizontal
+
+        VERTICAL: MEJORAR el hardward para tener servidor mas potentes
+            -Desventajas; Inversion grande, la tecnologia puede ser una traba
+
+        HORIZONTAL: Dividimos las tareas en multi-insttancias d servidores que alojen el aplicatico y se apoyen en tareas complejas
+            -Desvewntajas: Es mucho mas complejo, pero es mas eficiente Bien configurado.
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+CLISTERIZAR:
+
+    Debemos recordar como trabajar con process Child
+        Cuando cada proceso se ejecuta, cuetna con un "process id", conocida como PID
+        Cuando un proceso padre instanciaba un proceso hijo, este mantiene una ref a partir del PID, haciendo saber que ese proceso es parte de èl
+
+
+    FORK:
+        Referencia a que un proceso nuevo seguirà, pero se mantendra ligado al proceso que lo genero.
+        Digamos:
+            El primary process ( proceso padre )   //Forkea a procesos hijos
+            Workers: intancias del primary ( porcesos hijos )
+
+
+    
+
+    ¿COMO CLUSTERIZAR?
+
+            ej tenemos un endp con una funcion op1 ( que demora poco )
+                Otro endp con una funcion op2    ( demora mucho )
+
+
+        
+        1ª Vamos a realizar un proceso padre, para que utilize diferentes servidores para trabajar
+                
+                EN APP.js 
+
+                    import cluster from 'cluster'
+
+                    if(cluster.isPrimary){
+                        console.log(` Proceso principal - pid ${process.pid}. Generando Workers`)
+                        cluter.fork()
+                        cluster.fork()
+                        cluster.fork()
+                    }else{
+                        
+                        console.log(`Worker ${cluster.worker.id} - ProcessID: ${process.pid}`);
+                        
+
+
+                        //PONEMOS TODO NUESTRO SERVIDOR ADENTRO LO QUE YA TENIAMOS EN APP
+                    }
+
+
+        !!! De esta manera Estariamos atendiento con los distintos workers forkeados del servidor
+            
+
