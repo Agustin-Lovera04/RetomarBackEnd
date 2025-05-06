@@ -1,0 +1,300 @@
+paths:
+  /carts:
+    get:
+      summary: Obtiene los carritos guardados en BD.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carritos obtenidos correctamente.
+        "500":
+          description: Error Interno - Al recuperar carrito
+          
+  /carts/{id}:
+    get:
+      summary: Obtiene un carrito en especifico, recuperado mediante id.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de carrito requerido.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito recuperado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Carrito no encontrado
+        "401":
+          description: Error de autorizacion
+        "500":
+          description: Error interno - Al modificar producto
+    put:
+      summary: Modifica el listado de productos del carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de carrito requerido.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putArrayProductsInCart'
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Carrito modificado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+    delete:
+      summary: Elimina todos los productos del carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de carrito requerido.
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Productos eliminados correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+
+  /carts/create/{title}:
+    post:
+      summary: Crea un nuevo carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: title
+          required: true
+          description: Título para el nuevo carrito.
+          schema:
+            type: string
+      security:
+        - basicAuth: []
+      responses:
+        "201":
+          description: Carrito Creado correctamente
+        "400":
+          description: Debe enviar un titulo para el carrito
+
+  /carts/modCart/{id}:
+    put:
+      summary: Modifica carrito recuperado mediante id.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de carrito requerido.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/putCart'
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Carrito modificado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+
+  /carts/deleteCart/{id}:
+    delete:
+      summary: Elimina carrito recuperado mediante id.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de carrito requerido.
+          schema:
+            type: string
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Carrito eliminado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+
+  /carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito requerido.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto requerido.
+          schema:
+            type: string
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Producto agregado correctamente
+        "400":
+          description: Debe enviar IDs Validos
+        "404":
+          description: Carrito no encontrado
+        "401":
+          description: No puedes agregar al carrito productos creados por usted.
+        "500":
+          description: Error interno
+    delete:
+      summary: Elimina un producto del carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito requerido.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto requerido.
+          schema:
+            type: string
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+        "400":
+          description: Debe enviar IDs Validos
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+    put:
+      summary: Modifica la cantidad de un producto en el carrito.
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Id del carrito requerido.
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Id del producto requerido.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putQuantityProductInCart'
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: Cantidad modificada correctamente
+        "400":
+          description: Debe enviar IDs Validos
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno
+
+components:
+  schemas:
+    putCart:
+      type: object
+      properties:
+        title:
+          type: string
+      required:
+        - title
+      example:
+        title: Nuevo Nombre
+        
+    putArrayProductsInCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+              quantity:
+                type: number
+      required:
+        - products
+      example:
+        products:
+          - product: "idProducto1"
+            quantity: 2
+          - product: "idProducto2"
+            quantity: 5
+            
+    putQuantityProductInCart:
+      type: object
+      properties:
+        quantity:
+          type: number
+      required:
+        - quantity
+      example:
+        quantity: 3
+        
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      
+security:
+  - basicAuth: []

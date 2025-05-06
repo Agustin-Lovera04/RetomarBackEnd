@@ -36,6 +36,11 @@
 -----------MULTER------------------------------------------------
 
 MULTER + STORAGE ---
+
+
+Multer es una librería de Node.js que permite subir y procesar archivos adjuntos. Se usa para manejar datos de formularios en formato multipart/form-data. 
+
+!!!Para combinar facil manejor de formularios podemos usar FormData y luego utiñizar multer como midle en el router
    
     -util.js (De la doc oficial, crea una funcion para definir donde se guardaran los archivos manejados por multer, y manipular nombre etc etc.
     Lo exportamos y lo usamos en el server)

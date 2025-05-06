@@ -1,0 +1,33 @@
+<h1>Restablecer contraseña</h1>
+<div id="response"></div>
+<form id="formEmail">
+    <label for="email"> Ingrese email de recuperacion:
+        <input type="email" id="email" name="email">
+    </label>
+    <button type="submit">Enviar</button>
+</form>
+
+<script>
+    let responseDiv = document.getElementById('response')
+    let formEmail = document.getElementById('formEmail')
+    formEmail.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const formData = new FormData(formEmail)
+
+        fetch('/api/sessions/rstpass1', {
+            method: "POST",
+            body: formData
+        })
+
+        .then(response => response.json())
+        .then(data => {
+            if(data.error){
+              return responseDiv.innerHTML = `${data.error}`
+            }
+            
+            return responseDiv.innerHTML = `${data}`
+        })
+    })
+
+</script>

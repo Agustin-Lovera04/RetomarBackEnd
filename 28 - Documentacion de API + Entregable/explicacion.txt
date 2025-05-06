@@ -1,0 +1,214 @@
+Siempre es importante para nuestro proyecto su documentacion.
+
+DOCUMENTAR
+    Significa brinda suficiente infomrmacion sobre algun proceso, con el fin de que este sea lo suf entendible para el usuario.
+
+    Acerca de las librerias, acerca de las versiones, del funcionaiento, objetivos etc.
+
+
+Tenemos la ocion tambien de documentacion automatica de POSTMAN
+
+    Debemos crar una coleccion de conbsulas y luego en tocar en view collection en la coleccion de enpoints y luego publicarla al internet.
+
+
+-------------------------------------------------------------------------------------------------------------------
+Para simplificaarnos la documentacion llega SWAGGER
+    Nos permite crear nuestra "open API specification" === formato de descipcion de REST APIs
+    Es una herramienta de documentacon de codigo, nos permitira mantener cada modulo de nuestra API dentro de un especto de entendimient solido.
+    Es decir todo se mantendra en un contexto suficiemntemente alimentado de informacion para ser entendido por los prox desaroolladores.
+
+
+Como instaalar
+
+    npm i swagger-jsdoc:  Nos permite escribir nuesto archivo .yaml o .json y a partir de ahi generar un apiDoc
+
+    ·swagger-ui-express Nos permite crear una interfaz grafica e la documentacion
+
+
+
+1ª impoprtamos swaggerJSdoc
+    importamos swaggerUI
+
+
+2º en app, configuramos swagger
+
+            const options = {
+                definition: {
+                    openapi: "3.0.0",
+                    info; {
+                        title: API de productos,
+                        version " ..:" 
+                        Decscription: "Documetentacion de mi proyectyo
+                    }
+                },
+                apis: ["/docs/ymls"] // aca ponemos lasterminaciones desde donde documenteomos
+            }
+
+
+3° Creamos la interfaz grafia
+    const specs = swaggerJSdoc(options)
+    
+4°   routeamos la documentacion
+
+app.use('ruta', swaggerUI.serve, swaggerUI.setup(specs))
+
+5°  Creamos dentro de la carpeta "docs" los .yaml con la documentacion ej
+
+        Users.yaml
+
+                paths:
+                    /api/users:
+                        get:
+                            summary: Obtiene tdoos los usuarios     //Poner descripcion del endp
+                            tags:
+                                - Users         //tag para agrupamiento en interfaz
+                            responses:             //vamos agregando las posbiles respuestas y la consecuencia
+                                "201":
+                                    description: usuario creado
+                                "400":
+                                    description: error al crear usuario
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+
+PARAMETRO CON YAML
+
+
+
+                    /api/users/{id}:
+                        get:
+                            summary: obtiene usuario mediante id por parametro
+                            tags:
+                                -Users 
+                                ...
+                                ...
+                                ...
+                            parameters:                 //cofigurar un parametro
+                                - in: path
+                                name: id
+                                required: true
+                                description: Id de usuario a buscar
+                                schema:
+                                    type: string
+
+                            .....
+                            ....
+                            responses....
+                            ......
+                            
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+SCHEMAS PARA NO REPETIR
+
+Podemos generarschemas de resultados o estructurar que usaremosvarias veces ejemplo de product
+
+asi no teneoms q copiar y pegar varias veces y luego solo referenciar la estucutra en los schemas de los endp
+
+
+        components:
+            schemas:
+                Products:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                        name:
+                            type: string
+                        stock:
+                            type: number
+
+                            ....
+                            ....
+
+        
+
+        Luegpo en el schema del enpoints
+
+            post:
+      summary: Graba un usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createUser'      // se referie al schema del cuerpo del json,
+      responses:
+        "201":
+          description: Usuario creado
+        "400":
+          description: Faltan datos
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+REQ BODY CON SWAGGER
+
+
+dentro de components, tambien
+
+se establece como deberia llegar por body la informacion
+
+requestBodies:
+    createUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre de usurio
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Correo del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        first_name: Diego
+        last_name: Polverelli
+        email: diego@hotmail.com
+        password: coder123
+
+
+
+Luego en  cada endpoint necesario se hace referencia:
+    post:
+      summary: Graba un usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createUser'          //se hace referencia
+      responses:
+        "201":
+          description: Usuario creado
+        "500":
+          description: Error interno del servidor
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+ SEGURIDAD CON SWAGGER
+    Se pone dentro del apartado de components:  ( hay varios tipos la mas basica ej:)
+
+
+   securitySchemes:            
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+
+security:
+  - basicAuth: [] 
+
+Y luego se pone en el apartado security RECORDAR
+                                    
+
+Y asi vamos jugando con yaml y tenemos q ir viendo documentacion de swagger

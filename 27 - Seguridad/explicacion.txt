@@ -1,0 +1,46 @@
+Las vulnerabilidades en nuestro codigo son latentes, y los hackers estan al pie de cañonn para explotar esas vulnerabilidades.
+
+Una vulnerabilidad en el codigo, es cualquiero tipo de debilidad o brecha dejada a una persona malintencionada, compromentio nuestros datos o el de los usuarios.
+
+Pueden ser de
+    ·Hardware
+    ·Software
+    ·Procedimentales
+    ·Humanas
+
+Por eso es tan importante la seguridad de nuestro codigo
+
+
+OWASP
+    Open web application security proyect
+        es un proyecto de codigo abierto internacional, el cual brinda informacion referente a la seguridad general de app web.
+
+        Ademas provee un conjunto de herramientas que permiten conocer a profundida muchos conceptos referentes al aseguridad
+
+        ej 
+            ·owasp ZAP
+            ·owasp juice shop
+            etc.
+
+
+
+
+OWASP top 10
+    Es un documento que muestra las 10 vulnerabilidades principales y de impacto mas critico en las aplicaciones a lo largo de un plazo de tiempo.
+    Es actualizado cad 4/4 años con el fin de manteneter al dia las novedades con respecto a la seguridad
+
+    ej: 
+    broken access control   ( cuando se logra acceder a recursos no deberia tener acceso )
+    cryptographic failures ( Fallo en algun proceso de criptografia, ej una ocntraseña mal hasheada)
+    injection ( insercion de datos de un externo que rompe con nuestro correcto fuincioinamiento)
+
+
+
+Generalemtne en lo que respecta a codigo cotidiano, es solo prestar mucha tencion a la captura de erroes, y a validaciones constantemente para teneer consistencia en datos siempre.
+
+
+Prestar atencion en todos los puntos de codigo
+    ej en interacciones con usuario, que por medio de input no manden links, no manden cosas que podrian romperno ( inyection) etc.
+
+
+hay librerias como "purify" que sirven para seguridad de motores de plantillas como habdlebars

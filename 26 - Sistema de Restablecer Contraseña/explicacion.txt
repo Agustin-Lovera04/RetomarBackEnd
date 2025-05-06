@@ -1,0 +1,59 @@
+Primero vamos a instalar un sistema de mensajeria, como por ej " nodemailer"
+
+1 º creamos carpeta mails
+    mail.js
+
+      · Creamos el transporte
+
+      · Creamos la funcion que envia los mails ( pero con un cambio enviamos un html con el message):
+                export const enviarMail =( to, subject, message) => {
+                    return transport.sendMail(
+                        {
+                            to, subject,
+                            html: message       // enviaos el html
+                        }
+                    )
+                }
+
+
+2º Creamos la interfaz para recuperar contraseña
+
+    · Creamos un formulario con metodo post que vaya al endp donde estara la 1er  logica de reestablecimineto
+
+            //Tendra un input donde uno captara el email para recuperar la contraseña
+
+
+
+3º Creamos el endpoint
+    · que recibira el mail ingresado y hara una consulta para recuperar el usuario y corroborar que exista.
+    · Luego generaremos el token, con los datos del usuario y con un tiempo funcioonal de 1 h
+    · Creamos el mensaje con formato html, y le enviaremos el link que apunte al endpoint donde estara la 2da logica de reestablecimineto con el TOKEN por parametro
+    · Luego utilizamos nodemaileer para enviar el mail  
+
+            let response = await enviarMail(email, "recupero", message)
+            if(response.accepted > 0) {  SE ENVIO CORRECTAMENTE EL MAIL}
+
+
+4º Creamos el 2do endpoint de recuperacion
+
+    ·Recuperamo el token desde el parametro o desde donde lo hayamos enviado
+    · Verificamos el token, que este valido
+    ·Si esta todo ok, vamos a renderizar una vista donde tendremos un fomrulario con:
+
+            Dos input, donde se ingrsara la nueva contraseña // con las validaciones correspondientes.
+            y el token que recibimos, lo dejaremos oculto la vista.
+
+            ( puede ser en el mimso value de un input esconcido asi se vnia conjunto con las nuevas contraseñas al enviar el formulario)
+    
+
+5º Creamos el ultimo endp la etapa 3:
+
+    Recibiremos la contraseña ya validada, y el token.
+
+    ·lo verificamos para obtener los datos del usuario.
+
+    ·hasehamos la contraseña
+
+    ·Hacemos la consulta a BD y modificamos la contraseña del user con la contraseña nueva.
+
+    · y luego destruimos la sesion y nos vamos al login, para arrancar de 0s

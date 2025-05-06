@@ -1,0 +1,186 @@
+paths:
+  /products:
+    get:
+      summary: Obtiene y renderiza todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Productos recuperados
+        "500":
+          description: Error interno
+  /products/{id}:
+    get:
+      summary: Obtiene un producto en especifico coincidente con el id que ingresa por parametro.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de producto requerido.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto recuperado mediante id
+        "400":
+          description: Id Invalido
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno
+  /api/products:
+    post:
+      summary: Crea un producto.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createProduct'
+      responses:
+        "201":
+          description: Producto Creado correctamente
+        "400":
+          description: Debe enviar los campos solicitados
+        "409":
+          description: Controlar error numerico en los siguientes campos title, description, category
+        "500":
+          description: Error interno - No se pudo recuperar usuario
+  /api/products/{id}:
+    put:
+      summary: Modifica producto recuperado mediante id.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de producto requerido.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putProduct'
+      responses:
+        "200":
+          description: Producto modificado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Producto no encontrado
+        "401":
+          description: Error de autorizacion
+        "500":
+          description: Error interno - Al modificar producto
+    delete:
+      summary: Elimina producto recuperado mediante id.
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id de producto requerido.
+          schema:
+            type: string      
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+        "400":
+          description: Id Invalido
+        "404":
+          description: Producto no encontrado
+        "401":
+          description: Error de autorizacion
+        "500":
+          description: Error interno - Al modificar producto
+
+components:
+  schemas:
+    createProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          required: true
+          description: titulo de producto
+        description:
+          type: string
+          required: true
+        code:
+          type: string
+          unique: true
+          required: true
+        price:
+          type: number
+          required: true
+        status:
+          type: boolean
+          default: true
+        stock:
+          type: number
+          required: true
+        category:
+          type: string
+          required: true
+        thumbnail:
+          type: string
+        owner:
+          type: string
+          default: Admin
+      example:
+        title: Producto 1
+        description: Producto elegante diseño
+        code: codeunico
+        price: 2000
+        status: true
+        stock: 20
+        category: test
+    putProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          required: true
+          description: titulo de producto
+        description:
+          type: string
+          required: true
+        code:
+          type: string
+          unique: true
+          required: true
+        price:
+          type: number
+          required: true
+        status:
+          type: boolean
+          default: true
+        stock:
+          type: number
+          required: true
+        category:
+          type: string
+          required: true
+        thumbnail:
+          type: string
+        owner:
+          type: string
+          default: Admin      
+      example:
+        title: MODIFICACION
+        description: Producto elegante diseño
+        stock: 20
+  securitySchemes:            
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []

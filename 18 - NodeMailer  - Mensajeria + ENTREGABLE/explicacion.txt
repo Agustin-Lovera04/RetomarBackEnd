@@ -3,6 +3,10 @@ Utiliza los puertos 25/TCP o 587/TCP
 
 
 NODEMAILER 
+
+!!!ATENCION HAY ANTIVURUS QUE INTEERCEPTAS LAS PETICIONES Y PUEDEN GENERRAR PROBLEMAS PARA ENVIAR LOS MENSAJES.
+YO POR EJEMLO PARA QUE FUNCIONE TUVE QUE DESACTIVAR EL AVAST
+
     Dependencia que se utiliza por defecto para mensajeria, que se conecta con distiintos host y servicios de mialing ( gmail, hotmail, outlok etc)
 
 

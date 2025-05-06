@@ -1,0 +1,7 @@
+----OK           1-Realizar la configuracion necesaria para tener docuentado tu proyecto a partir de swagger
+
+----OK           2-Se debe documentar el modulo de productos
+
+3-Se debe documentar el modulo de carrito
+
+-----OK     4- NO realizar documentacion de sesiones

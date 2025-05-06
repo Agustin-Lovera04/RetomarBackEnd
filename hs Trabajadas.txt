@@ -160,7 +160,29 @@ AJUSTAR SI O SI, NO negociar con vos mimso ni con nadie el objetivo, tenemos que
 24/3
     15.30hs - 17.20 hs Termine la clase, me voy un rato a react
 
-¡clase 37
 
+
+1/4
+    Ya vengo con aprox 2 hs de SQL hice ( para la web )
+
+    Curso un ratito BACK hasta que el ale me pase nuevo EXCEL.
+
+    18.30 - 19.30hs me fui a seguir con la web del ale
+
+    HOY YA CUMPLIMOS DE SOBRA LAS HORSAS, DEJAR DE CONTARLAS
+
+
+
+ANOTACION:
+
+¡clase 41
+
+CUANDO TERMINEMOS EL CURSO:
+
+IGUAL VAMOS A REVEER TODO ESTE TEMA EN LAS NUEVAS CLASES DE CODER D BACK, DESD LA CLASE 36, O INCLUSO 35 HASTA LA 37
+
+PODRIAMOS HACER UN CURSO DE PYTHON, DISEÑO UX/UI , CIBERSEGUIRDAD,  muchas cosas ( y hoy hay cursos de todo )
+
+Curso de como customizar mi linkedin y mi github,  y rehacer nuestro portfolio
 
 RECORDAR NO USAMOS MAS NODEMON, GRACIAS A LA NUEVA VERSION DE NODE TENEMOS LA FUNCIONALIDAD --WATCH 

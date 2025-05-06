@@ -1,0 +1,21 @@
+      1 ) Realizar sistema de recuperacion de contraseña, lo cual envie por medio de un correo un boiton que redireccione a una pagina para reestablecer la contraseña
+          
+          ·Link del correo debe expirar a la 1hs dp de ser enviado
+--OK          · Si se trata de reestablecer con la misma contraseña, debe impedirlo, e indicar que nose puede colocar la misma
+          ·Si l link expiro debe redirigir a una vista que le permita genera nuevamente el correo de reestablecimineto.
+
+----OK            2) Establecer un nuevo rol para el schema del usuario llamado " premiun" el cual estara           hablitado tambien para crear productos
+
+            3 ) Modificar el schema de procucto para contar con un cmpo "owner" el cualhaga ref a la persona qe creo el producto.
+-----OK                · si un producto se crea sin owner, por dfecto "admin"
+                · El campo owner debera guardar solo el correo o el _id del usuario
+
+              4) Modificar los permisos de modificacion y eliminacion para:
+ -----OK           ·Un usuario premioun solo pueda borrar los prods que le pertenecen
+                    · el admin pueda borrar cualquier producto
+
+-----OK            5) modificar logica del carrit para que: 
+                · un user premiun no pueda agregar a su carrito un prod que le pertenecen
+
+----OK       6) impementar una nueva ruta en el royuter "/api/users/oremium/:uid" la cual permitira cambiar el rol de un usuario de "user a "premiun" y viceversa
+

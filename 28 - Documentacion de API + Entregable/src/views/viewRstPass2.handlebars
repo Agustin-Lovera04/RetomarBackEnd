@@ -1,0 +1,40 @@
+<h1>Ingrese una nueva contraseña: </h1>
+<div id="response"></div>
+<form id="formRST">
+    <label for="password1">Ingrese nueva contraseña:
+        <input type="password" id="password1" name="password1">
+    </label>
+    <label for="password2">Confirme nueva contraseña:
+        <input type="password" id="password2" name="password2">
+    </label>
+
+    <input type="text" id="token" name="token" value={{{token}}}>
+    <button type="submit"> </button>
+</form>
+
+
+<script>
+    const responseDiv = document.getElementById('response')
+    const formRST = document.getElementById('formRST')
+    formRST.addEventListener('submit', async(e) => {
+        e.preventDefault()
+        const formData = new FormData(formRST)
+
+        fetch('/api/sessions/rstPass2', {
+            method: "POST",
+            body:formData
+        })
+
+        .then(respons => respons.json())
+        .then(data => {
+            if(data.error){
+                responseDiv.innerHTML = `${data.error}`
+            }
+            responseDiv.innerHTML = `${data.ok}`
+        })
+        setTimeout(()=>{
+            window.location.href = '/login'
+        }, 4000)
+    })
+
+</script>
